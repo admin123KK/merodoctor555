@@ -27,7 +27,7 @@ class _Start3pageState extends State<Start3page> {
                           MaterialPageRoute(builder: (context) => Loginpage()));
                     },
                     child: const Text(
-                      'Skip',
+                      'Skipp',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.blueGrey),
                     ),
