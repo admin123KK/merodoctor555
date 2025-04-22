@@ -17,7 +17,7 @@ class _Start3pageState extends State<Start3page> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 70, horizontal: 50),
+              padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -89,8 +89,18 @@ class _Start3pageState extends State<Start3page> {
                     width: 240,
                   ),
                   InkWell(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFF1CA4AC),
+                              ),
+                            );
+                          });
+                      await Future.delayed(Duration(seconds: 1));
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Loginpage()));

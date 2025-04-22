@@ -23,11 +23,21 @@ class _StartpageState extends State<Startpage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 25),
               child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Start1page()));
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const Center(
+                          child: const CircularProgressIndicator(
+                            color: Color(0xFF1CA4AC),
+                          ),
+                        );
+                      });
+                  await Future.delayed(Duration(seconds: 1));
+                  Navigator.pushReplacement(
+                      context, //pushreplacement wont let you show the progress indicator when you get back to page
+                      MaterialPageRoute(builder: (context) => Start1page()));
+                  // Navigator.pop(context);
                 },
                 child: Container(
                   width: 123,

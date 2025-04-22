@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/loginpage.dart';
 import 'package:merodoctor/welcompage.dart';
 
 class Registerpage extends StatefulWidget {
@@ -131,19 +132,35 @@ class _RegisterpageState extends State<Registerpage> {
                   const SizedBox(
                     height: 30,
                   ),
-                  Container(
-                    height: 30,
-                    width: 123,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF1CA4AC),
-                      borderRadius: BorderRadius.circular(22),
+                  InkWell(
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFF1CA4AC),
+                              ),
+                            );
+                          });
+                      await Future.delayed(Duration(seconds: 3));
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Loginpage()));
+                    },
+                    child: Container(
+                      height: 30,
+                      width: 123,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1CA4AC),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      child: const Center(
+                          child: Text(
+                        'Register',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      )),
                     ),
-                    child: const Center(
-                        child: Text(
-                      'Register',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    )),
                   ),
                   const SizedBox(
                     height: 9,

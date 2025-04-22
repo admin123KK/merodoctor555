@@ -17,7 +17,7 @@ class _Start1pageState extends State<Start1page> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 70, horizontal: 50),
+              padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -28,7 +28,7 @@ class _Start1pageState extends State<Start1page> {
                           MaterialPageRoute(
                               builder: (context) => Start2page()));
                     },
-                    child: Text(
+                    child: const Text(
                       'Skip',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.blueGrey),
@@ -91,8 +91,18 @@ class _Start1pageState extends State<Start1page> {
                     width: 240,
                   ),
                   InkWell(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFF1CA4AC),
+                              ),
+                            );
+                          });
+                      await Future.delayed(Duration(seconds: 1));
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Start2page()));
@@ -107,7 +117,7 @@ class _Start1pageState extends State<Start1page> {
                           Icons.arrow_right_alt_sharp,
                           color: Colors.white,
                         )),
-                  )
+                  ),
                 ],
               ),
             ),

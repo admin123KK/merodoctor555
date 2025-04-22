@@ -84,11 +84,20 @@ class _Start2pageState extends State<Start2page> {
                     width: 240,
                   ),
                   InkWell(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                                child: CircularProgressIndicator(
+                              color: Color(0xFF1CA4AC),
+                            ));
+                          });
+                      await Future.delayed(Duration(seconds: 1));
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Start3page()));
+                              builder: (context) => const Start3page()));
                     },
                     child: Container(
                       height: 50,

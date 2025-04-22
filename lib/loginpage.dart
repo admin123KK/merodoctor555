@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:merodoctor/forgotpassword.dart';
+import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/registerpage.dart';
 
 class Loginpage extends StatefulWidget {
@@ -95,15 +96,26 @@ class _LoginpageState extends State<Loginpage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
                         child: InkWell(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC),
+                                    ),
+                                  );
+                                });
+                            await Future.delayed(Duration(seconds: 1));
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Forgotpassword()));
+                                    builder: (context) =>
+                                        const Forgotpassword()));
                           },
-                          child: Text(
+                          child: const Text(
                             'Forgot password?',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -116,17 +128,35 @@ class _LoginpageState extends State<Loginpage> {
                   const SizedBox(
                     height: 55,
                   ),
-                  Container(
-                    height: 30,
-                    width: 123,
-                    decoration: BoxDecoration(
-                        color: const Color(0xFF1CA4AC),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: const Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                  InkWell(
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFF1CA4AC),
+                              ),
+                            );
+                          });
+                      await Future.delayed(Duration(seconds: 2));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Homepage()));
+                    },
+                    child: Container(
+                      height: 30,
+                      width: 123,
+                      decoration: BoxDecoration(
+                          color: const Color(0xFF1CA4AC),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: const Center(
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ),
