@@ -10,6 +10,8 @@ class Doctorpage extends StatefulWidget {
 class _DoctorpageState extends State<Doctorpage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return const Scaffold(
+      backgroundColor: Colors.blue,
+    );
   }
 }
