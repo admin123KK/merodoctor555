@@ -8,9 +8,29 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  String greeting = "";
+
+  @override
+  void initState() {
+    updateGreeting();
+    super.initState();
+  }
+
+  void updateGreeting() {
+    DateTime now = DateTime.now();
+    int hour = now.hour;
+    if (hour < 12) {
+      greeting = "Good morbing";
+    } else if (hour < 17) {
+      greeting = "Good afternoon";
+    } else {
+      greeting = "Good Evening";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 65),
@@ -21,18 +41,18 @@ class _HomepageState extends State<Homepage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Find your desire \nhealth Solution',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
-                  'Good morning, Sky Karki',
+                  '$greeting, Sky',
                   style: TextStyle(color: Colors.grey),
                 ),
               ],
             ),
-            Icon(
+            const Icon(
               Icons.notifications_active_outlined,
               color: Colors.black,
               size: 33,
