@@ -70,6 +70,95 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Icon(
+                            Icons.person_search_outlined,
+                            size: 30,
+                          ),
+                        ),
+                        const Text(
+                          'Doctor',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: const Icon(
+                            Icons.medication_outlined,
+                            size: 30,
+                          ),
+                        ),
+                        const Text(
+                          'Pharmacy',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: const Icon(
+                            Icons.warning_amber_outlined,
+                            size: 30,
+                          ),
+                        ),
+                        const Text(
+                          'Emergency',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: const Icon(
+                            Icons.local_hospital_outlined,
+                            size: 30,
+                          ),
+                        ),
+                        const Text(
+                          'Hospital',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ],
             ),
             const Positioned(
