@@ -32,145 +32,224 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 65),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Find your desire \nhealth Solution',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '$greeting, Sky',
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      topRight: Radius.circular(22),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 65),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Find your desire \nhealth Solution',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '$greeting, Sky',
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        topRight: Radius.circular(22),
+                      ),
+                    ),
+                    child: const TextField(
+                      style: TextStyle(color: Colors.white),
+                      cursorColor: Colors.white,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search, color: Colors.white),
+                        hintText: 'Search...',
+                        hintStyle: TextStyle(color: Colors.white70),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 10),
+                      ),
                     ),
                   ),
-                  child: const TextField(
-                    style: TextStyle(color: Colors.white),
-                    cursorColor: Colors.white,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search, color: Colors.white),
-                      hintText: 'Search...',
-                      hintStyle: TextStyle(color: Colors.white70),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(vertical: 10),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: const Icon(
+                              Icons.person_search_outlined,
+                              size: 30,
+                            ),
+                          ),
+                          const Text(
+                            'Doctor',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Icon(
+                              Icons.medication_outlined,
+                              size: 30,
+                            ),
+                          ),
+                          const Text(
+                            'Pharmacy',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Icon(
+                              Icons.warning_amber_outlined,
+                              size: 30,
+                            ),
+                          ),
+                          const Text(
+                            'Emergency',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Icon(
+                              Icons.local_hospital_outlined,
+                              size: 30,
+                            ),
+                          ),
+                          const Text(
+                            'Hospital',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    height: 230,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(90, 28, 165, 172),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Text(
+                                'Early Protection for \n your family',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 22),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(13.0),
+                              child: Container(
+                                height: 25,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF1CA4AC),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Center(
+                                  child: Text(
+                                    'Learn more',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 0),
+                            child: Container(
+                              height: 130,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(70)),
+                              child: Image.asset(
+                                'assets/image/startpage3.png',
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                      ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Icon(
-                            Icons.person_search_outlined,
-                            size: 30,
-                          ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'See all',
+                          style: TextStyle(color: Color(0xFF1CA4AC)),
                         ),
-                        const Text(
-                          'Doctor',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.grey),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: const Icon(
-                            Icons.medication_outlined,
-                            size: 30,
-                          ),
-                        ),
-                        const Text(
-                          'Pharmacy',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.grey),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: const Icon(
-                            Icons.warning_amber_outlined,
-                            size: 30,
-                          ),
-                        ),
-                        const Text(
-                          'Emergency',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.grey),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: const Icon(
-                            Icons.local_hospital_outlined,
-                            size: 30,
-                          ),
-                        ),
-                        const Text(
-                          'Hospital',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.grey),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            ),
-            const Positioned(
-              top: 0,
-              right: 0,
-              child: const Icon(
-                Icons.notifications_active_outlined,
-                color: Colors.black,
-                size: 33,
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ),
-          ],
+              const Positioned(
+                top: 0,
+                right: 0,
+                child: const Icon(
+                  Icons.notifications_active_outlined,
+                  color: Colors.black,
+                  size: 33,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
