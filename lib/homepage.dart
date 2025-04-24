@@ -236,7 +236,27 @@ class _HomepageState extends State<Homepage> {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                  const Text(
+                    'Top Doctor',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildDoctorCard(('assets/image/startpage1.png'),
+                            'Dr.SKy Karki', 'Cardiologist'),
+                        _buildDoctorCard(('assets/image/startpage3.png'),
+                            'Dr.Abiskar Gyawali', 'Orthopedist'),
+                        _buildDoctorCard(('assets/image/startpage3.png'),
+                            'Ritesh Ac', 'Psychologist')
+                      ],
+                    ),
+                  ),
                 ],
               ),
               const Positioned(
@@ -297,4 +317,60 @@ class _HomepageState extends State<Homepage> {
       ),
     );
   }
+}
+
+Widget _buildDoctorCard(String imagePath, String name, String type) {
+  return Padding(
+    padding: const EdgeInsets.only(right: 15),
+    child: Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 4,
+      child: Container(
+        width: 160,
+        height: 230,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(93, 28, 165, 172),
+            borderRadius: BorderRadius.circular(16)),
+        child: Column(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 58,
+              backgroundImage: AssetImage(imagePath),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              name,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              type,
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Container(
+              height: 20,
+              width: 80,
+              decoration: BoxDecoration(
+                  color: Colors.black, borderRadius: BorderRadius.circular(20)),
+              child: const Center(
+                child: Text(
+                  'Visit',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
 }
