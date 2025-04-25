@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:merodoctor/homepage.dart';
+import 'package:merodoctor/reportcheck.dart';
 
 class Profilepage extends StatefulWidget {
   const Profilepage({super.key});
@@ -194,11 +195,19 @@ class _ProfilepageState extends State<Profilepage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
-                      const Padding(
+                      Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: const Icon(
-                          Icons.chevron_right_outlined,
-                          size: 30,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Reportcheck()));
+                          },
+                          child: const Icon(
+                            Icons.chevron_right_outlined,
+                            size: 30,
+                          ),
                         ),
                       ),
                     ],
@@ -219,7 +228,7 @@ class _ProfilepageState extends State<Profilepage> {
                             color: const Color.fromARGB(90, 28, 165, 172),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Icon(Icons.person_search_outlined),
+                          child: const Icon(Icons.person_search_outlined),
                         ),
                       ),
                       const Text(

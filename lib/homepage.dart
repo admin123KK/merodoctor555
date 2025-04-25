@@ -310,7 +310,7 @@ class _HomepageState extends State<Homepage> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
+                  Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Profilepage()));
                 },
                 child: const Icon(
