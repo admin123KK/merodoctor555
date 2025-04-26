@@ -8,13 +8,15 @@ class Doctordetailspage extends StatefulWidget {
 }
 
 class _DoctordetailspageState extends State<Doctordetailspage> {
+  Color containerColor = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 45,
           ),
           const Padding(
@@ -91,7 +93,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
               ),
             ],
           ),
-          Padding(
+          const Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Text(
               'An Orthopedist is a medical doctor who specializes in diagnosing,treating and preventing conditions related \nto the bones,joints, muscles, ligaments,and tendons.\nThey help manage injuries, architures fractures on the \nmusculoskeletal issues.',
@@ -99,6 +101,21 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
             ),
           ),
           SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+                child: Text(
+                  'Schedule for Appointment',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
             height: 20,
           ),
           Padding(
@@ -185,22 +202,32 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                     ),
                   ),
                 ),
-                Container(
-                  height: 60,
-                  width: 50,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xFF1CA4AC)),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Thu',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text('14')
-                      ],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      containerColor = containerColor == Colors.white
+                          ? Color(0xFF1CA4AC)
+                          : Colors.white;
+                    });
+                  },
+                  child: Container(
+                    height: 60,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: containerColor,
+                        border: Border.all(color: Color(0xFF1CA4AC)),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Thu',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text('14')
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -237,7 +264,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                           'Sat',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text('16')
+                        Text('16'),
                       ],
                     ),
                   ),
@@ -245,6 +272,192 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
               ],
             ),
           ),
+          const Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+            child: const Divider(
+              color: Color(0xFF1CA4AC),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Row(
+              children: [
+                Container(
+                  height: 40,
+                  width: 90,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Center(child: Text('5.55')),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF1CA4AC)),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(child: Text('5.55')),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF1CA4AC)),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(child: Text('5.55')),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Row(
+              children: [
+                Container(
+                  height: 40,
+                  width: 90,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Center(child: Text('5.55')),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF1CA4AC)),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(child: Text('5.55')),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF1CA4AC)),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(child: Text('5.55')),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Row(
+              children: [
+                Container(
+                  height: 40,
+                  width: 90,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Center(child: Text('5.55')),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF1CA4AC)),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(child: Text('5.55')),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF1CA4AC)),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(child: Text('5.55')),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Row(
+              children: [
+                Container(
+                  height: 40,
+                  width: 90,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Center(child: Text('5.55')),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF1CA4AC)),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(child: Text('5.55')),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Color(0xFF1CA4AC)),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(child: Text('5.55')),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
