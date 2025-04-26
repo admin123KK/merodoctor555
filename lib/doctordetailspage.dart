@@ -14,8 +14,11 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
+          SizedBox(
+            height: 45,
+          ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 70),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -42,7 +45,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                   height: 150,
                   width: 200,
                   decoration: BoxDecoration(
-                      color: Colors.grey,
+                      color: const Color.fromARGB(90, 28, 165, 172),
                       borderRadius: BorderRadius.circular(20)),
                   child: Image.asset('assets/image/startpage2.png'),
                 ),
@@ -55,21 +58,193 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                       Text(
                         '  Dr.Sky Karki',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 17),
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       Text(
                         '  Orthopedist',
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
-                      Text('  Active'),
-                      Text('  5 Years')
+                      Text(
+                        '  Active',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.green),
+                      ),
+                      Text('  5 Year Experience')
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          Text('hi')
+          const SizedBox(
+            height: 10,
+          ),
+          const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                child: Text(
+                  'About',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Text(
+              'An Orthopedist is a medical doctor who specializes in diagnosing,treating and preventing conditions related \nto the bones,joints, muscles, ligaments,and tendons.\nThey help manage injuries, architures fractures on the \nmusculoskeletal issues.',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: const Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Sun',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('10'),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xFF1CA4AC),
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Mon',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('11')
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Tue',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('12')
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Wed',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('13')
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Thu',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('14')
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Fri',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('15')
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xFF1CA4AC)),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Sat',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('16')
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

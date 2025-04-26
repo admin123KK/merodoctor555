@@ -65,9 +65,9 @@ class _DloginpageState extends State<Dloginpage> {
                       controller: _email,
                       cursorColor: Colors.blue,
                       decoration: const InputDecoration(
-                        hintText: 'Enter your email address',
+                        hintText: 'enter your id number',
                         hintStyle: TextStyle(color: Colors.grey),
-                        labelText: 'Email',
+                        labelText: 'Id Number',
                         labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
                         icon: Icon(
                           Icons.email_outlined,
