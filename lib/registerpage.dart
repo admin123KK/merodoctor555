@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/loginpage.dart';
-import 'package:merodoctor/welcompage.dart';
 
 class Registerpage extends StatefulWidget {
   const Registerpage({super.key});
@@ -174,7 +174,7 @@ class _RegisterpageState extends State<Registerpage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Welcompage()));
+                                  builder: (context) => const Homepage()));
                         },
                         child: const Text(
                           ' Login',
