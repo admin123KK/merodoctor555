@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/doctordetailspage.dart';
 import 'package:merodoctor/profilepage.dart';
 
 class Homepage extends StatefulWidget {
@@ -249,12 +250,30 @@ class _HomepageState extends State<Homepage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        _buildDoctorCard(('assets/image/startpage1.png'),
-                            'Dr.SKy Karki', 'Cardiologist'),
-                        _buildDoctorCard(('assets/image/startpage3.png'),
-                            'Dr.Abiskar Gyawali', 'Orthopedist'),
-                        _buildDoctorCard(('assets/image/startpage3.png'),
-                            'Ritesh Ac', 'Psychologist')
+                        _buildDoctorCard(
+                          ('assets/image/startpage1.png'),
+                          'Dr.SKy Karki',
+                          'Cardiologist',
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Doctordetailspage()));
+                          },
+                        ),
+                        _buildDoctorCard(
+                          ('assets/image/startpage3.png'),
+                          'Dr.Abiskar Gyawali',
+                          'Orthopedist',
+                          () {},
+                        ),
+                        _buildDoctorCard(
+                          ('assets/image/startpage3.png'),
+                          'Ritesh Ac',
+                          'Psychologist',
+                          () {},
+                        )
                       ],
                     ),
                   ),
@@ -326,7 +345,8 @@ class _HomepageState extends State<Homepage> {
   }
 }
 
-Widget _buildDoctorCard(String imagePath, String name, String type) {
+Widget _buildDoctorCard(
+    String imagePath, String name, String type, VoidCallback onTap) {
   return Padding(
     padding: const EdgeInsets.only(right: 15),
     child: Card(
@@ -363,15 +383,21 @@ Widget _buildDoctorCard(String imagePath, String name, String type) {
             const SizedBox(
               height: 12,
             ),
-            Container(
-              height: 20,
-              width: 80,
-              decoration: BoxDecoration(
-                  color: Colors.black, borderRadius: BorderRadius.circular(20)),
-              child: const Center(
-                child: Text(
-                  'Visit',
-                  style: TextStyle(color: Colors.white),
+            InkWell(
+              onTap: onTap,
+              child: Container(
+                height: 20,
+                width: 80,
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(20)),
+                child: const Center(
+                  child: InkWell(
+                    child: Text(
+                      'Visit',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
             )
