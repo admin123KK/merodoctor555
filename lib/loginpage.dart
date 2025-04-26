@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/registerpage.dart';
@@ -176,6 +177,33 @@ class _LoginpageState extends State<Loginpage> {
                         },
                         child: const Text(
                           ' Register',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1CA4AC)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text('or'),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Login as Doctor?'),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Dloginpage()));
+                        },
+                        child: const Text(
+                          ' Start',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF1CA4AC)),
