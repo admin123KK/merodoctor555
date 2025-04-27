@@ -99,7 +99,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send, color: Color(0xFF1CA4AC)),
+            icon: const Icon(Icons.send, color: Colors.blue),
             onPressed: _sendMessage,
           ),
         ],
@@ -124,8 +124,8 @@ class _MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final alignment =
         message.isUser ? Alignment.centerRight : Alignment.centerLeft;
-    final color = message.isUser ? Color(0xFF1CA4AC) : Colors.black;
-    final textColor = Colors.white;
+    final color = message.isUser ? Colors.blue[100] : Colors.grey[300];
+    final textColor = Colors.black87;
 
     return Container(
       alignment: alignment,
