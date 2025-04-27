@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/homepage.dart';
 
 class Doctordetailspage extends StatefulWidget {
   const Doctordetailspage({super.key});
@@ -51,18 +52,25 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 45),
-            const Padding(
+            const SizedBox(height: 40),
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.arrow_back_ios, size: 30),
-                  Text(
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Homepage()));
+                      },
+                      child: const Icon(Icons.arrow_back_ios, size: 30)),
+                  const Text(
                     'Doctor Details',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                   ),
-                  Icon(Icons.more_vert, size: 30),
+                  const Icon(Icons.more_vert, size: 30),
                 ],
               ),
             ),
