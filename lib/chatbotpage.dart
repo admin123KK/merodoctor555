@@ -29,12 +29,12 @@ class _ChatbotpageState extends State<Chatbotpage> {
   void _addBotReply(String userMessage) {
     String botReply;
 
-    if (userMessage.toLowerCase().contains('hello')) {
+    if (userMessage.toLowerCase().contains('chor')) {
       botReply = 'Hi there! K help garna sakchu ma?';
     } else if (userMessage.toLowerCase().contains('help')) {
       botReply = 'Sure! Tell me what you need help with ma chu ta.';
     } else {
-      botReply = 'Sorry, Tmely k bhanna khojeyko sathi!!';
+      botReply = 'tme  baula ho ';
     }
     setState(() {
       _messages.add(_Message(text: botReply, isUser: false));
@@ -61,9 +61,12 @@ class _ChatbotpageState extends State<Chatbotpage> {
           Expanded(
             child: TextField(
               controller: _controller,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Type your message.....',
-                border: InputBorder.none,
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Color(0xFF1CA4AC)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
               onSubmitted: (_) => _sendMessage(),
             ),
@@ -72,7 +75,7 @@ class _ChatbotpageState extends State<Chatbotpage> {
             onPressed: _sendMessage,
             icon: const Icon(
               Icons.send_outlined,
-              color: Colors.blue,
+              color: Color(0xFF1CA4AC),
             ),
           ),
         ],
@@ -158,7 +161,6 @@ class _MessageBubble extends StatelessWidget {
         ),
         child: Text(
           message.text,
-        
           style: TextStyle(color: textColor, fontSize: 16),
         ),
       ),

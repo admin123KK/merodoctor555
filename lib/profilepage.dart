@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:merodoctor/chatbotpage.dart';
 import 'package:merodoctor/homepage.dart';
+import 'package:merodoctor/loginpage.dart';
 import 'package:merodoctor/reportcheck.dart';
 
 class Profilepage extends StatefulWidget {
@@ -348,12 +349,90 @@ class _ProfilepageState extends State<Profilepage> {
                             fontWeight: FontWeight.bold, color: Colors.red),
                       ),
                       const Spacer(),
-                      const Padding(
+                      Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: const Icon(
-                          Icons.chevron_right_outlined,
-                          color: Colors.red,
-                          size: 30,
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      'Are you sure to logout of your account?',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    icon: const Icon(
+                                      Icons.logout_outlined,
+                                      size: 30,
+                                      color: Color(0xFF1CA4AC),
+                                    ),
+                                    content: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 20),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InkWell(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    color: Color(0xFF1CA4AC)),
+                                              )),
+                                          InkWell(
+                                            onTap: () async {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return const Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                      color: Color(0xFF1CA4AC),
+                                                    ));
+                                                  });
+                                              await Future.delayed(
+                                                  const Duration(seconds: 2));
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const Loginpage()));
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              width: 110,
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xFF1CA4AC),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: const Center(
+                                                child: Text(
+                                                  'Log out ',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          child: const Icon(
+                            Icons.chevron_right_outlined,
+                            color: Colors.red,
+                            size: 30,
+                          ),
                         ),
                       ),
                     ],
