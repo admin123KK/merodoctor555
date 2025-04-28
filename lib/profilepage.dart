@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:merodoctor/chatbotpage.dart';
+import 'package:merodoctor/historyorsavedpage.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/loginpage.dart';
 import 'package:merodoctor/reportcheck.dart';
@@ -162,11 +163,20 @@ class _ProfilepageState extends State<Profilepage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 50),
-                        child: Icon(
-                          Icons.chevron_right_rounded,
-                          size: 30,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Historyorsavedpage()));
+                          },
+                          child: const Icon(
+                            Icons.chevron_right_rounded,
+                            size: 30,
+                          ),
                         ),
                       ),
                     ],
@@ -204,7 +214,7 @@ class _ProfilepageState extends State<Profilepage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Reportcheck()));
+                                    builder: (context) => const Reportcheck()));
                           },
                           child: const Icon(
                             Icons.chevron_right_outlined,
