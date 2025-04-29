@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:merodoctor/admin/aloginpage.dart';
+import 'package:merodoctor/doctor/dhomepage.dart';
 import 'package:merodoctor/doctor/dregisterpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
-import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/loginpage.dart';
 
 class Dloginpage extends StatefulWidget {
@@ -145,7 +145,7 @@ class _DloginpageState extends State<Dloginpage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Homepage()));
+                              builder: (context) => const Dhomepage()));
                     },
                     child: Container(
                       height: 30,
