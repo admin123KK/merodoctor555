@@ -173,7 +173,7 @@ class _DloginpageState extends State<Dloginpage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Dregisterpage()));
+                                  builder: (context) => const Dregisterpage()));
                         },
                         child: const Text(
                           ' Register',
@@ -188,29 +188,107 @@ class _DloginpageState extends State<Dloginpage> {
                     height: 10,
                   ),
                   const Text('or'),
-                  const SizedBox(
-                    height: 10,
+                  const Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 10),
+                    child: Divider(),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Login as User?'),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Loginpage()));
-                        },
-                        child: const Text(
-                          ' Start',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1CA4AC)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC),
+                                    ),
+                                  );
+                                });
+                            await Future.delayed(Duration(seconds: 2));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Loginpage()));
+                          },
+                          child: Container(
+                            height: 90,
+                            width: 80,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color(0xFF1CA4AC),
+                                ),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.person_outline,
+                                ),
+                                Text(
+                                  'User \nLogin',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                      )
-                    ],
-                  ),
+                        InkWell(
+                          child: Container(
+                              height: 90,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1CA4AC),
+                                border:
+                                    Border.all(color: const Color(0xFF1CA4AC)),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.person_4_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    'Doctor \nLogin',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  )
+                                ],
+                              )),
+                        ),
+                        InkWell(
+                          child: Container(
+                            height: 90,
+                            width: 80,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xFF1CA4AC)),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.admin_panel_settings_outlined),
+                                Text(
+                                  'Merchant \nLogin',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

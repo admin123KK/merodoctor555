@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/registerpage.dart';
@@ -210,7 +211,7 @@ class _LoginpageState extends State<Loginpage> {
                                 color: const Color(0xFF1CA4AC),
                               ),
                               borderRadius: BorderRadius.circular(15)),
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -226,40 +227,61 @@ class _LoginpageState extends State<Loginpage> {
                             ],
                           ),
                         ),
-                        Container(
+                        InkWell(
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC),
+                                    ),
+                                  );
+                                });
+                            await Future.delayed(Duration(seconds: 2));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Dloginpage()));
+                          },
+                          child: Container(
+                              height: 90,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xFF1CA4AC)),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.person_4_outlined),
+                                  Text(
+                                    'Doctor \nLogin',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              )),
+                        ),
+                        InkWell(
+                          child: Container(
                             height: 90,
                             width: 80,
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xFF1CA4AC)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
+                                border:
+                                    Border.all(color: const Color(0xFF1CA4AC)),
+                                borderRadius: BorderRadius.circular(15)),
                             child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.person_4_outlined),
+                                Icon(Icons.admin_panel_settings_outlined),
                                 Text(
-                                  'Doctor \nLogin',
+                                  'Merchant \nLogin',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )
                               ],
-                            )),
-                        Container(
-                          height: 90,
-                          width: 80,
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xFF1CA4AC)),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.admin_panel_settings_outlined),
-                              Text(
-                                'Merchant \nLogin',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            ],
+                            ),
                           ),
                         )
                       ],
