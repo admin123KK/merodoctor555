@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/registerpage.dart';
@@ -191,26 +190,101 @@ class _LoginpageState extends State<Loginpage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Login as Doctor?'),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Dloginpage()));
-                        },
-                        child: const Text(
-                          ' Start',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1CA4AC)),
-                        ),
-                      )
-                    ],
+                  const Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+                    child: Divider(),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 90,
+                          width: 80,
+                          decoration: BoxDecoration(
+                              color: Color(0xFF1CA4AC),
+                              border: Border.all(
+                                color: const Color(0xFF1CA4AC),
+                              ),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.person_outline,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                'User \nLogin',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                            height: 90,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xFF1CA4AC)),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.person_4_outlined),
+                                Text(
+                                  'Doctor \nLogin',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            )),
+                        Container(
+                          height: 90,
+                          width: 80,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xFF1CA4AC)),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.admin_panel_settings_outlined),
+                              Text(
+                                'Merchant \nLogin',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     const Text('Login as Doctor?'),
+                  //     InkWell(
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //                 builder: (context) => Dloginpage()));
+                  //       },
+                  //       child: const Text(
+                  //         ' Start',
+                  //         style: TextStyle(
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Color(0xFF1CA4AC)),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
                 ],
               ),
             ),

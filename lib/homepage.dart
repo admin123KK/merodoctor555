@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:merodoctor/doctordetailspage.dart';
+import 'package:merodoctor/doctor/doctordetailspage.dart';
 import 'package:merodoctor/profilepage.dart';
 
 class Homepage extends StatefulWidget {

@@ -55,7 +55,7 @@ class _ChatbotpageState extends State<Chatbotpage> {
   Widget _buildInputArea() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      color: Colors.grey[200],
+      color: Colors.white,
       child: Row(
         children: [
           Expanded(
@@ -86,6 +86,7 @@ class _ChatbotpageState extends State<Chatbotpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Padding(
