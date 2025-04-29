@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/admin/aloginpage.dart';
 import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/homepage.dart';
@@ -265,6 +266,22 @@ class _LoginpageState extends State<Loginpage> {
                               )),
                         ),
                         InkWell(
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC),
+                                    ),
+                                  );
+                                });
+                            await Future.delayed(Duration(seconds: 2));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Aloginpage()));
+                          },
                           child: Container(
                             height: 90,
                             width: 80,

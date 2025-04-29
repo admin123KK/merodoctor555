@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:merodoctor/admin/aloginpage.dart';
+import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/doctor/dregisterpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/loginpage.dart';
 
-class Dloginpage extends StatefulWidget {
-  const Dloginpage({super.key});
+class Aloginpage extends StatefulWidget {
+  const Aloginpage({super.key});
 
   @override
-  State<Dloginpage> createState() => _DloginpageState();
+  State<Aloginpage> createState() => _AloginpageState();
 }
 
-class _DloginpageState extends State<Dloginpage> {
+class _AloginpageState extends State<Aloginpage> {
   late final _password = TextEditingController();
   late final _email = TextEditingController();
   @override
@@ -241,30 +241,6 @@ class _DloginpageState extends State<Dloginpage> {
                             ),
                           ),
                         ),
-                        Container(
-                            height: 90,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF1CA4AC),
-                              border:
-                                  Border.all(color: const Color(0xFF1CA4AC)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.person_4_outlined,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'Doctor \nLogin',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                )
-                              ],
-                            )),
                         InkWell(
                           onTap: () async {
                             showDialog(
@@ -277,25 +253,55 @@ class _DloginpageState extends State<Dloginpage> {
                                   );
                                 });
                             await Future.delayed(Duration(seconds: 2));
-                            Navigator.pushReplacement(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const Aloginpage()));
+                                    builder: (context) => Dloginpage()));
                           },
+                          child: Container(
+                              height: 90,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xFF1CA4AC)),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.person_4_outlined,
+                                  ),
+                                  Text(
+                                    'Doctor \nLogin',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ],
+                              )),
+                        ),
+                        InkWell(
                           child: Container(
                             height: 90,
                             width: 80,
                             decoration: BoxDecoration(
+                                color: const Color(0xFF1CA4AC),
                                 border:
                                     Border.all(color: const Color(0xFF1CA4AC)),
                                 borderRadius: BorderRadius.circular(15)),
                             child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.admin_panel_settings_outlined),
+                                Icon(
+                                  Icons.admin_panel_settings_outlined,
+                                  color: Colors.white,
+                                ),
                                 Text(
                                   'Merchant \nLogin',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 )
                               ],
                             ),
