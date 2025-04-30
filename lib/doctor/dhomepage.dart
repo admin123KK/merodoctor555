@@ -112,6 +112,203 @@ class _DhomepageState extends State<Dhomepage> {
                             )
                           ],
                         ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 100,
+                                width: 160,
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(93, 28, 165, 172),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: const Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Todays Appointment',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Text(
+                                      '55',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 30),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 100,
+                                      width: 160,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(93, 28, 165, 172),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: const Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              'Total Patients',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Text(
+                                            '208',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 30),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(93, 28, 165, 172),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: const Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 13),
+                                  child: const Column(
+                                    children: [
+                                      Icon(
+                                        Icons.edit_document,
+                                        size: 30,
+                                      ),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      Text(
+                                        'Appointments',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 9,
+                              ),
+                              Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(93, 28, 165, 172),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: const Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 13),
+                                  child: const Column(
+                                    children: [
+                                      Icon(
+                                        Icons.mail_outline_rounded,
+                                        size: 30,
+                                      ),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      Text(
+                                        'Message',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 9,
+                              ),
+                              Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(93, 28, 165, 172),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: const Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 13),
+                                  child: const Column(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_month_outlined,
+                                        size: 30,
+                                      ),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      Text(
+                                        'Schedule',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 9,
+                              ),
+                              Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(93, 28, 165, 172),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: const Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 13),
+                                  child: const Column(
+                                    children: [
+                                      Icon(
+                                        Icons.person_outline_outlined,
+                                        size: 30,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        'Patients',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
