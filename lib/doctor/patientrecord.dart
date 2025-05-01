@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class Patientrecord extends StatefulWidget {
@@ -18,7 +16,7 @@ class _PatientrecordState extends State<Patientrecord> {
         body: Column(
           children: [
             const SizedBox(height: 60),
-            Padding(
+            const Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +62,7 @@ class _PatientrecordState extends State<Patientrecord> {
                         child: Image.asset('assets/image/startpage3.png'),
                       ),
                     ),
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [

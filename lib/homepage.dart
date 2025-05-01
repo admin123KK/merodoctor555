@@ -254,8 +254,18 @@ class _HomepageState extends State<Homepage> {
                           ('assets/image/startpage1.png'),
                           'Dr.SKy Karki',
                           'Cardiologist',
-                          () {
-                            Navigator.push(
+                          () async {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC),
+                                    ),
+                                  );
+                                });
+                            await Future.delayed(Duration(seconds: 1));
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>

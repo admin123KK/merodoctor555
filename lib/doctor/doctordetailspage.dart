@@ -264,20 +264,87 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                       color: Colors.white,
                     ),
                   ),
-                  Container(
-                    height: 50,
-                    width: 180,
-                    decoration: BoxDecoration(
-                        color: const Color(
-                          0xFF1CA4AC,
-                        ),
-                        borderRadius: BorderRadius.circular(18)),
-                    child: const Center(
-                        child: Text(
-                      'Book Appointment',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    )),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              icon: Icon(Icons.edit_document),
+                              title: Text('Book appointment?'),
+                              content: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4, vertical: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        'cancel',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF1CA4AC)),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                color: Color(0xFF1CA4AC),
+                                              ));
+                                            });
+
+                                        Future.delayed(Duration(seconds: 2),
+                                            () {
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        width: 70,
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF1CA4AC),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: const Center(
+                                          child: Text(
+                                            'Confirm',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 180,
+                      decoration: BoxDecoration(
+                          color: const Color(
+                            0xFF1CA4AC,
+                          ),
+                          borderRadius: BorderRadius.circular(18)),
+                      child: const Center(
+                          child: Text(
+                        'Book Appointment',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      )),
+                    ),
                   ),
                 ],
               ),
