@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:merodoctor/doctor/dprofilepage.dart';
+import 'package:merodoctor/doctor/patientrecord.dart';
 
 class Dhomepage extends StatefulWidget {
   const Dhomepage({super.key});
@@ -278,31 +279,40 @@ class _DhomepageState extends State<Dhomepage> {
                               const SizedBox(
                                 width: 9,
                               ),
-                              Container(
-                                height: 80,
-                                width: 80,
-                                decoration: BoxDecoration(
-                                    color: Color.fromARGB(93, 28, 165, 172),
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: const Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 13),
-                                  child: const Column(
-                                    children: [
-                                      Icon(
-                                        Icons.person_outline_outlined,
-                                        size: 30,
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Patients',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10),
-                                      )
-                                    ],
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Patientrecord()));
+                                },
+                                child: Container(
+                                  height: 80,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(93, 28, 165, 172),
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: const Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 13),
+                                    child: const Column(
+                                      children: [
+                                        Icon(
+                                          Icons.person_outline_outlined,
+                                          size: 30,
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          'Patients',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
