@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/admin/ahomepage.dart';
 import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/doctor/dregisterpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
@@ -49,7 +50,7 @@ class _AloginpageState extends State<Aloginpage> {
                     height: 20,
                   ),
                   const Text(
-                    'Welcome Back Dr.',
+                    'Welcome Back Admin',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 30,
@@ -147,17 +148,26 @@ class _AloginpageState extends State<Aloginpage> {
                           MaterialPageRoute(
                               builder: (context) => const Homepage()));
                     },
-                    child: Container(
-                      height: 30,
-                      width: 123,
-                      decoration: BoxDecoration(
-                          color: const Color(0xFF1CA4AC),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const Center(
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Ahomepage()));
+                      },
+                      child: Container(
+                        height: 30,
+                        width: 123,
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF1CA4AC),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Center(
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
@@ -282,6 +292,7 @@ class _AloginpageState extends State<Aloginpage> {
                               )),
                         ),
                         InkWell(
+                          onTap: () {},
                           child: Container(
                             height: 90,
                             width: 80,
