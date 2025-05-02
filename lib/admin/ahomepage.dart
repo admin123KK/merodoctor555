@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../doctor/dprofilepage.dart';
+
 class Ahomepage extends StatefulWidget {
   const Ahomepage({super.key});
 
@@ -59,7 +61,7 @@ class _AhomepageState extends State<Ahomepage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
-              height: 700,
+              height: 750,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -67,14 +69,14 @@ class _AhomepageState extends State<Ahomepage> {
               ),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Admin Pannel',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -82,11 +84,207 @@ class _AhomepageState extends State<Ahomepage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Container(
-                          height: 100,
-                          width: 90,
+                          height: 130,
+                          width: 100,
                           decoration: BoxDecoration(
                               color: const Color.fromARGB(93, 28, 165, 172),
                               borderRadius: BorderRadius.circular(15)),
+                          child: const Column(
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Icon(
+                                Icons.person_outline,
+                                size: 30,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: Text(
+                                  '  Total\nPatients',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                '108',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 30),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                        child: Container(
+                          height: 130,
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(93, 28, 165, 172),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: const Column(
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Icon(
+                                Icons.person_4_outlined,
+                                size: 30,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: Text(
+                                  '  Total\nDoctors',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                '108',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 30),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 0),
+                        child: Container(
+                          height: 130,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(93, 28, 165, 172),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: const Column(
+                            children: [
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Icon(
+                                Icons.calendar_month_outlined,
+                                size: 30,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: Text(
+                                  'Appointments',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                '369',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 30),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Container(
+                          height: 60,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(93, 28, 165, 172),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  'Doctor',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Container(
+                                  height: 30,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFF1CA4AC),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const Center(
+                                    child: Text(
+                                      'EDIT',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Container(
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(93, 28, 165, 172),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              'Patients',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Container(
+                              height: 30,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFF1CA4AC),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: const Center(
+                                child: Text(
+                                  'EDIT',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Text(
+                          'Notifications',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 20),
                         ),
                       ),
                     ],
@@ -97,6 +295,118 @@ class _AhomepageState extends State<Ahomepage> {
           ),
         ],
       ),
+      bottomNavigationBar: Container(
+        height: 90,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 8,
+                spreadRadius: 3,
+                offset: Offset(0, 2),
+              ),
+            ]),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Icon(
+                Icons.home_outlined,
+                size: 30,
+                color: Color(0xFF1CA4AC),
+              ),
+              const Icon(
+                Icons.mail_outline,
+                size: 30,
+              ),
+              const Icon(
+                Icons.calendar_month_outlined,
+                size: 30,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Dprofilepage()));
+                },
+                child: const Icon(
+                  Icons.person_outline_rounded,
+                  size: 30,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
+}
+
+Widget _buildDoctorCard(
+    String imagePath, String name, String type, VoidCallback onTap) {
+  return Padding(
+    padding: const EdgeInsets.only(right: 15),
+    child: Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 4,
+      child: Container(
+        width: 160,
+        height: 230,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(93, 28, 165, 172),
+            borderRadius: BorderRadius.circular(16)),
+        child: Column(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 58,
+              backgroundImage: AssetImage(imagePath),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              name,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              type,
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            InkWell(
+              onTap: onTap,
+              child: Container(
+                height: 20,
+                width: 80,
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(20)),
+                child: const Center(
+                  child: InkWell(
+                    child: Text(
+                      'Visit',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
 }
