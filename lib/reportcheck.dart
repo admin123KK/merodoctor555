@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:merodoctor/profilepage.dart';
 
 class Reportcheck extends StatefulWidget {
@@ -9,6 +13,28 @@ class Reportcheck extends StatefulWidget {
 }
 
 class _ReportcheckState extends State<Reportcheck> {
+  Future<void> pickAndUploadFile() async {
+    final result = await FilePicker.platform.pickFiles();
+
+    if (result != null && result.files.single.path != null) {
+      File file = File(result.files.single.path!);
+      await uploadFile(file);
+    }
+  }
+
+  Future<void> uploadFile(File file) async {
+    final uri = Uri.parse('https://your-backend-url.com/api/upload');
+    var request = http.MultipartRequest('POST', uri)
+      ..files.add(await http.MultipartFile.fromPath('file', file.path));
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      print('Upload successful');
+    } else {
+      print('Upload failed with status: ${response.statusCode}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +107,7 @@ class _ReportcheckState extends State<Reportcheck> {
             height: 30,
           ),
           InkWell(
-            onTap: () {},
+            onTap: pickAndUploadFile,
             child: Container(
               height: 30,
               width: 123,
