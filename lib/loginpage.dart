@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/aloginpage.dart';
 import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
@@ -13,8 +16,54 @@ class Loginpage extends StatefulWidget {
 }
 
 class _LoginpageState extends State<Loginpage> {
-  late final _email = TextEditingController();
-  late final _password = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+
+  Future<void> loginUser(String email, String password) async {
+    const String apiUrl =
+        "http://10.0.2.2:5082/api/Auth/login"; // Fixed for Android emulator
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"email": email, "password": password}),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['success']) {
+        final token = data['data'];
+        print("Login Successful! JWT Token: $token");
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Homepage()),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text("Login Failed"),
+            content: Text(data['message'] ?? 'Unknown error'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("OK"),
+              )
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      print("Login error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Network error or invalid server response")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +76,7 @@ class _LoginpageState extends State<Loginpage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 170,
                     width: 170,
                     child: Image.asset('assets/image/startpage.png'),
@@ -39,15 +88,15 @@ class _LoginpageState extends State<Loginpage> {
               height: 630,
               width: double.infinity,
               decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(55),
-                      topRight: Radius.circular(55))),
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(55),
+                  topRight: Radius.circular(55),
+                ),
+              ),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const Text(
                     'Welcome Back',
                     style: TextStyle(
@@ -66,34 +115,29 @@ class _LoginpageState extends State<Loginpage> {
                       controller: _email,
                       cursorColor: Colors.blue,
                       decoration: const InputDecoration(
-                        hintText: 'Enter your email address',
+                        hintText: 'Enter your email addresss',
                         hintStyle: TextStyle(color: Colors.grey),
                         labelText: 'Email',
                         labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
-                        icon: Icon(
-                          Icons.email_outlined,
-                          // color: Color(0xFF1CA4AC),
-                        ),
+                        icon: Icon(Icons.email_outlined),
                       ),
                     ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: TextField(
-                        cursorColor: const Color(0xFF1CA4AC),
-                        controller: _password,
-                        decoration: const InputDecoration(
-                          icon: Icon(
-                            Icons.lock_outline,
-                          ),
-                          hintText: 'Enter you password',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          labelText: 'Password',
-                          labelStyle: TextStyle(
-                            color: Color(0xFF1CA4AC),
-                          ),
-                        ),
-                      )),
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: TextField(
+                      cursorColor: const Color(0xFF1CA4AC),
+                      controller: _password,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.lock_outline),
+                        hintText: 'Enter your password',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        labelText: 'Password',
+                        labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
+                      ),
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -102,20 +146,17 @@ class _LoginpageState extends State<Loginpage> {
                         child: InkWell(
                           onTap: () async {
                             showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xFF1CA4AC),
-                                    ),
-                                  );
-                                });
-                            await Future.delayed(Duration(seconds: 1));
+                              context: context,
+                              builder: (context) => const Center(
+                                  child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC))),
+                            );
+                            await Future.delayed(const Duration(seconds: 1));
                             Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Forgotpassword()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Forgotpassword()),
+                            );
                           },
                           child: const Text(
                             'Forgot password?',
@@ -127,32 +168,37 @@ class _LoginpageState extends State<Loginpage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 55,
-                  ),
+                  const SizedBox(height: 55),
                   InkWell(
                     onTap: () async {
+                      final email = _email.text.trim();
+                      final password = _password.text.trim();
+
+                      if (email.isEmpty || password.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text("Please fill in all fields")),
+                        );
+                        return;
+                      }
+
                       showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                color: Color(0xFF1CA4AC),
-                              ),
-                            );
-                          });
-                      await Future.delayed(Duration(seconds: 2));
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Homepage()));
+                        context: context,
+                        builder: (context) => const Center(
+                            child: CircularProgressIndicator(
+                                color: Color(0xFF1CA4AC))),
+                      );
+
+                      await loginUser(email, password);
+                      Navigator.of(context).pop(); // Close loading dialog
                     },
                     child: Container(
                       height: 30,
                       width: 123,
                       decoration: BoxDecoration(
-                          color: const Color(0xFF1CA4AC),
-                          borderRadius: BorderRadius.circular(20)),
+                        color: const Color(0xFF1CA4AC),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: const Center(
                         child: Text(
                           'Login',
@@ -162,9 +208,7 @@ class _LoginpageState extends State<Loginpage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 9,
-                  ),
+                  const SizedBox(height: 9),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -172,9 +216,10 @@ class _LoginpageState extends State<Loginpage> {
                       InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Registerpage()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Registerpage()),
+                          );
                         },
                         child: const Text(
                           ' Register',
@@ -185,16 +230,11 @@ class _LoginpageState extends State<Loginpage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   const Text('or'),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   const Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+                    padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Divider(),
                   ),
                   Padding(
@@ -208,19 +248,16 @@ class _LoginpageState extends State<Loginpage> {
                           width: 80,
                           decoration: BoxDecoration(
                               color: Color(0xFF1CA4AC),
-                              border: Border.all(
-                                color: const Color(0xFF1CA4AC),
-                              ),
+                              border:
+                                  Border.all(color: const Color(0xFF1CA4AC)),
                               borderRadius: BorderRadius.circular(15)),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.person_outline,
-                                color: Colors.white,
-                              ),
+                              Icon(Icons.person_outline, color: Colors.white),
                               Text(
                                 'User \nLogin',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -231,99 +268,78 @@ class _LoginpageState extends State<Loginpage> {
                         InkWell(
                           onTap: () async {
                             showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xFF1CA4AC),
-                                    ),
-                                  );
-                                });
-                            await Future.delayed(Duration(seconds: 2));
+                              context: context,
+                              builder: (context) => const Center(
+                                  child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC))),
+                            );
+                            await Future.delayed(const Duration(seconds: 2));
                             Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Dloginpage()));
-                          },
-                          child: Container(
-                              height: 90,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xFF1CA4AC)),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.person_4_outlined),
-                                  Text(
-                                    'Doctor \nLogin',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )),
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xFF1CA4AC),
-                                    ),
-                                  );
-                                });
-                            await Future.delayed(Duration(seconds: 2));
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Aloginpage()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Dloginpage()),
+                            );
                           },
                           child: Container(
                             height: 90,
                             width: 80,
                             decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xFF1CA4AC)),
-                                borderRadius: BorderRadius.circular(15)),
+                              border:
+                                  Border.all(color: const Color(0xFF1CA4AC)),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.person_4_outlined),
+                                Text(
+                                  'Doctor \nLogin',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              builder: (context) => const Center(
+                                  child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC))),
+                            );
+                            await Future.delayed(const Duration(seconds: 2));
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Aloginpage()),
+                            );
+                          },
+                          child: Container(
+                            height: 90,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xFF1CA4AC)),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.admin_panel_settings_outlined),
                                 Text(
                                   'Merchant \nLogin',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   )
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     const Text('Login as Doctor?'),
-                  //     InkWell(
-                  //       onTap: () {
-                  //         Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //                 builder: (context) => Dloginpage()));
-                  //       },
-                  //       child: const Text(
-                  //         ' Start',
-                  //         style: TextStyle(
-                  //             fontWeight: FontWeight.bold,
-                  //             color: Color(0xFF1CA4AC)),
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
                 ],
               ),
             ),

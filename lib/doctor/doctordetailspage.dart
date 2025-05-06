@@ -348,7 +348,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
