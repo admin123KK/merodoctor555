@@ -21,7 +21,7 @@ class _LoginpageState extends State<Loginpage> {
 
   Future<void> loginUser(String email, String password) async {
     const String apiUrl =
-        "http://10.0.2.2:5082/api/Auth/login"; // Fixed for Android emulator
+        "https://098c-27-34-69-72.ngrok-free.app/api/Auth/login";
 
     try {
       final response = await http.post(
@@ -41,22 +41,59 @@ class _LoginpageState extends State<Loginpage> {
           MaterialPageRoute(builder: (context) => const Homepage()),
         );
       } else {
+        Navigator.of(context).pop(); // close loading
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
+            icon: const Icon(
+              Icons.error_outline_outlined,
+              color: Colors.red,
+            ),
             title: const Text("Login Failed"),
-            content: Text(data['message'] ?? 'Unknown error'),
+            content: Center(
+              child: Text(
+                data['message'] ?? 'Unknown error',
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("OK"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'cancel',
+                      style: TextStyle(color: Color(0xFF1CA4AC)),
+                    ),
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        height: 30,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1CA4AC),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'OK',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               )
             ],
           ),
         );
       }
     } catch (e) {
-      print("Login error: $e");
+      Navigator.of(context).pop(); // close loading
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text("Network error or invalid server response")),
@@ -184,13 +221,13 @@ class _LoginpageState extends State<Loginpage> {
 
                       showDialog(
                         context: context,
+                        barrierDismissible: false,
                         builder: (context) => const Center(
                             child: CircularProgressIndicator(
                                 color: Color(0xFF1CA4AC))),
                       );
 
                       await loginUser(email, password);
-                      Navigator.of(context).pop(); // Close loading dialog
                     },
                     child: Container(
                       height: 30,
