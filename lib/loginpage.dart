@@ -50,7 +50,8 @@ class _LoginpageState extends State<Loginpage> {
               color: Colors.red,
             ),
             title: const Text("Login Failed"),
-            content: Center(
+            content: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 23),
               child: Text(
                 data['message'] ?? 'Unknown error',
                 style: const TextStyle(color: Colors.red),
