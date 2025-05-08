@@ -79,7 +79,7 @@ class _DregisterpageState extends State<Dregisterpage> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         showDialog(
             context: context,
-            builder: (_) => AlertDialog(
+            builder: (_) => const AlertDialog(
                   icon: Icon(
                     Icons.check_circle_outline,
                     color: Colors.green,
@@ -126,11 +126,12 @@ class _DregisterpageState extends State<Dregisterpage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        icon: Icon(
+        icon: const Icon(
           Icons.error_outline,
           color: Colors.red,
+          size: 30,
         ),
-        title: Text('Something went wrong'),
+        title: const Text('Something went wrong'),
         content: Text(
           msg,
         ),
@@ -141,7 +142,10 @@ class _DregisterpageState extends State<Dregisterpage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                    onTap: () => Navigator.pop(context), child: Text('Cancel')),
+                    onTap: () => Navigator.pop(context),
+                    child: InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Text('Cancel'))),
                 InkWell(
                   child: Container(
                     height: 30,
