@@ -21,7 +21,7 @@ class _LoginpageState extends State<Loginpage> {
 
   Future<void> loginUser(String email, String password) async {
     const String apiUrl =
-        "https://098c-27-34-69-72.ngrok-free.app/api/Auth/login";
+        "https://0d71-2400-1a00-bb20-5718-d481-a287-47e2-576.ngrok-free.app/api/Auth/login";
 
     try {
       final response = await http.post(
@@ -311,7 +311,7 @@ class _LoginpageState extends State<Loginpage> {
                                   child: CircularProgressIndicator(
                                       color: Color(0xFF1CA4AC))),
                             );
-                            await Future.delayed(const Duration(seconds: 2));
+                            await Future.delayed(const Duration(seconds: 3));
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
