@@ -51,7 +51,7 @@ class _RegisterpageState extends State<Registerpage> {
 
     try {
       final url = Uri.parse(
-          "https://0d71-2400-1a00-bb20-5718-d481-a287-47e2-576.ngrok-free.app/api/AuthPatientRegistration/register-patient");
+          "https://c2e1-2400-1a00-bb20-fd39-7053-b143-a1b-375.ngrok-free.app/api/AuthPatientRegistration/register-patient");
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},

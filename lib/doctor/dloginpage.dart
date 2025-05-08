@@ -22,7 +22,7 @@ class _DloginpageState extends State<Dloginpage> {
 
   Future<void> loginDoctor() async {
     if (_email.text.isEmpty || _password.text.isEmpty) {
-      showMessage("Please fill in both fields", isError: true);
+      showErrorMessage("Please fill in both fields", isError: true);
       return;
     }
 
@@ -32,7 +32,7 @@ class _DloginpageState extends State<Dloginpage> {
 
     try {
       final url = Uri.parse(
-          'https://0d71-2400-1a00-bb20-5718-d481-a287-47e2-576.ngrok-free.app/api/Auth/login'); // Replace this with actual URL
+          'https://c2e1-2400-1a00-bb20-fd39-7053-b143-a1b-375.ngrok-free.app/api/Auth/login'); // Replace this with actual URL
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -47,24 +47,24 @@ class _DloginpageState extends State<Dloginpage> {
       });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showMessage("Login successful", isError: false);
+        showSuccessMessage("Login successful", isError: false);
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const Dhomepage()));
         });
       } else {
         final body = jsonDecode(response.body);
-        showMessage(body["message"] ?? "Login failed", isError: true);
+        showErrorMessage(body["message"] ?? "Login failed", isError: true);
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      showMessage("An error occurred: $e", isError: true);
+      showErrorMessage("Invalid Crediental", isError: true);
     }
   }
 
-  void showMessage(String msg, {required bool isError}) {
+  void showErrorMessage(String msg, {required bool isError}) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -73,8 +73,48 @@ class _DloginpageState extends State<Dloginpage> {
           color: isError ? Colors.red : Colors.green,
           size: 30,
         ),
-        title: Text(isError ? 'Error' : 'Success'),
-        content: Text(msg),
+        title: Text(isError ? 'Login Error' : 'Success'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              msg,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'OK',
+              style: TextStyle(color: Color(0xFF1CA4AC)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showSuccessMessage(String msg, {required bool isError}) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        icon: const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+          size: 30,
+        ),
+        title: Text(isError ? 'Login Error' : 'Success'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              msg,
+              style: const TextStyle(color: Colors.green),
+            ),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
