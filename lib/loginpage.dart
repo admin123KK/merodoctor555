@@ -18,10 +18,11 @@ class Loginpage extends StatefulWidget {
 class _LoginpageState extends State<Loginpage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
+  bool _isPasswordVisible = false;
 
   Future<void> loginUser(String email, String password) async {
     const String apiUrl =
-        "https://c2e1-2400-1a00-bb20-fd39-7053-b143-a1b-375.ngrok-free.app/api/Auth/login";
+        "https://93a1-2400-1a00-bb20-db55-f891-6e3d-3134-16a9.ngrok-free.app/api/Auth/login";
 
     try {
       final response = await http.post(
@@ -32,74 +33,80 @@ class _LoginpageState extends State<Loginpage> {
 
       final data = jsonDecode(response.body);
 
+      // Close the loading dialog
+      Navigator.pop(context);
+
       if (response.statusCode == 200 && data['success']) {
         final token = data['data'];
         print("Login Successful! JWT Token: $token");
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Homepage()),
-        );
+        showSuccessMessage('Login Successful');
+        await Future.delayed(const Duration(seconds: 2), () {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => Homepage()));
+        });
       } else {
-        Navigator.of(context).pop(); // close loading
-        showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            icon: const Icon(
-              Icons.error_outline_outlined,
-              color: Colors.red,
-            ),
-            title: const Text("Login Failed"),
-            content: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 23),
-              child: Text(
-                data['message'] ?? 'Unknown error',
-                style: const TextStyle(color: Colors.red),
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'cancel',
-                      style: TextStyle(color: Color(0xFF1CA4AC)),
-                    ),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        height: 30,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1CA4AC),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'OK',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        );
+        showErrorMessage(data['message'] ?? 'Login failed');
       }
     } catch (e) {
-      Navigator.of(context).pop(); // close loading
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text("Network error or invalid server response")),
-      );
+      // Close the loading dialog
+      Navigator.pop(context);
+      showErrorMessage('An error occurred. Please try again.');
     }
+  }
+
+  void showSuccessMessage(String msg) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        icon: const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+          size: 30,
+        ),
+        title: const Text('Success'),
+        content: Text(
+          msg,
+          style: const TextStyle(color: Colors.green),
+        ),
+        actions: [
+          InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: Color(0xFF1CA4AC)),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void showErrorMessage(String msg) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        icon: const Icon(
+          Icons.error_outline,
+          color: Colors.red,
+          size: 30,
+        ),
+        title: const Text('Login Error'),
+        content: Text(
+          msg,
+          style: const TextStyle(color: Colors.red),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'OK',
+              style: TextStyle(color: Color(0xFF1CA4AC)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -166,13 +173,23 @@ class _LoginpageState extends State<Loginpage> {
                     child: TextField(
                       cursorColor: const Color(0xFF1CA4AC),
                       controller: _password,
-                      obscureText: true,
-                      decoration: const InputDecoration(
+                      obscureText: !_isPasswordVisible,
+                      decoration: InputDecoration(
                         icon: Icon(Icons.lock_outline),
                         hintText: 'Enter your password',
                         hintStyle: TextStyle(color: Colors.grey),
                         labelText: 'Password',
                         labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                          icon: Icon(_isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
                       ),
                     ),
                   ),
@@ -212,22 +229,20 @@ class _LoginpageState extends State<Loginpage> {
                       final email = _email.text.trim();
                       final password = _password.text.trim();
 
-                      if (email.isEmpty || password.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text("Please fill in all fields")),
-                        );
-                        return;
-                      }
-
+                      // Show loading dialog
                       showDialog(
                         context: context,
-                        barrierDismissible: false,
-                        builder: (context) => const Center(
-                            child: CircularProgressIndicator(
-                                color: Color(0xFF1CA4AC))),
+                        builder: (BuildContext context) => const Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF1CA4AC),
+                          ),
+                        ),
                       );
 
+                      // Simulate a 2-second delay for processing login
+                      await Future.delayed(const Duration(seconds: 2));
+
+                      // Perform the login request
                       await loginUser(email, password);
                     },
                     child: Container(
@@ -285,7 +300,7 @@ class _LoginpageState extends State<Loginpage> {
                           height: 90,
                           width: 80,
                           decoration: BoxDecoration(
-                              color: Color(0xFF1CA4AC),
+                              color: const Color(0xFF1CA4AC),
                               border:
                                   Border.all(color: const Color(0xFF1CA4AC)),
                               borderRadius: BorderRadius.circular(15)),

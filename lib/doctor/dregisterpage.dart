@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'dloginpage.dart'; // Assuming this is the login page after registration
 
 class Dregisterpage extends StatefulWidget {
@@ -24,6 +22,7 @@ class _DregisterpageState extends State<Dregisterpage> {
   final _password = TextEditingController();
 
   bool isLoading = false;
+  bool _isPasswordVisible = false; // 👁️ Password visibility toggle
 
   Future<void> registerDoctor() async {
     if (_name.text.isEmpty ||
@@ -35,7 +34,7 @@ class _DregisterpageState extends State<Dregisterpage> {
         _clinicAddress.text.isEmpty ||
         _specializationId.text.isEmpty ||
         _password.text.isEmpty) {
-      showMessage("⚠️ Please fill all fields");
+      showErrorMessage("⚠️ Please fill all fields");
       return;
     }
 
@@ -43,7 +42,8 @@ class _DregisterpageState extends State<Dregisterpage> {
     int? specializationId = int.tryParse(_specializationId.text);
 
     if (experience == null || specializationId == null) {
-      showMessage("⚠️ Experience and Specialization ID must be valid numbers");
+      showErrorMessage(
+          "⚠️ Experience and Specialization ID must be valid numbers");
       return;
     }
 
@@ -53,7 +53,7 @@ class _DregisterpageState extends State<Dregisterpage> {
 
     try {
       final url = Uri.parse(
-        'https://c2e1-2400-1a00-bb20-fd39-7053-b143-a1b-375.ngrok-free.app/api/AuthDoctorRegistration/register-doctor',
+        'https://93a1-2400-1a00-bb20-db55-f891-6e3d-3134-16a9.ngrok-free.app/api/AuthDoctorRegistration/register-doctor',
       );
 
       final response = await http.post(
@@ -77,24 +77,7 @@ class _DregisterpageState extends State<Dregisterpage> {
       });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showDialog(
-            context: context,
-            builder: (_) => const AlertDialog(
-                  icon: Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                  ),
-                  content: Text(
-                    'Login Success',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  actions: [
-                    Text(
-                      'Register Successfully',
-                      style: TextStyle(color: Colors.green),
-                    )
-                  ],
-                ));
+        showSuccessMessage('Login Successfully', isError: false);
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const Dloginpage()));
@@ -106,23 +89,20 @@ class _DregisterpageState extends State<Dregisterpage> {
               body['message'] ??
               body['error'] ??
               response.body;
-          showMessage("❌ $errorMessage");
+          showErrorMessage("❌ $errorMessage");
         } catch (_) {
-          showMessage("❌ Server error: ${response.statusCode}");
+          showErrorMessage("❌ Server error: ${response.statusCode}");
         }
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      showMessage("❌ Exception: $e");
+      showErrorMessage("❌ Exception: $e");
     }
   }
 
-  void showMessage(String msg) {
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(content: Text(msg), backgroundColor: Colors.redAccent),
-
+  void showErrorMessage(String msg) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -132,9 +112,7 @@ class _DregisterpageState extends State<Dregisterpage> {
           size: 30,
         ),
         title: const Text('Something went wrong'),
-        content: Text(
-          msg,
-        ),
+        content: Text(msg),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -143,16 +121,15 @@ class _DregisterpageState extends State<Dregisterpage> {
               children: [
                 InkWell(
                     onTap: () => Navigator.pop(context),
-                    child: InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: Text('Cancel'))),
+                    child: const Text('Cancel')),
                 InkWell(
                   child: Container(
                     height: 30,
                     width: 60,
                     decoration: BoxDecoration(
-                        color: const Color(0xFF1CA4AC),
-                        borderRadius: BorderRadius.circular(15)),
+                      color: const Color(0xFF1CA4AC),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                     child: Center(
                       child: InkWell(
                         onTap: () => Navigator.pop(context),
@@ -168,6 +145,38 @@ class _DregisterpageState extends State<Dregisterpage> {
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  void showSuccessMessage(String msg, {required bool isError}) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        icon: const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+          size: 30,
+        ),
+        title: Text(isError ? 'Login Error' : 'Success'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              msg,
+              style: const TextStyle(color: Colors.green),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'OK',
+              style: TextStyle(color: Color(0xFF1CA4AC)),
+            ),
+          ),
         ],
       ),
     );
@@ -292,19 +301,37 @@ class _DregisterpageState extends State<Dregisterpage> {
   }
 
   Widget buildTextField(
-      TextEditingController controller, String label, IconData icon,
-      {bool isPassword = false}) {
+    TextEditingController controller,
+    String label,
+    IconData icon, {
+    bool isPassword = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       child: TextField(
         controller: controller,
-        obscureText: isPassword,
+        obscureText: isPassword ? !_isPasswordVisible : false,
         cursorColor: const Color(0xFF1CA4AC),
         decoration: InputDecoration(
           labelText: label,
           hintText: 'Enter your $label',
           labelStyle: const TextStyle(color: Color(0xFF1CA4AC)),
           icon: Icon(icon),
+          suffixIcon: isPassword
+              ? IconButton(
+                  icon: Icon(
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: const Color(0xFF1CA4AC),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                )
+              : null,
         ),
       ),
     );

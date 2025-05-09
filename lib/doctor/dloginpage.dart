@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/aloginpage.dart';
@@ -19,6 +18,7 @@ class _DloginpageState extends State<Dloginpage> {
   final _password = TextEditingController();
   final _email = TextEditingController();
   bool isLoading = false;
+  bool _isPasswordVisible = false;
 
   Future<void> loginDoctor() async {
     if (_email.text.isEmpty || _password.text.isEmpty) {
@@ -32,7 +32,7 @@ class _DloginpageState extends State<Dloginpage> {
 
     try {
       final url = Uri.parse(
-          'https://c2e1-2400-1a00-bb20-fd39-7053-b143-a1b-375.ngrok-free.app/api/Auth/login'); // Replace this with actual URL
+          'https://93a1-2400-1a00-bb20-db55-f891-6e3d-3134-16a9.ngrok-free.app/api/Auth/login'); // Replace this with actual URL
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -48,7 +48,7 @@ class _DloginpageState extends State<Dloginpage> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         showSuccessMessage("Login successful", isError: false);
-        Future.delayed(const Duration(seconds: 2), () {
+        await Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const Dhomepage()));
         });
@@ -185,15 +185,22 @@ class _DloginpageState extends State<Dloginpage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextField(
-                      controller: _password,
-                      cursorColor: const Color(0xFF1CA4AC),
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.lock_outline),
-                        hintText: 'Enter your password',
-                        labelText: 'Password',
-                      ),
-                    ),
+                        controller: _password,
+                        cursorColor: const Color(0xFF1CA4AC),
+                        obscureText: !_isPasswordVisible,
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.lock_outline),
+                            hintText: 'Enter your password',
+                            labelText: 'Password',
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
+                                icon: Icon(_isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off)))),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

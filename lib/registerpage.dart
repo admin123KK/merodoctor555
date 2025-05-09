@@ -22,11 +22,14 @@ class _RegisterpageState extends State<Registerpage> {
   final _confirmPassword = TextEditingController();
   final _address = TextEditingController();
 
-  int selectedGender = 0; // 0: Male, 1: Female, 2: Other
+  int selectedGender = 0;
   bool isLoading = false;
 
-  double latitude = 0; // Provide real values later
+  double latitude = 0;
   double longitude = 0;
+
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   Future<void> registerUser() async {
     if (_fullName.text.isEmpty ||
@@ -36,12 +39,12 @@ class _RegisterpageState extends State<Registerpage> {
         _address.text.isEmpty ||
         _password.text.isEmpty ||
         _confirmPassword.text.isEmpty) {
-      showMessage("⚠️ Please fill all fields");
+      showErrorMessage("⚠️ Please fill all fields");
       return;
     }
 
     if (_password.text != _confirmPassword.text) {
-      showMessage("❌ Passwords do not match");
+      showErrorMessage("❌ Passwords do not match");
       return;
     }
 
@@ -51,7 +54,7 @@ class _RegisterpageState extends State<Registerpage> {
 
     try {
       final url = Uri.parse(
-          "https://c2e1-2400-1a00-bb20-fd39-7053-b143-a1b-375.ngrok-free.app/api/AuthPatientRegistration/register-patient");
+          "https://93a1-2400-1a00-bb20-db55-f891-6e3d-3134-16a9.ngrok-free.app/api/AuthPatientRegistration/register-patient");
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -74,26 +77,84 @@ class _RegisterpageState extends State<Registerpage> {
       });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showMessage("✅ Registration successful");
+        showSuccessMessage("✅ Registration successful", isError: false);
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const Loginpage()));
         });
       } else {
         final body = jsonDecode(response.body);
-        showMessage("❌ ${body['title'] ?? 'Unknown Error'}");
+        showErrorMessage("❌ ${body['title'] ?? 'Unknown Error'}");
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      showMessage("❌ Exception: $e");
+      showErrorMessage("❌ Exception: $e");
     }
   }
 
-  void showMessage(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(msg), backgroundColor: Colors.redAccent),
+  void showErrorMessage(String msg) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        icon: const Icon(Icons.error_outline, color: Colors.red, size: 30),
+        title: const Text('Something went wrong'),
+        content: Text(msg),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: const Text('Cancel')),
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    height: 30,
+                    width: 60,
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF1CA4AC),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: const Center(
+                      child: Text(
+                        'OK',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void showSuccessMessage(String msg, {required bool isError}) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        icon: const Icon(Icons.check_circle_outline,
+            color: Colors.green, size: 30),
+        title: Text(isError ? 'Login Error' : 'Success'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(msg, style: const TextStyle(color: Colors.green)),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK', style: TextStyle(color: Color(0xFF1CA4AC))),
+          ),
+        ],
+      ),
     );
   }
 
@@ -202,17 +263,43 @@ class _RegisterpageState extends State<Registerpage> {
   Widget buildTextField(
       TextEditingController controller, String label, IconData icon,
       {bool isPassword = false}) {
+    bool isMainPassword = label == 'Password';
+    bool isConfirmPassword = label == 'Confirm Password';
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       child: TextField(
         controller: controller,
-        obscureText: isPassword,
+        obscureText: isPassword
+            ? (isMainPassword ? _obscurePassword : _obscureConfirmPassword)
+            : false,
         cursorColor: const Color(0xFF1CA4AC),
         decoration: InputDecoration(
           labelText: label,
           hintText: 'Enter your $label',
           labelStyle: const TextStyle(color: Color(0xFF1CA4AC)),
           icon: Icon(icon),
+          suffixIcon: isPassword
+              ? IconButton(
+                  icon: Icon(
+                    (isMainPassword
+                            ? _obscurePassword
+                            : _obscureConfirmPassword)
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    color: const Color(0xFF1CA4AC),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (isMainPassword) {
+                        _obscurePassword = !_obscurePassword;
+                      } else {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      }
+                    });
+                  },
+                )
+              : null,
         ),
       ),
     );
@@ -232,7 +319,7 @@ class _RegisterpageState extends State<Registerpage> {
               lastDate: DateTime.now());
 
           if (pickedDate != null) {
-            _dob.text = pickedDate.toIso8601String(); // ISO format
+            _dob.text = pickedDate.toIso8601String();
           }
         },
         decoration: const InputDecoration(
