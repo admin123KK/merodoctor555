@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/aloginpage.dart';
@@ -22,6 +23,7 @@ class _DloginpageState extends State<Dloginpage> {
 
   Future<void> loginDoctor() async {
     if (_email.text.isEmpty || _password.text.isEmpty) {
+      Navigator.pop(context);
       showErrorMessage("Please fill in both fields", isError: true);
       return;
     }
@@ -84,13 +86,16 @@ class _DloginpageState extends State<Dloginpage> {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
+          InkWell(
+            onTap: () => Navigator.pop(context),
             child: const Text(
               'OK',
-              style: TextStyle(color: Color(0xFF1CA4AC)),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1CA4AC),
+              ),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -244,7 +249,17 @@ class _DloginpageState extends State<Dloginpage> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 40, vertical: 10),
                           ),
-                          onPressed: loginDoctor,
+                          onPressed: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) => const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFF1CA4AC),
+                                      ),
+                                    ));
+                            await Future.delayed(Duration(seconds: 2));
+                            loginDoctor();
+                          },
                           child: const Text(
                             'Login',
                             style: TextStyle(color: Colors.white),
