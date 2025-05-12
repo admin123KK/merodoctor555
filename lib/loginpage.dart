@@ -22,7 +22,7 @@ class _LoginpageState extends State<Loginpage> {
 
   Future<void> loginUser(String email, String password) async {
     const String apiUrl =
-        "https://2400-27-34-69-91.ngrok-free.app/api/Auth/login";
+        "https://5461-2400-1a00-bb20-aa34-b8b7-6651-6dc9-cd27.ngrok-free.app/api/Auth/login";
 
     try {
       final response = await http.post(
@@ -50,7 +50,7 @@ class _LoginpageState extends State<Loginpage> {
     } catch (e) {
       // Close the loading dialog
       Navigator.pop(context);
-      showErrorMessage('An error occurred. Please try again.');
+      showErrorMessage('Something went wrong on server');
     }
   }
 
