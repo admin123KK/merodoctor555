@@ -90,7 +90,7 @@ class _RegisterpageState extends State<Registerpage> {
       setState(() {
         isLoading = false;
       });
-      showErrorMessage("❌ Exception: $e");
+      showErrorMessage("❌ Something went wrong ");
     }
   }
 
