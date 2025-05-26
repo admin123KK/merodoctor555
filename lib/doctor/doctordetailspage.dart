@@ -23,26 +23,26 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
   ];
 
   final List<String> times = [
-    '5:00',
-    '5:30',
-    '6:00',
-    '6:30',
-    '7:00',
-    '7:30',
-    '8:00',
-    '8:30',
-    '9:00',
-    '9:30',
-    '10:00',
-    '10:30',
-    '11:00',
-    '11:30',
-    '12:00',
-    '12:30',
-    '1:00',
-    '1:30',
-    '2:00',
-    '2:30',
+    '5:00 PM',
+    '5:30 PM',
+    '6:00 AM',
+    '6:30 AM',
+    '7:00 AM',
+    '7:30 AM',
+    '8:00 AM',
+    '8:30 AM',
+    '9:00 AM',
+    '9:30 AM',
+    '10:00 AM',
+    '10:30 AM',
+    '11:00 AM',
+    '11:30 AM',
+    '12:00 PM',
+    '12:30 PM',
+    '1:00  PM',
+    '1:30  PM',
+    '2:00  PM',
+    '2:30  PM',
   ];
 
   @override
@@ -93,24 +93,18 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Dr. Sky Karki',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        Text(
-                          'Orthopedist',
-                          style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          'Active',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.green),
-                        ),
+                        SizedBox(height: 10),
+                        Text('Dr. Sky Karki',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('Orthopedist',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold)),
+                        Text('Active',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green)),
                         Text('5 Year Experience'),
                       ],
                     ),
@@ -149,7 +143,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
             ),
             const SizedBox(height: 20),
 
-            // Days Section
+            // Days section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Row(
@@ -206,7 +200,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
               child: Divider(color: Color(0xFF1CA4AC)),
             ),
 
-            // Times Section
+            // Times section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Wrap(
@@ -244,9 +238,8 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                 }),
               ),
             ),
-            const SizedBox(
-              height: 35,
-            ),
+            const SizedBox(height: 35),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Row(
@@ -266,25 +259,44 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                   ),
                   InkWell(
                     onTap: () {
+                      final String dayText = selectedDayIndex != -1
+                          ? '${days[selectedDayIndex]['day']}  ${days[selectedDayIndex]['date']}'
+                          : '— no date selected —';
+
+                      final String timeText = selectedTimeIndex != -1
+                          ? times[selectedTimeIndex]
+                          : '— no time selected —';
+
                       showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              icon: Icon(Icons.edit_document),
-                              title: Text('Book appointment?'),
-                              content: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 4, vertical: 10),
-                                child: Row(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            icon: const Icon(
+                              Icons.edit_calendar_outlined,
+                              size: 50,
+                            ),
+                            title: const Text('Book appointment?'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Date :  $dayText',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Time :  $timeText',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 20),
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
+                                      onTap: () => Navigator.pop(context),
                                       child: const Text(
-                                        'cancel',
+                                        'Cancel',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xFF1CA4AC)),
@@ -293,31 +305,29 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                     InkWell(
                                       onTap: () async {
                                         showDialog(
-                                            barrierDismissible: false,
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                color: Color(0xFF1CA4AC),
-                                              ));
-                                            });
-
-                                        await Future.delayed(
-                                          Duration(seconds: 2),
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (_) => const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xFF1CA4AC),
+                                            ),
+                                          ),
                                         );
+                                        await Future.delayed(
+                                            const Duration(seconds: 2));
                                         Navigator.of(context,
                                                 rootNavigator: true)
-                                            .pop();
-                                        Navigator.of(context).pop();
+                                            .pop(); // loader
+                                        Navigator.of(context).pop(); // alert
                                       },
                                       child: Container(
                                         height: 30,
                                         width: 70,
                                         decoration: BoxDecoration(
-                                            color: Color(0xFF1CA4AC),
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
+                                          color: const Color(0xFF1CA4AC),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
                                         child: const Center(
                                           child: Text(
                                             'Confirm',
@@ -327,27 +337,28 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
-                              ),
-                            );
-                          });
+                              ],
+                            ),
+                          );
+                        },
+                      );
                     },
                     child: Container(
                       height: 50,
                       width: 180,
                       decoration: BoxDecoration(
-                          color: const Color(
-                            0xFF1CA4AC,
-                          ),
+                          color: const Color(0xFF1CA4AC),
                           borderRadius: BorderRadius.circular(18)),
                       child: const Center(
-                          child: Text(
-                        'Book Appointment',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                      )),
+                        child: Text(
+                          'Book Appointment',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 ],
