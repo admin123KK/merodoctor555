@@ -368,14 +368,12 @@ class _ProfilepageState extends State<Profilepage> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: const Text(
-                                      'Are you sure to logout of your account?',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      'Are you sure?',
                                     ),
                                     icon: const Icon(
                                       Icons.logout_outlined,
                                       size: 30,
-                                      color: Color(0xFF1CA4AC),
+                                      color: Colors.red,
                                     ),
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -413,8 +411,8 @@ class _ProfilepageState extends State<Profilepage> {
                                                           const Loginpage()));
                                             },
                                             child: Container(
-                                              height: 50,
-                                              width: 110,
+                                              height: 33,
+                                              width: 80,
                                               decoration: BoxDecoration(
                                                   color:
                                                       const Color(0xFF1CA4AC),
