@@ -71,17 +71,54 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 37,
-                    width: 123,
-                    decoration: BoxDecoration(
-                        color: Color(0xFF1CA4AC),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: const Center(
-                      child: Text(
-                        'Send Email',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                  InkWell(
+                    onTap: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFF1CA4AC),
+                              ),
+                            );
+                          });
+                      await Future.delayed(Duration(seconds: 2));
+                      Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          icon: const Icon(
+                            Icons.check_outlined,
+                            color: Colors.green,
+                          ),
+                          title: const Text('Email Send'),
+                          content: const Text(
+                            'If the address exists, a reset link is in your inbox',
+                            style: TextStyle(color: Colors.green),
+                          ),
+                        ),
+                        barrierDismissible: false,
+                      );
+                      await Future.delayed(Duration(seconds: 3));
+                      if (Navigator.canPop(context)) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: Container(
+                      height: 37,
+                      width: 123,
+                      decoration: BoxDecoration(
+                          color: Color(0xFF1CA4AC),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: const Center(
+                        child: Text(
+                          'Send Email',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
                       ),
                     ),
                   ),

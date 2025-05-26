@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import 'dloginpage.dart'; // Assuming this is the login page after registration
 
 class Dregisterpage extends StatefulWidget {
@@ -53,7 +55,7 @@ class _DregisterpageState extends State<Dregisterpage> {
 
     try {
       final url = Uri.parse(
-        'https://93a1-2400-1a00-bb20-db55-f891-6e3d-3134-16a9.ngrok-free.app/api/AuthDoctorRegistration/register-doctor',
+        'https://d574-2400-1a00-bb20-cf36-ac31-fa97-40fe-ba90.ngrok-free.app/api/AuthDoctorRegistration/register-doctor',
       );
 
       final response = await http.post(
