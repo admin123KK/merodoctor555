@@ -91,7 +91,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           icon: const Icon(
-                            Icons.check_outlined,
+                            Icons.check_circle_outline_rounded,
                             color: Colors.green,
                           ),
                           title: const Text('Email Send'),

@@ -293,6 +293,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                     InkWell(
                                       onTap: () async {
                                         showDialog(
+                                            barrierDismissible: false,
                                             context: context,
                                             builder: (BuildContext context) {
                                               return const Center(
@@ -302,10 +303,13 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                               ));
                                             });
 
-                                        Future.delayed(Duration(seconds: 2),
-                                            () {
-                                          Navigator.pop(context);
-                                        });
+                                        await Future.delayed(
+                                          Duration(seconds: 2),
+                                        );
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop();
+                                        Navigator.of(context).pop();
                                       },
                                       child: Container(
                                         height: 30,
