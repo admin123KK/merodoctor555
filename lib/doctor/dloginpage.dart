@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/aloginpage.dart';
@@ -33,7 +34,7 @@ class _DloginpageState extends State<Dloginpage> {
 
     try {
       final url = Uri.parse(
-          'https://d574-2400-1a00-bb20-cf36-ac31-fa97-40fe-ba90.ngrok-free.app/api/Auth/login'); // Replace this with actual URL
+          'ttps://d00c-2400-1a00-bb20-cf36-b8e5-8992-e243-3546.ngrok-free.app/api/Auth/login'); // Replace this with actual URL
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -293,6 +294,14 @@ class _DloginpageState extends State<Dloginpage> {
                         icon: Icons.person_outline,
                         label: 'User Login',
                         onTap: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC),
+                                    ),
+                                  ));
+                          await Future.delayed(Duration(seconds: 1));
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -309,6 +318,14 @@ class _DloginpageState extends State<Dloginpage> {
                         icon: Icons.admin_panel_settings_outlined,
                         label: 'Admin Login',
                         onTap: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFF1CA4AC),
+                                    ),
+                                  ));
+                          await Future.delayed(Duration(seconds: 1));
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

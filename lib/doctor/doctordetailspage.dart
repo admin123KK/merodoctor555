@@ -246,8 +246,8 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: 50,
-                    width: 60,
+                    height: 45,
+                    width: 50,
                     decoration: BoxDecoration(
                         color: const Color(0xFF1CA4AC),
                         borderRadius: BorderRadius.circular(17)),
@@ -347,8 +347,8 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                       );
                     },
                     child: Container(
-                      height: 50,
-                      width: 180,
+                      height: 40,
+                      width: 170,
                       decoration: BoxDecoration(
                           color: const Color(0xFF1CA4AC),
                           borderRadius: BorderRadius.circular(18)),

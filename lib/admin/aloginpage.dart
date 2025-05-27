@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/ahomepage.dart';
 import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
+import 'package:merodoctor/loginpage.dart';
 
 class Aloginpage extends StatefulWidget {
   const Aloginpage({super.key});
@@ -20,7 +21,7 @@ class _LoginpageState extends State<Aloginpage> {
 
   Future<void> loginUser(String email, String password) async {
     const String apiUrl =
-        "https://2400-27-34-69-91.ngrok-free.app/api/Auth/login";
+        "https://d00c-2400-1a00-bb20-cf36-b8e5-8992-e243-3546.ngrok-free.app/api/Auth/login";
 
     try {
       final response = await http.post(
@@ -260,27 +261,6 @@ class _LoginpageState extends State<Aloginpage> {
                     ),
                   ),
                   const SizedBox(height: 9),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     const Text("Didn't have account?"),
-                  //     InkWell(
-                  //       onTap: () {
-                  //         Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //               builder: (context) => Registerpage()),
-                  //         );
-                  //       },
-                  //       child: const Text(
-                  //         ' Register',
-                  //         style: TextStyle(
-                  //             fontWeight: FontWeight.bold,
-                  //             color: Color(0xFF1CA4AC)),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   const SizedBox(height: 10),
                   const Text('or'),
                   const SizedBox(height: 10),
@@ -294,25 +274,41 @@ class _LoginpageState extends State<Aloginpage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                          height: 90,
-                          width: 80,
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xFF1CA4AC)),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.person_outline, color: Colors.black),
-                              Text(
-                                'User \nLogin',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              )
-                            ],
+                        InkWell(
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) => const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(0xFF1CA4AC),
+                                      ),
+                                    ));
+                            await Future.delayed(Duration(seconds: 1));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Loginpage()));
+                          },
+                          child: Container(
+                            height: 90,
+                            width: 80,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xFF1CA4AC)),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.person_outline, color: Colors.black),
+                                Text(
+                                  'User \nLogin',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         InkWell(
@@ -323,7 +319,7 @@ class _LoginpageState extends State<Aloginpage> {
                                   child: CircularProgressIndicator(
                                       color: Color(0xFF1CA4AC))),
                             );
-                            await Future.delayed(const Duration(seconds: 3));
+                            await Future.delayed(const Duration(seconds: 1));
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
