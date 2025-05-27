@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/ahomepage.dart';
+import 'package:merodoctor/api.dart';
 import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/loginpage.dart';
@@ -20,8 +21,7 @@ class _LoginpageState extends State<Aloginpage> {
   bool _isPasswordVisible = false;
 
   Future<void> loginUser(String email, String password) async {
-    const String apiUrl =
-        "https://d00c-2400-1a00-bb20-cf36-b8e5-8992-e243-3546.ngrok-free.app/api/Auth/login";
+    final String apiUrl = ApiConfig.adminLoginUrl;
 
     try {
       final response = await http.post(

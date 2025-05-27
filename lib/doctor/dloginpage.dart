@@ -1,7 +1,9 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/aloginpage.dart';
+import 'package:merodoctor/api.dart';
 import 'package:merodoctor/doctor/dhomepage.dart';
 import 'package:merodoctor/doctor/dregisterpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
@@ -32,8 +34,7 @@ class _DloginpageState extends State<Dloginpage> {
     });
 
     try {
-      final url = Uri.parse(
-          'https://d00c-2400-1a00-bb20-cf36-b8e5-8992-e243-3546.ngrok-free.app/api/Auth/login'); // Replace this with actual URL
+      final url = Uri.parse(ApiConfig.doctorLoginUrl);
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},

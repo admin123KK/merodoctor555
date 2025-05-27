@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:merodoctor/api.dart';
 
 import 'dloginpage.dart'; // Assuming this is the login page after registration
 
@@ -54,10 +55,7 @@ class _DregisterpageState extends State<Dregisterpage> {
     });
 
     try {
-      final url = Uri.parse(
-        'https://d00c-2400-1a00-bb20-cf36-b8e5-8992-e243-3546.ngrok-free.app/api/AuthDoctorRegistration/register-doctor',
-      );
-
+      final url = Uri.parse(ApiConfig.doctorRegisterUrl);
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},

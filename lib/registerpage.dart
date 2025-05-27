@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
+import 'package:merodoctor/api.dart';
 
 import 'loginpage.dart';
 
@@ -53,22 +53,19 @@ class _RegisterpageState extends State<Registerpage> {
     });
 
     try {
-      final url = Uri.parse(
-          "https://d00c-2400-1a00-bb20-cf36-b8e5-8992-e243-3546.ngrok-free.app/api/AuthPatientRegistration/register-patient");
       final response = await http.post(
-        url,
+        Uri.parse(ApiConfig.registerPatientUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           "fullName": _fullName.text,
           "email": _email.text,
           "phoneNumber": _phone.text,
-          "dateOfBirth": DateFormat("yyyy-MM-dd'T'HH:mm:ss")
-              .format(DateTime.parse(_dob.text)),
+          "dateOfBirth": _dob.text,
           "gender": selectedGender,
           "address": _address.text,
           "latitude": latitude,
           "longitude": longitude,
-          "password": _password.text,
+          "password": _password.text
         }),
       );
 
