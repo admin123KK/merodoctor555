@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:merodoctor/chatbotpage.dart';
+import 'package:merodoctor/doctor/dhomepage.dart';
 import 'package:merodoctor/historyorsavedpage.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/loginpage.dart';
@@ -31,7 +32,7 @@ class _DprofilepageState extends State<Dprofilepage> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Homepage()));
+                                builder: (context) => Homepage()));
                       },
                       child: const Icon(
                         Icons.arrow_back_ios_new_outlined,
@@ -368,7 +369,7 @@ class _DprofilepageState extends State<Dprofilepage> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: const Text(
-                                      'Are you sure to logout of your account?',
+                                      'Are you sure ?',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -413,8 +414,8 @@ class _DprofilepageState extends State<Dprofilepage> {
                                                           const Loginpage()));
                                             },
                                             child: Container(
-                                              height: 50,
-                                              width: 110,
+                                              height: 30,
+                                              width: 75,
                                               decoration: BoxDecoration(
                                                   color:
                                                       const Color(0xFF1CA4AC),
@@ -479,7 +480,7 @@ class _DprofilepageState extends State<Dprofilepage> {
               InkWell(
                   onTap: () {
                     Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => Homepage()));
+                        MaterialPageRoute(builder: (context) => Dhomepage()));
                   },
                   child: const Icon(Icons.home_outlined, size: 30)),
               const Icon(

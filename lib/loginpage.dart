@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/aloginpage.dart';
@@ -325,7 +326,7 @@ class _LoginpageState extends State<Loginpage> {
                                   child: CircularProgressIndicator(
                                       color: Color(0xFF1CA4AC))),
                             );
-                            await Future.delayed(const Duration(seconds: 3));
+                            await Future.delayed(const Duration(seconds: 1));
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
