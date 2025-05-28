@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/ahomepage.dart';
@@ -22,6 +21,7 @@ class _LoginpageState extends State<Aloginpage> {
 
   Future<void> loginUser(String email, String password) async {
     final String apiUrl = ApiConfig.adminLoginUrl;
+    print('Login URL: $apiUrl');
 
     try {
       final response = await http.post(

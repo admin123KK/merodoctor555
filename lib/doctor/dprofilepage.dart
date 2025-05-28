@@ -376,7 +376,7 @@ class _DprofilepageState extends State<Dprofilepage> {
                                     icon: const Icon(
                                       Icons.logout_outlined,
                                       size: 30,
-                                      color: Color(0xFF1CA4AC),
+                                      color: Colors.red,
                                     ),
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(

@@ -24,7 +24,6 @@ class _DloginpageState extends State<Dloginpage> {
 
   Future<void> loginDoctor() async {
     if (_email.text.isEmpty || _password.text.isEmpty) {
-      Navigator.pop(context);
       showErrorMessage("Please fill in both fields", isError: true);
       return;
     }
@@ -34,7 +33,7 @@ class _DloginpageState extends State<Dloginpage> {
     });
 
     try {
-      final url = Uri.parse(ApiConfig.doctorLoginUrl);
+      final url = Uri.parse(ApiConfig.loginUrl);
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -62,7 +61,7 @@ class _DloginpageState extends State<Dloginpage> {
       setState(() {
         isLoading = false;
       });
-      showErrorMessage("Invalid Crediental", isError: true);
+      showErrorMessage(" $e", isError: true);
     }
   }
 
@@ -184,28 +183,29 @@ class _DloginpageState extends State<Dloginpage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextField(
-                        controller: _password,
-                        cursorColor: const Color(0xFF1CA4AC),
-                        obscureText: !_isPasswordVisible,
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.lock_outline),
-                            hintText: 'Enter your password',
-                            labelText: 'Password',
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isPasswordVisible = !_isPasswordVisible;
-                                  });
-                                },
-                                icon: Icon(_isPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off)))),
+                      controller: _password,
+                      cursorColor: const Color(0xFF1CA4AC),
+                      obscureText: !_isPasswordVisible,
+                      decoration: InputDecoration(
+                        icon: const Icon(Icons.lock_outline),
+                        hintText: 'Enter your password',
+                        labelText: 'Password',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                          icon: Icon(_isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                      ),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -227,8 +227,8 @@ class _DloginpageState extends State<Dloginpage> {
                                   builder: (_) => const Forgotpassword()));
                         },
                         child: const Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: const Text(
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          child: Text(
                             'Forgot password?',
                             style: TextStyle(color: Color(0xFF1CA4AC)),
                           ),
@@ -249,17 +249,7 @@ class _DloginpageState extends State<Dloginpage> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 40, vertical: 10),
                           ),
-                          onPressed: () async {
-                            showDialog(
-                                context: context,
-                                builder: (context) => const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Color(0xFF1CA4AC),
-                                      ),
-                                    ));
-                            await Future.delayed(Duration(seconds: 2));
-                            loginDoctor();
-                          },
+                          onPressed: loginDoctor,
                           child: const Text(
                             'Login',
                             style: TextStyle(color: Colors.white),
@@ -301,7 +291,7 @@ class _DloginpageState extends State<Dloginpage> {
                                       color: Color(0xFF1CA4AC),
                                     ),
                                   ));
-                          await Future.delayed(Duration(seconds: 1));
+                          await Future.delayed(const Duration(seconds: 1));
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -325,7 +315,7 @@ class _DloginpageState extends State<Dloginpage> {
                                       color: Color(0xFF1CA4AC),
                                     ),
                                   ));
-                          await Future.delayed(Duration(seconds: 1));
+                          await Future.delayed(const Duration(seconds: 1));
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
