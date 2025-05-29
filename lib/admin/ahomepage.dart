@@ -213,8 +213,16 @@ class _AhomepageState extends State<Ahomepage> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
+                                  onTap: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => const Center(
+                                              child: CircularProgressIndicator(
+                                                color: Color(0xFF1CA4AC),
+                                              ),
+                                            ));
+                                    await Future.delayed(Duration(seconds: 2));
+                                    Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -265,8 +273,15 @@ class _AhomepageState extends State<Ahomepage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: InkWell(
-                              onTap: () {
-                                Navigator.push(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => const Center(
+                                            child: CircularProgressIndicator(
+                                          color: Color(0xFF1CA4AC),
+                                        )));
+                                await Future.delayed(Duration(seconds: 2));
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => PAdminPage()));
