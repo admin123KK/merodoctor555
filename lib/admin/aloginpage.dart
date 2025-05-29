@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/ahomepage.dart';
@@ -18,42 +19,58 @@ class _LoginpageState extends State<Aloginpage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   bool _isPasswordVisible = false;
+  bool isLoading = false;
 
-  Future<void> loginUser(String email, String password) async {
-    final String apiUrl = ApiConfig.adminLoginUrl;
-    print('Login URL: $apiUrl');
+  Future<void> loginDoctor() async {
+    if (_email.text.isEmpty || _password.text.isEmpty) {
+      showErrorMessage(
+        "Please fill in both fields",
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
 
     try {
+      final url = Uri.parse(ApiConfig.loginUrl);
       final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"email": email, "password": password}),
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "email": _email.text,
+          "password": _password.text,
+        }),
       );
 
-      final data = jsonDecode(response.body);
+      setState(() {
+        isLoading = false;
+      });
 
-      // Close the loading dialog
-      Navigator.pop(context);
-
-      if (response.statusCode == 200 && data['success']) {
-        final token = data['data'];
-        print("Login Successful! JWT Token: $token");
-        showSuccessMessage('Login Successful');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showSuccessMessage("Login successful", isError: false);
         await Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => Ahomepage()));
+              context, MaterialPageRoute(builder: (_) => const Ahomepage()));
         });
       } else {
-        showErrorMessage(data['message'] ?? 'Login failed');
+        final body = jsonDecode(response.body);
+        showErrorMessage(
+          body["message"] ?? "Login failed",
+        );
       }
     } catch (e) {
-      // Close the loading dialog
-      Navigator.pop(context);
-      showErrorMessage('An error occurred. Please try again.');
+      setState(() {
+        isLoading = false;
+      });
+      showErrorMessage(
+        " $e",
+      );
     }
   }
 
-  void showSuccessMessage(String msg) {
+  void showSuccessMessage(String msg, {required bool isError}) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -223,43 +240,24 @@ class _LoginpageState extends State<Aloginpage> {
                     ],
                   ),
                   const SizedBox(height: 55),
-                  InkWell(
-                    onTap: () async {
-                      final email = _email.text.trim();
-                      final password = _password.text.trim();
-
-                      // Show loading dialog
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => const Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xFF1CA4AC),
+                  isLoading
+                      ? const CircularProgressIndicator(
+                          color: Color(0xFF1CA4AC))
+                      : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF1CA4AC),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 10),
+                          ),
+                          onPressed: loginDoctor,
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
-                      );
-
-                      // Simulate a 2-second delay for processing login
-                      await Future.delayed(const Duration(seconds: 2));
-
-                      // Perform the login request
-                      await loginUser(email, password);
-                    },
-                    child: Container(
-                      height: 30,
-                      width: 123,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1CA4AC),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: 9),
                   const SizedBox(height: 10),
                   const Text('or'),
