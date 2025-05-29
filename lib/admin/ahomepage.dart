@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/admin/dadminpage.dart';
+import 'package:merodoctor/admin/patiadminpage.dart';
 
 import '../doctor/dprofilepage.dart';
 
@@ -210,25 +212,35 @@ class _AhomepageState extends State<Ahomepage> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
-                                child: Container(
-                                  height: 30,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF1CA4AC),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: const Center(
-                                    child: Text(
-                                      'EDIT',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DAdminPage()));
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFF1CA4AC),
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: const Center(
+                                      child: Text(
+                                        'EDIT',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ),
                                 ),
                               )
                             ],
                           ))),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
@@ -252,18 +264,26 @@ class _AhomepageState extends State<Ahomepage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Container(
-                              height: 30,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                  color: Color(0xFF1CA4AC),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: const Center(
-                                child: Text(
-                                  'EDIT',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PAdminPage()));
+                              },
+                              child: Container(
+                                height: 30,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF1CA4AC),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Center(
+                                  child: Text(
+                                    'EDIT',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
                             ),
