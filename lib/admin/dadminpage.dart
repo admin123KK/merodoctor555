@@ -55,7 +55,10 @@ class _DAdminPageState extends State<DAdminPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -81,6 +84,9 @@ class _DAdminPageState extends State<DAdminPage> {
       body: SafeArea(
         child: Column(
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             // Top bar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -130,9 +136,23 @@ class _DAdminPageState extends State<DAdminPage> {
 
             const SizedBox(height: 20),
 
+            const Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Row(
+                children: [
+                  const Text(
+                    'Doctor List',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             // Header
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+            const Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Row(
                 children: const [
                   Expanded(
@@ -161,7 +181,7 @@ class _DAdminPageState extends State<DAdminPage> {
                   final doctor = doctors[index];
                   return Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                        const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
                     child: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
