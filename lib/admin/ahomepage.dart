@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/admin/dadminpage.dart';
 import 'package:merodoctor/admin/patiadminpage.dart';
 
@@ -348,7 +349,7 @@ class _AhomepageState extends State<Ahomepage> {
               ),
             ]),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -357,9 +358,15 @@ class _AhomepageState extends State<Ahomepage> {
                 size: 30,
                 color: Color(0xFF1CA4AC),
               ),
-              const Icon(
-                Icons.mail_outline,
-                size: 30,
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Amessage()));
+                },
+                child: const Icon(
+                  Icons.mail_outline,
+                  size: 30,
+                ),
               ),
               const Icon(
                 Icons.calendar_month_outlined,
