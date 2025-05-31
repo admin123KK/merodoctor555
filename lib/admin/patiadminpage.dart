@@ -66,7 +66,7 @@ class _PAdminPageState extends State<PAdminPage> {
                 });
                 Navigator.pop(context);
               },
-              child: Text('Verify'))
+              child: const Text('Verify'))
         ],
       ),
     );
@@ -77,18 +77,14 @@ class _PAdminPageState extends State<PAdminPage> {
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(
-            height: 60,
-          ),
+          const SizedBox(height: 60),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                   child: const Icon(
                     Icons.arrow_back_ios_new_outlined,
                     color: Colors.black,
@@ -106,9 +102,7 @@ class _PAdminPageState extends State<PAdminPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Container(
@@ -126,11 +120,9 @@ class _PAdminPageState extends State<PAdminPage> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           const Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.symmetric(horizontal: 30),
             child: Row(
               children: [
                 Text(
@@ -140,22 +132,26 @@ class _PAdminPageState extends State<PAdminPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           // Header
           const Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.symmetric(horizontal: 30),
             child: Row(
-              children: const [
+              children: [
                 Expanded(
                     flex: 3,
                     child: Text("Name",
                         style: TextStyle(fontWeight: FontWeight.bold))),
                 Expanded(
                     flex: 3,
-                    child: Text("Specialty",
+                    child: Text("Age",
                         style: TextStyle(fontWeight: FontWeight.bold))),
+                Expanded(
+                    flex: 2,
+                    child: Text(
+                      'Email',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )),
                 Expanded(
                     flex: 2,
                     child: Text("Status",
@@ -164,17 +160,15 @@ class _PAdminPageState extends State<PAdminPage> {
             ),
           ),
 
-          const SizedBox(height: 8),
-
-          // Doctor List
+          // Patient List
           Expanded(
             child: ListView.builder(
               itemCount: patients.length,
               itemBuilder: (context, index) {
-                final doctor = patients[index];
+                final patient = patients[index];
                 return Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 6),
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 2),
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -184,14 +178,19 @@ class _PAdminPageState extends State<PAdminPage> {
                     child: Row(
                       children: [
                         Expanded(
-                            flex: 3,
-                            child: Text(doctor['name'],
+                            flex: 2,
+                            child: Text(patient['name'],
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600))),
-                        Expanded(flex: 3, child: Text(doctor['specialty'])),
+                        Expanded(flex: 1, child: Text(patient['age'])),
                         Expanded(
-                          flex: 2,
-                          child: doctor['verified']
+                            child: Text(
+                          patient['email'],
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                        Expanded(
+                          flex: 1,
+                          child: patient['active']
                               ? Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 4),
@@ -200,7 +199,7 @@ class _PAdminPageState extends State<PAdminPage> {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: const Text(
-                                    "Verified",
+                                    "Active",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.green),
                                   ),
@@ -210,7 +209,7 @@ class _PAdminPageState extends State<PAdminPage> {
                                     backgroundColor: Colors.black,
                                     foregroundColor: Colors.white,
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
+                                        horizontal: 9, vertical: 8),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6),
                                     ),
