@@ -78,6 +78,8 @@ class _DAdminPageState extends State<DAdminPage> {
     );
   }
 
+  void showViewDialoge() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

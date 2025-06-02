@@ -35,6 +35,15 @@ class _PAdminPageState extends State<PAdminPage> {
     },
   ];
 
+  void showPatientDetails() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Patient Record'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +128,6 @@ class _PAdminPageState extends State<PAdminPage> {
               ],
             ),
           ),
-
           // Patient List
           Expanded(
             child: ListView.builder(
@@ -138,47 +146,53 @@ class _PAdminPageState extends State<PAdminPage> {
                     child: Row(
                       children: [
                         Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: Text(patient['name'],
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600))),
                         Expanded(flex: 2, child: Text(patient['age'])),
                         Expanded(
-                            flex: 2,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 0),
-                              decoration: BoxDecoration(
-                                color: patient['active']
-                                    ? Color(0xFFE6F4EA)
-                                    : Color(0xFFFFE6E6),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                patient['active'] ? 'Active' : "Inactive",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: patient['active']
-                                        ? Colors.green
-                                        : Colors.red),
-                              ),
-                            )),
+                          flex: 2,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 0),
+                            // decoration: BoxDecoration(
+                            //   color: patient['active']
+                            //       ? Color(0xFFE6F4EA)
+                            //       : Color(0xFFFFE6E6),
+                            //   borderRadius: BorderRadius.circular(20),
+                            // ),
+                            child: Text(
+                              patient['active'] ? 'Active' : "Inactive",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: patient['active']
+                                      ? Colors.green
+                                      : Colors.red),
+                            ),
+                          ),
+                        ),
                         Expanded(
                           flex: 1,
-                          child: Container(
-                            height: 20,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF1CA4AC),
-                              borderRadius: BorderRadius.circular(17),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'Check',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                          child: InkWell(
+                            onTap: () {
+                              showPatientDetails();
+                            },
+                            child: Container(
+                              height: 20,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1CA4AC),
+                                borderRadius: BorderRadius.circular(17),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'View',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
                           ),
