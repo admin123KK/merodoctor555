@@ -38,8 +38,13 @@ class _PAdminPageState extends State<PAdminPage> {
   void showPatientDetails() {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (_) => const AlertDialog(
         title: Text('Patient Record'),
+        content: Row(
+          children: [
+            Text('Name'),
+          ],
+        ),
       ),
     );
   }
@@ -183,7 +188,7 @@ class _PAdminPageState extends State<PAdminPage> {
                               height: 20,
                               width: 50,
                               decoration: BoxDecoration(
-                                color: Color(0xFF1CA4AC),
+                                color: const Color(0xFF1CA4AC),
                                 borderRadius: BorderRadius.circular(17),
                               ),
                               child: const Center(
