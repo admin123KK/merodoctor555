@@ -35,43 +35,6 @@ class _PAdminPageState extends State<PAdminPage> {
     },
   ];
 
-  void showVerifyDialog(int index) {
-    String nmcId = '';
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text('Verify Doctor'),
-        content: TextField(
-          onChanged: (value) {
-            nmcId = value;
-          },
-          decoration: const InputDecoration(
-              labelText: 'NMC ID',
-              hintText: 'Enter NMC ID',
-              border: OutlineInputBorder()),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  patients[index]['active'] = true;
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('Verify'))
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,27 +98,24 @@ class _PAdminPageState extends State<PAdminPage> {
           const SizedBox(height: 20),
           // Header
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.symmetric(horizontal: 40),
             child: Row(
               children: [
                 Expanded(
-                    flex: 3,
+                    flex: 2,
                     child: Text("Name",
-                        style: TextStyle(fontWeight: FontWeight.bold))),
-                Expanded(
-                    flex: 3,
-                    child: Text("Age",
-                        style: TextStyle(fontWeight: FontWeight.bold))),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16))),
                 Expanded(
                     flex: 2,
-                    child: Text(
-                      'Email',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )),
+                    child: Text("Age",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16))),
                 Expanded(
                     flex: 2,
                     child: Text("Status",
-                        style: TextStyle(fontWeight: FontWeight.bold))),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16))),
               ],
             ),
           ),
@@ -182,41 +142,46 @@ class _PAdminPageState extends State<PAdminPage> {
                             child: Text(patient['name'],
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600))),
-                        Expanded(flex: 1, child: Text(patient['age'])),
+                        Expanded(flex: 2, child: Text(patient['age'])),
                         Expanded(
-                            child: Text(
-                          patient['email'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
+                            flex: 2,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 0),
+                              decoration: BoxDecoration(
+                                color: patient['active']
+                                    ? Color(0xFFE6F4EA)
+                                    : Color(0xFFFFE6E6),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                patient['active'] ? 'Active' : "Inactive",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: patient['active']
+                                        ? Colors.green
+                                        : Colors.red),
+                              ),
+                            )),
                         Expanded(
                           flex: 1,
-                          child: patient['active']
-                              ? Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE6F4EA),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: const Text(
-                                    "Active",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black,
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 9, vertical: 8),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                  ),
-                                  onPressed: () => showVerifyDialog(index),
-                                  child: const Text("Verify"),
-                                ),
+                          child: Container(
+                            height: 20,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF1CA4AC),
+                              borderRadius: BorderRadius.circular(17),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Check',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
