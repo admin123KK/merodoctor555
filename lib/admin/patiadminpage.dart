@@ -38,13 +38,35 @@ class _PAdminPageState extends State<PAdminPage> {
   void showPatientDetails() {
     showDialog(
       context: context,
-      builder: (_) => const AlertDialog(
-        title: Text('Patient Record'),
-        content: Row(
+      builder: (_) => AlertDialog(
+        title: const Text('Patient Record'),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Name'),
+            Text(
+              'Name',
+            ),
+            Text('Age'),
+            Text('Email'),
+            Text('Status')
           ],
         ),
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                  color: Color(
+                    0xFF1CA4AC,
+                  ),
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
       ),
     );
   }
