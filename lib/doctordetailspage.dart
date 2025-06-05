@@ -355,8 +355,9 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                               productId:
                                                   "APPT123", // You can customize this
                                               productName: "Doctor Appointment",
-                                              productPrice:
-                                                  "20", // Set your price here
+                                              productPrice: "20",
+                                              callbackUrl:
+                                                  '', // Set your price here
                                             ),
                                             onPaymentSuccess:
                                                 (EsewaPaymentSuccessResult
