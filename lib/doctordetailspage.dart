@@ -111,6 +111,27 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green)),
                         Text('5 Year Experience'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Rs.',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              '1000/',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                  fontSize: 18),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -297,6 +318,10 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                   'Time :  $timeText',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
+                                const Text(
+                                  'Cost : Rs.1000',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -341,6 +366,8 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                             ),
                                           ),
                                         );
+                                        await Future.delayed(
+                                            const Duration(seconds: 2));
                                         try {
                                           EsewaFlutterSdk.initPayment(
                                             esewaConfig: EsewaConfig(
@@ -365,13 +392,20 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                               debugPrint(
                                                   ":::SUCCESS::: => $data");
                                               verifyTransactionStatus(data);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      content: Text(
+                                                          'Successfully Booked')));
                                             },
                                             onPaymentFailure: (data) {
                                               debugPrint(
                                                   ":::FAILURE::: => $data");
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
-                                                SnackBar(
+                                                const SnackBar(
+                                                    backgroundColor: Colors.red,
                                                     content: Text(
                                                         'Payment failed.')),
                                               );
@@ -381,7 +415,8 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                                   ":::CANCELLATION::: => $data");
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
-                                                SnackBar(
+                                                const SnackBar(
+                                                    backgroundColor: Colors.red,
                                                     content: Text(
                                                         'Payment cancelled.')),
                                               );
@@ -397,8 +432,6 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                                     'Exception: ${e.toString()}')),
                                           );
                                         }
-                                        await Future.delayed(
-                                            const Duration(seconds: 2));
 
                                         Navigator.of(context,
                                                 rootNavigator: true)
