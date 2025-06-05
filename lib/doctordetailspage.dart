@@ -1,3 +1,7 @@
+import 'package:esewa_flutter_sdk/esewa_config.dart';
+import 'package:esewa_flutter_sdk/esewa_flutter_sdk.dart';
+import 'package:esewa_flutter_sdk/esewa_payment.dart';
+import 'package:esewa_flutter_sdk/esewa_payment_success_result.dart';
 import 'package:flutter/material.dart';
 import 'package:merodoctor/homepage.dart';
 
@@ -44,6 +48,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
     '2:00  PM',
     '2:30  PM',
   ];
+  void verifyTransactionStatus(EsewaPaymentSuccessResult result) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -273,9 +278,13 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                           return AlertDialog(
                             icon: const Icon(
                               Icons.edit_calendar_outlined,
+                              color: Color(0xFF1CA4AC),
                               size: 50,
                             ),
-                            title: const Text('Book appointment?'),
+                            title: const Text(
+                              'Book appointment?',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,12 +297,10 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                   'Time :  $timeText',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                const Divider(),
-                                const Row(
-                                  children: [
-                                    Divider(),
-                                  ],
+                                const SizedBox(
+                                  height: 20,
                                 ),
+                                const Divider(),
                                 Center(child: Text('Payement with')),
                                 const SizedBox(
                                   height: 20,
@@ -334,8 +341,64 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                             ),
                                           ),
                                         );
+                                        try {
+                                          EsewaFlutterSdk.initPayment(
+                                            esewaConfig: EsewaConfig(
+                                              environment: Environment
+                                                  .test, // Change to Environment.live for production
+                                              clientId:
+                                                  'JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R ',
+                                              secretId:
+                                                  'BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==',
+                                            ),
+                                            esewaPayment: EsewaPayment(
+                                              productId:
+                                                  "APPT123", // You can customize this
+                                              productName: "Doctor Appointment",
+                                              productPrice:
+                                                  "20", // Set your price here
+                                            ),
+                                            onPaymentSuccess:
+                                                (EsewaPaymentSuccessResult
+                                                    data) {
+                                              debugPrint(
+                                                  ":::SUCCESS::: => $data");
+                                              verifyTransactionStatus(data);
+                                            },
+                                            onPaymentFailure: (data) {
+                                              debugPrint(
+                                                  ":::FAILURE::: => $data");
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        'Payment failed.')),
+                                              );
+                                            },
+                                            onPaymentCancellation: (data) {
+                                              debugPrint(
+                                                  ":::CANCELLATION::: => $data");
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        'Payment cancelled.')),
+                                              );
+                                            },
+                                          );
+                                        } on Exception catch (e) {
+                                          debugPrint(
+                                              "EXCEPTION : ${e.toString()}");
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    'Exception: ${e.toString()}')),
+                                          );
+                                        }
                                         await Future.delayed(
                                             const Duration(seconds: 2));
+
                                         Navigator.of(context,
                                                 rootNavigator: true)
                                             .pop(); // loader
