@@ -288,6 +288,27 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                   'Time :  $timeText',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
+                                const Divider(),
+                                const Row(
+                                  children: [
+                                    Divider(),
+                                  ],
+                                ),
+                                Center(child: Text('Payement with')),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Center(
+                                  child: Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(27),
+                                    ),
+                                    child:
+                                        Image.asset('assets/image/esewa.png'),
+                                  ),
+                                ),
                                 const SizedBox(height: 20),
                                 Row(
                                   mainAxisAlignment:
