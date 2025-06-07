@@ -28,11 +28,11 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                     size: 30,
                   ),
                 ),
-                Text(
-                  'History ',
+                const Text(
+                  'Historyy ',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 ),
-                Icon(
+                const Icon(
                   Icons.more_vert,
                   size: 30,
                 )
