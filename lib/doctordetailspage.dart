@@ -18,7 +18,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
 
   final List<Map<String, String>> days = [
     {'day': 'Sun', 'date': '10'},
-    {'day': 'Mon', 'date': '11'},
+    {'day': 'Mon', 'date': '13'},
     {'day': 'Tue', 'date': '12'},
     {'day': 'Wed', 'date': '13'},
     {'day': 'Thu', 'date': '14'},
