@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:esewa_flutter_sdk/esewa_config.dart';
 import 'package:esewa_flutter_sdk/esewa_flutter_sdk.dart';
@@ -6,6 +7,7 @@ import 'package:esewa_flutter_sdk/esewa_payment.dart';
 import 'package:esewa_flutter_sdk/esewa_payment_success_result.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:merodoctor/api.dart';
 import 'package:merodoctor/homepage.dart';
 
 class Doctordetailspage extends StatefulWidget {
@@ -25,8 +27,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
   Future<void> submitRatingReview() async {
     setState(() => isLoading = true);
     final response = await http.post(
-      Uri.parse(
-          'https://your-backend.com/api/doctor/rate'), // Replace with your real endpoint
+      Uri.parse(ApiConfig.ratingUrl), // Replace with your real endpoint
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "doctorId": "123", // Replace with actual doctor ID
@@ -41,9 +42,11 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(response.statusCode == 200
-            ? 'Thank you for your feedback!'
-            : 'Something went wrong.'),
+        content: Text(
+          response.statusCode == 200
+              ? 'Thank you for your feedback!'
+              : 'Something went wrong.$e ',
+        ),
         backgroundColor: response.statusCode == 200 ? Colors.green : Colors.red,
       ),
     );
@@ -162,31 +165,97 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                             ),
                           ],
                         ),
-                        Container(
-                          height: 30,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF1CA4AC),
-                            borderRadius: BorderRadius.circular(27),
-                          ),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Rate',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                  width: 7,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.yellow[700],
-                                )
-                              ],
+                        InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      title: const Text("Rate & Review"),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text(
+                                              "How was your experience?"),
+                                          const SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: List.generate(5, (index) {
+                                              return IconButton(
+                                                icon: Icon(
+                                                  Icons.star,
+                                                  color: index < rating
+                                                      ? Colors.amber
+                                                      : Colors.grey,
+                                                ),
+                                                onPressed: () => setState(
+                                                    () => rating = index + 1.0),
+                                              );
+                                            }),
+                                          ),
+                                          TextField(
+                                            controller: reviewController,
+                                            maxLines: 3,
+                                            decoration: const InputDecoration(
+                                              hintText: "Write your review...",
+                                              border: OutlineInputBorder(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        if (isLoading)
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        else ...[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text("Cancel"),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: submitRatingReview,
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color(0xFF1CA4AC),
+                                              foregroundColor: Colors.white,
+                                            ),
+                                            child: const Text("Submit"),
+                                          ),
+                                        ]
+                                      ]);
+                                });
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 90,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF1CA4AC),
+                              borderRadius: BorderRadius.circular(27),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Rate',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    width: 7,
+                                  ),
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.yellow[700],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         )

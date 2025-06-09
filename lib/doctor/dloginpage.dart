@@ -17,12 +17,12 @@ class Dloginpage extends StatefulWidget {
 
 class _DloginpageState extends State<Dloginpage> {
   final _password = TextEditingController();
-  final _email = TextEditingController();
+  final _registrationId = TextEditingController();
   bool isLoading = false;
   bool _isPasswordVisible = false;
 
   Future<void> loginDoctor() async {
-    if (_email.text.isEmpty || _password.text.isEmpty) {
+    if (_registrationId.text.isEmpty || _password.text.isEmpty) {
       showErrorMessage("Please fill in both fields", isError: true);
       return;
     }
@@ -32,36 +32,61 @@ class _DloginpageState extends State<Dloginpage> {
     });
 
     try {
-      final url = Uri.parse(ApiConfig.loginUrl);
+      final url = Uri.parse(ApiConfig.doctorLoginUrl);
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          "email": _email.text,
-          "password": _password.text,
+          "registrationId": _registrationId.text.trim(),
+          "password": _password.text.trim(),
         }),
       );
 
-      setState(() {
-        isLoading = false;
-      });
+      print('Status code: ${response.statusCode}');
+      print('Body: ${response.body}');
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        showSuccessMessage("Login successful", isError: false);
-        await Future.delayed(const Duration(seconds: 2), () {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => const Dhomepage()));
-        });
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Dhomepage()),
+        );
       } else {
-        final body = jsonDecode(response.body);
-        showErrorMessage(body["message"] ?? "Login failed", isError: true);
+        final errorMessage =
+            jsonDecode(response.body)['message'] ?? 'Login failed';
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Login Failed'),
+            content: Text(errorMessage),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
       }
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      showErrorMessage(" $e", isError: true);
+      print("Login error: $e");
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('An error occurred. Please try again later.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void showErrorMessage(String msg, {required bool isError}) {
@@ -99,41 +124,9 @@ class _DloginpageState extends State<Dloginpage> {
     );
   }
 
-  void showSuccessMessage(String msg, {required bool isError}) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        icon: const Icon(
-          Icons.check_circle_outline,
-          color: Colors.green,
-          size: 30,
-        ),
-        title: Text(isError ? 'Login Error' : 'Success'),
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              msg,
-              style: const TextStyle(color: Colors.green),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'OK',
-              style: TextStyle(color: Color(0xFF1CA4AC)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   void dispose() {
-    _email.dispose();
+    _registrationId.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -167,18 +160,18 @@ class _DloginpageState extends State<Dloginpage> {
                         color: Color(0xFF1CA4AC)),
                   ),
                   const Text(
-                    'Login to Your Account',
+                    'Login with your Registration ID',
                     style: TextStyle(color: Color(0xFF1CA4AC)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(27),
                     child: TextField(
-                      controller: _email,
+                      controller: _registrationId,
                       cursorColor: Colors.blue,
                       decoration: const InputDecoration(
-                        hintText: 'Enter your email',
-                        labelText: 'Email',
-                        icon: Icon(Icons.email_outlined),
+                        hintText: 'Enter your Registration ID',
+                        labelText: 'Registration ID',
+                        icon: Icon(Icons.badge_outlined),
                       ),
                     ),
                   ),
