@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:esewa_flutter_sdk/esewa_config.dart';
 import 'package:esewa_flutter_sdk/esewa_flutter_sdk.dart';
 import 'package:esewa_flutter_sdk/esewa_payment.dart';
 import 'package:esewa_flutter_sdk/esewa_payment_success_result.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:merodoctor/homepage.dart';
 
 class Doctordetailspage extends StatefulWidget {
@@ -15,6 +18,36 @@ class Doctordetailspage extends StatefulWidget {
 class _DoctordetailspageState extends State<Doctordetailspage> {
   int selectedDayIndex = -1;
   int selectedTimeIndex = -1;
+  double rating = 0;
+  final TextEditingController reviewController = TextEditingController();
+  bool isLoading = false;
+
+  Future<void> submitRatingReview() async {
+    setState(() => isLoading = true);
+    final response = await http.post(
+      Uri.parse(
+          'https://your-backend.com/api/doctor/rate'), // Replace with your real endpoint
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "doctorId": "123", // Replace with actual doctor ID
+        "userId": "456", // Replace with current user ID
+        "rating": rating,
+        "review": reviewController.text.trim(),
+      }),
+    );
+
+    setState(() => isLoading = false);
+    Navigator.pop(context);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.statusCode == 200
+            ? 'Thank you for your feedback!'
+            : 'Something went wrong.'),
+        backgroundColor: response.statusCode == 200 ? Colors.green : Colors.red,
+      ),
+    );
+  }
 
   final List<Map<String, String>> days = [
     {'day': 'Sun', 'date': '10'},
