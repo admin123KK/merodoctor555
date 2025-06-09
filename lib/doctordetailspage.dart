@@ -127,27 +127,24 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                     child: Image.asset('assets/image/startpage2.png'),
                   ),
                   const SizedBox(width: 10),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 10),
-                        Text('Dr. Sky Karki',
+                        const SizedBox(height: 10),
+                        const Text('Dr. Sky Karki',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
-                        Text('Orthopedist',
+                        const Text('Orthopedist',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),
-                        Text('Active',
+                        const Text('Active',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green)),
-                        Text('5 Year Experience'),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
+                        const Text('5 Year Experience'),
+                        const Row(
                           children: [
                             Text(
                               'Rs.',
@@ -164,6 +161,34 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                   fontSize: 18),
                             ),
                           ],
+                        ),
+                        Container(
+                          height: 30,
+                          width: 90,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF1CA4AC),
+                            borderRadius: BorderRadius.circular(27),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Rate',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  width: 7,
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.yellow[700],
+                                )
+                              ],
+                            ),
+                          ),
                         )
                       ],
                     ),
