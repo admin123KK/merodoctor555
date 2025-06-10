@@ -16,17 +16,23 @@ class _PatientrecordState extends State<Patientrecord> {
         body: Column(
           children: [
             const SizedBox(height: 60),
-            const Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Icon(Icons.arrow_back_ios_new, size: 25, color: Colors.black),
-                  Text(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(Icons.arrow_back_ios_new,
+                          size: 25, color: Colors.black)),
+                  const Text(
                     'Patient Record',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
-                  Icon(Icons.more_vert_rounded, size: 25, color: Colors.black),
+                  const Icon(Icons.more_vert_rounded,
+                      size: 25, color: Colors.black),
                 ],
               ),
             ),
