@@ -566,9 +566,17 @@ class _DhomepageState extends State<Dhomepage> {
                 size: 30,
                 color: Color(0xFF1CA4AC),
               ),
-              const Icon(
-                Icons.mail_outline,
-                size: 30,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Dmessage()));
+                },
+                child: const Icon(
+                  Icons.mail_outline,
+                  size: 30,
+                ),
               ),
               const Icon(
                 Icons.calendar_month_outlined,
@@ -576,8 +584,10 @@ class _DhomepageState extends State<Dhomepage> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Dprofilepage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Dprofilepage()));
                 },
                 child: const Icon(
                   Icons.person_outline_rounded,
