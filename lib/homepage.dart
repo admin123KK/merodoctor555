@@ -364,7 +364,7 @@ Widget _buildDoctorCard(
       elevation: 4,
       child: Container(
         width: 160,
-        height: 230,
+        height: 270,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: const Color.fromARGB(93, 28, 165, 172),
@@ -392,6 +392,13 @@ Widget _buildDoctorCard(
             ),
             const SizedBox(
               height: 12,
+            ),
+            Icon(
+              Icons.star,
+              color: Colors.yellow[700],
+            ),
+            const SizedBox(
+              height: 10,
             ),
             InkWell(
               onTap: onTap,

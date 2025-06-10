@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/api.dart';
-
 import 'loginpage.dart';
 
 class Registerpage extends StatefulWidget {

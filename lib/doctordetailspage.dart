@@ -30,8 +30,8 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
       Uri.parse(ApiConfig.ratingUrl), // Replace with your real endpoint
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
-        "doctorId": "123", // Replace with actual doctor ID
-        "userId": "456", // Replace with current user ID
+        "doctorId": "73f759aec02d", // Replace with actual doctor ID
+        "userId": "c9aad3b2673e", // Replace with current user ID
         "rating": rating,
         "review": reviewController.text.trim(),
       }),

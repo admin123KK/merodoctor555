@@ -45,11 +45,25 @@ class _PAdminPageState extends State<PAdminPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Name',
+              'Name :',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text('Age'),
-            Text('Email'),
-            Text('Status')
+            Text(
+              'Age :',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Email :',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Status :',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Appointment Time :',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ],
         ),
         actions: [
