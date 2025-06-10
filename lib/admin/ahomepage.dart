@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/admin/adminprofile.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/admin/dadminpage.dart';
 import 'package:merodoctor/admin/patiadminpage.dart';
-
-import '../doctor/dprofilepage.dart';
 
 class Ahomepage extends StatefulWidget {
   const Ahomepage({super.key});
@@ -375,7 +374,7 @@ class _AhomepageState extends State<Ahomepage> {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Dprofilepage()));
+                      MaterialPageRoute(builder: (context) => Adminprofile()));
                 },
                 child: const Icon(
                   Icons.person_outline_rounded,

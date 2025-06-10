@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:merodoctor/doctordetailspage.dart';
+import 'package:merodoctor/message.dart';
 import 'package:merodoctor/profilepage.dart';
 
 class Homepage extends StatefulWidget {
@@ -329,9 +330,17 @@ class _HomepageState extends State<Homepage> {
                 size: 30,
                 color: Color(0xFF1CA4AC),
               ),
-              const Icon(
-                Icons.mail_outline,
-                size: 30,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Pmessage()));
+                },
+                child: const Icon(
+                  Icons.mail_outline,
+                  size: 30,
+                ),
               ),
               const Icon(
                 Icons.calendar_month_outlined,
@@ -339,8 +348,10 @@ class _HomepageState extends State<Homepage> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Profilepage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Profilepage()));
                 },
                 child: const Icon(
                   Icons.person_outline_rounded,

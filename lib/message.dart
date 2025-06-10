@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Amessage extends StatefulWidget {
-  const Amessage({super.key});
+class Pmessage extends StatefulWidget {
+  const Pmessage({super.key});
 
   @override
-  State<Amessage> createState() => _AmessageState();
+  State<Pmessage> createState() => _PmessageState();
 }
 
-class _AmessageState extends State<Amessage> {
+class _PmessageState extends State<Pmessage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,14 +17,16 @@ class _AmessageState extends State<Amessage> {
             height: 60,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   child: const Icon(
-                    Icons.arrow_back_ios_new,
+                    Icons.arrow_back_ios,
                     size: 27,
                   ),
                 ),
@@ -33,8 +35,8 @@ class _AmessageState extends State<Amessage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 ),
                 const Icon(
-                  Icons.more_vert_outlined,
-                  size: 30,
+                  Icons.more_vert,
+                  color: Colors.black,
                 )
               ],
             ),
