@@ -402,11 +402,17 @@ Widget _buildDoctorCard(
               textAlign: TextAlign.center,
             ),
             const SizedBox(
-              height: 12,
+              height: 5,
             ),
-            Icon(
-              Icons.star,
-              color: Colors.yellow[700],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(5, (index) {
+                return Icon(
+                  Icons.star,
+                  color: Colors.yellow[800],
+                  size: 20,
+                );
+              }),
             ),
             const SizedBox(
               height: 10,
