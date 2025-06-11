@@ -41,6 +41,42 @@ class _DmessageState extends State<Dmessage> {
                 )
               ],
             ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Column(
+            children: List.generate(10, (index) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                child: Container(
+                  height: 40,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(90, 28, 165, 172),
+                      borderRadius: BorderRadius.circular(13)),
+                  child: const Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Doctor Sky',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('Doctor your appointment  for 4.40AM'),
+                        Text(
+                          '5.55 AM',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
           )
         ],
       ),
