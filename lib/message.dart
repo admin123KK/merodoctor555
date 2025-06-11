@@ -37,10 +37,45 @@ class _PmessageState extends State<Pmessage> {
                 const Icon(
                   Icons.more_vert,
                   color: Colors.black,
-                )
+                ),
               ],
             ),
-          )
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Column(
+              children: List.generate(10, (index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Container(
+                height: 40,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(90, 28, 165, 172),
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Aakash Karki',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text('Booked the appointment for 8.30'),
+                      Text(
+                        '11.11 AM',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 11),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }))
         ],
       ),
     );
