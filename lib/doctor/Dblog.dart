@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class Dblog extends StatefulWidget {
   const Dblog({super.key});
@@ -15,27 +17,31 @@ class _DblogState extends State<Dblog> {
   void addOrUpdateComment() {
     final text = _commentController.text.trim();
     if (text.isEmpty) return;
+
     if (editingId == null) {
+      // Add new comment
       setState(() {
         comments.add({
-          // 'id': const Uuid().v4(),
+          'id': const Uuid().v4(),
           'text': text,
-          'timeStamp': DateTime.now().toString()
+          'timestamp': DateFormat('MMM d, h:mm a').format(DateTime.now()),
         });
       });
     } else {
+      // Update existing comment
       setState(() {
         final index = comments.indexWhere((c) => c['id'] == editingId);
         if (index != -1) {
-          comments[index]['text'] = 'text';
+          comments[index]['text'] = text;
         }
         editingId = null;
       });
     }
+
     _commentController.clear();
   }
 
-  void editComments(String id) {
+  void editComment(String id) {
     final comment = comments.firstWhere((c) => c['id'] == id);
     _commentController.text = comment['text'];
     setState(() {
@@ -43,7 +49,7 @@ class _DblogState extends State<Dblog> {
     });
   }
 
-  void deleteComments(String id) {
+  void deleteComment(String id) {
     setState(() {
       comments.removeWhere((c) => c['id'] == id);
       if (editingId == id) {
@@ -55,20 +61,18 @@ class _DblogState extends State<Dblog> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        children: [
-          SizedBox(
-            height: 60,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 60,
+            ),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.arrow_back_ios,
-                ),
+                Icon(Icons.arrow_back_ios),
                 Text(
                   'Create Blog',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
@@ -76,8 +80,77 @@ class _DblogState extends State<Dblog> {
                 Icon(Icons.more_vert)
               ],
             ),
-          )
-        ],
+            const SizedBox(
+              height: 30,
+            ),
+            Container(
+              height: 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(
+                    90,
+                    28,
+                    165,
+                    172,
+                  ),
+                  borderRadius: BorderRadius.circular(11)),
+              child: TextField(
+                cursorColor: Colors.grey,
+                controller: _commentController,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  labelText: editingId == null
+                      ? "Write a comment..."
+                      : "Edit your comment...",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      editingId == null ? Icons.send : Icons.check,
+                      color: Colors.black,
+                    ),
+                    onPressed: addOrUpdateComment,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: comments.isEmpty
+                  ? const Center(child: Text("No comments yet."))
+                  : ListView.builder(
+                      itemCount: comments.length,
+                      itemBuilder: (context, index) {
+                        final comment = comments[index];
+                        return ListTile(
+                          iconColor: Colors.blueGrey,
+                          title: Text(
+                            comment['text'],
+                          ),
+                          subtitle: Text(comment['timestamp']),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () => editComment(comment['id']),
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () => deleteComment(comment['id']),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
