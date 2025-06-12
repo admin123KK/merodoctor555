@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/doctor/Dblog.dart';
 import 'package:merodoctor/doctor/dprofilepage.dart';
 import 'package:merodoctor/doctor/message.dart';
 import 'package:merodoctor/doctor/patientrecord.dart';
@@ -293,8 +294,7 @@ class _DhomepageState extends State<Dhomepage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              Patientrecord()));
+                                          builder: (context) => Dblog()));
                                 },
                                 child: Container(
                                   height: 80,

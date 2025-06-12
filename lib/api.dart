@@ -1,6 +1,6 @@
 class ApiConfig {
   static const String baseUrl =
-      "https://9a93-2400-1a00-bb20-cf49-310f-2db9-8782-ed23.ngrok-free.app";
+      "https://4812-2400-1a00-bb20-cf49-9e1-6e9a-324f-1302.ngrok-free.app";
 
   static String get loginUrl => "$baseUrl/api/Auth/login";
   static String get registerPatientUrl =>
@@ -11,4 +11,13 @@ class ApiConfig {
       '$baseUrl/api/AuthDoctorRegistration/register-doctor';
   static const String adminLoginUrl = "$baseUrl/api/Auth/admin/login";
   static const String ratingUrl = "$baseUrl/api/Ratings/UserRating/{doctorId}";
+  static String getCommentsByBlog(String blogId) =>
+      "$baseUrl/api/BlogComments/ByBlog/$blogId";
+
+  static String get addCommentUrl => "$baseUrl/api/BlogComments/Add";
+
+  static String get updateCommentUrl => "$baseUrl/api/BlogComments/Update";
+
+  static String deleteCommentUrl(String id) =>
+      "$baseUrl/api/BlogComments/Delete/$id";
 }
