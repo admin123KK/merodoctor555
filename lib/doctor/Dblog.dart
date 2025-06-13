@@ -100,12 +100,12 @@ class _DblogState extends State<Dblog> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   labelText: editingId == null
-                      ? "Write a comment..."
-                      : "Edit your comment...",
+                      ? "  Create a new blog post..."
+                      : "Edit your post...",
                   labelStyle: TextStyle(color: Colors.grey),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      editingId == null ? Icons.send : Icons.check,
+                      editingId == null ? Icons.post_add : Icons.check,
                       color: Colors.black,
                     ),
                     onPressed: addOrUpdateComment,
