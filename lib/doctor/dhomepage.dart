@@ -308,14 +308,14 @@ class _DhomepageState extends State<Dhomepage> {
                                     child: const Column(
                                       children: [
                                         Icon(
-                                          Icons.person_outline_outlined,
+                                          Icons.post_add,
                                           size: 30,
                                         ),
                                         SizedBox(
                                           height: 5,
                                         ),
                                         Text(
-                                          'Patients',
+                                          'My Blog',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 10),
