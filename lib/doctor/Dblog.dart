@@ -55,6 +55,7 @@ class _DblogState extends State<Dblog> {
           'timestamp': DateFormat('MMM d, h:mm a').format(DateTime.now()),
           'category': selectedCategory,
           'doctorName': 'Dr. John Doe',
+          'title': _titleController.text.trim(),
           'image': _selectedImage,
         });
       });
@@ -64,6 +65,7 @@ class _DblogState extends State<Dblog> {
         if (index != -1) {
           comments[index]['text'] = text;
           comments[index]['category'] = selectedCategory;
+          comments[index]['titile'] = _titleController.text.trim();
         }
         editingId = null;
       });
@@ -106,8 +108,14 @@ class _DblogState extends State<Dblog> {
           ),
         const SizedBox(height: 10),
         ElevatedButton.icon(
-          icon: const Icon(Icons.image),
-          label: const Text("Pick Image from Gallery"),
+          icon: const Icon(
+            Icons.image,
+            color: Colors.black,
+          ),
+          label: const Text(
+            "Pick Image from Gallery",
+            style: TextStyle(color: Color(0xFF1CA4AC)),
+          ),
           onPressed: pickImageFromGallery,
         ),
       ],
@@ -142,19 +150,40 @@ class _DblogState extends State<Dblog> {
               controller: _titleController,
               decoration: InputDecoration(
                 labelText: 'Blog Title',
+                labelStyle: const TextStyle(color: Colors.black),
                 border: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Color(0xFF1CA4AC),
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide(color: Color(0xFF1CA4AC))),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide:
+                        const BorderSide(color: Color(0xFF1CA4AC), width: 2)),
               ),
             ),
             const SizedBox(height: 15),
             DropdownButtonFormField<String>(
               value: selectedCategory,
               decoration: InputDecoration(
-                labelText: "Select Category",
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              ),
+                  labelText: "Select Category",
+                  labelStyle: TextStyle(color: Colors.black),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF1CA4AC),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Color(0xFF1CA4AC))),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(
+                          color: Color(0xFF1CA4AC), width: 2))),
               items: categories
                   .map((cat) => DropdownMenuItem(
                         value: cat,
@@ -216,16 +245,17 @@ class _DblogState extends State<Dblog> {
                             child: Image.file(
                               comment['image'],
                               height: 100,
-                              width: 100,
+                              width: 80,
                               fit: BoxFit.cover,
                             ),
                           )
                         : const Icon(Icons.image_not_supported),
-                    title: Text(comment['text']),
+                    title: Text(comment['title']),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 4),
+                        Text(comment['text']),
                         Text('Doctor: ${comment['doctorName'] ?? 'N/A'}'),
                         Text('Category: ${comment['category'] ?? 'N/A'}'),
                         Text(comment['timestamp'],
