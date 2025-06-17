@@ -175,8 +175,8 @@ class _HomepageState extends State<Homepage> {
     return Column(
       children: [
         Container(
-          height: 60,
-          width: 60,
+          height: 55,
+          width: 55,
           decoration: BoxDecoration(
             color: Colors.amber,
             borderRadius: BorderRadius.circular(15),

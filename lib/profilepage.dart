@@ -72,11 +72,15 @@ class _ProfilepageState extends State<Profilepage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  height: 60,
+                  height: 50,
                   width: 1,
                   decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
+                      color: Colors.white,
+                      gradient: LinearGradient(
+                          colors: [Colors.white, Colors.grey],
+                          stops: [0.0, 1.0],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter)),
                 ),
                 const Column(
                   children: [
@@ -100,6 +104,11 @@ class _ProfilepageState extends State<Profilepage> {
                   height: 60,
                   width: 1,
                   decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Colors.white, Colors.grey],
+                        stops: [0.0, 1.0],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter),
                     color: Colors.white,
                   ),
                 ),
@@ -125,8 +134,12 @@ class _ProfilepageState extends State<Profilepage> {
                   height: 60,
                   width: 1,
                   decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
+                      color: Colors.white,
+                      gradient: LinearGradient(
+                          colors: [Colors.white, Colors.grey],
+                          stops: [0.0, 1.0],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter)),
                 ),
               ],
             ),
