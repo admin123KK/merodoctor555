@@ -76,8 +76,13 @@ class _DprofilepageState extends State<Dprofilepage> {
                   height: 60,
                   width: 1,
                   decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
+                      color: Colors.white,
+                      gradient: LinearGradient(
+                        colors: [Colors.white, Colors.grey],
+                        stops: [0.0, 1.0],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      )),
                 ),
                 const Column(
                   children: [
@@ -101,6 +106,11 @@ class _DprofilepageState extends State<Dprofilepage> {
                   height: 60,
                   width: 1,
                   decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Colors.white, Colors.grey],
+                        stops: [0.0, 1.0],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter),
                     color: Colors.white,
                   ),
                 ),
@@ -126,8 +136,12 @@ class _DprofilepageState extends State<Dprofilepage> {
                   height: 60,
                   width: 1,
                   decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
+                      color: Colors.white,
+                      gradient: LinearGradient(
+                        colors: [Colors.white, Colors.grey],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      )),
                 ),
               ],
             ),
@@ -165,7 +179,7 @@ class _DprofilepageState extends State<Dprofilepage> {
                       ),
                       const Spacer(),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
