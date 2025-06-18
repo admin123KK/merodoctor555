@@ -39,15 +39,22 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                 children: [
                   InkWell(
                     onTap: () => Navigator.pop(context),
                     child: const Icon(Icons.arrow_back_ios_new, size: 30),
                   ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   const Text(
                     'History',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
+                  const SizedBox(
+                    width: 230,
                   ),
                   const Icon(Icons.more_vert, size: 30),
                 ],
