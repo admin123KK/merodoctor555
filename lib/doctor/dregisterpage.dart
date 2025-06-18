@@ -1,7 +1,9 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/api.dart';
+
 import 'dloginpage.dart'; // Assuming this is the login page after registration
 
 class Dregisterpage extends StatefulWidget {
