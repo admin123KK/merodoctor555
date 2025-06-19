@@ -208,6 +208,89 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                     ),
                                                   ],
                                                 ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                const Row(
+                                                  children: [
+                                                    Text(
+                                                      "Doctor's Remarks",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const Row(
+                                                  children: [
+                                                    Text(
+                                                        'Pneumonia detected. Antibiotics prescribed. \nRest, fluids, and follow-up in 3–5 days \nrecommended. Seek care if symptoms worsen.')
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+                                                const Row(
+                                                  children: [
+                                                    Text(
+                                                      'Prescription',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    )
+                                                  ],
+                                                ),
+                                                const Row(
+                                                  children: [
+                                                    Text(
+                                                        'Tab Azithromycin 500mg – 1 tablet once \ndaily for 5 days'),
+                                                  ],
+                                                ),
+                                                const Row(
+                                                  children: [
+                                                    Text(
+                                                        'Follow-up: May 5,2024')
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                const Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'AI generated report diagonosis by\n licensed medical professional.',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20),
+                                                    child: Text(
+                                                      'OK',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18,
+                                                          color: Color(
+                                                              0xFF1CA4AC)),
+                                                    ),
+                                                  ),
+                                                )
                                               ],
                                             );
                                           });
