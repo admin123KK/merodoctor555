@@ -166,23 +166,48 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                       MainAxisAlignment
                                                           .spaceEvenly,
                                                   children: [
-                                                    Container(
-                                                      height: 70,
-                                                      width: 100,
-                                                      decoration:
-                                                          const BoxDecoration(
+                                                    Column(
+                                                      children: [
+                                                        Container(
+                                                          height: 90,
+                                                          width: 100,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          14),
                                                               color:
-                                                                  Colors.black),
+                                                                  Colors.grey),
+                                                          child: Image.asset(
+                                                            'assets/image/xray.png',
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        const Text(
+                                                            'Apr 27, 2025')
+                                                      ],
                                                     ),
-                                                    const Text(
-                                                      'PHNEUMONIA \nDETECTED',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 27),
+                                                    const Column(
+                                                      children: [
+                                                        Text(
+                                                          'PNEUMONIA \nDETECTED',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 27),
+                                                        ),
+                                                        Text(
+                                                            'Confidence:   98%'),
+                                                        Text(
+                                                            'Severity: Moderate')
+                                                      ],
                                                     ),
                                                   ],
-                                                )
+                                                ),
                                               ],
                                             );
                                           });
@@ -200,12 +225,12 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                         style: TextStyle(color: Colors.black),
                                       )),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   );
