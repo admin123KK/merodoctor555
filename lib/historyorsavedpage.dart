@@ -39,8 +39,6 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                 children: [
                   InkWell(
                     onTap: () => Navigator.pop(context),
@@ -49,14 +47,19 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                   const SizedBox(
                     width: 20,
                   ),
-                  const Text(
-                    'History',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  const Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'History',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 22),
+                        ),
+                        const Icon(Icons.more_vert, size: 30),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    width: 230,
-                  ),
-                  const Icon(Icons.more_vert, size: 30),
                 ],
               ),
             ),
@@ -99,7 +102,107 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                               ),
                               const SizedBox(height: 4),
                               Text('Age: ${patient['age']}'),
-                              Text('Patient ID: ${patient['id']}'),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Patient ID: ${patient['id']}'),
+                                  InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                'Patient Report',
+                                              ),
+                                              actions: [
+                                                Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          patient['name'],
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        Text(
+                                                            'ID: ${patient['id']}'),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                            'Age: ${patient['age']}'),
+                                                        Text('Referring Doctor')
+                                                      ],
+                                                    ),
+                                                    const Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                            'Date: 1977/20/21'),
+                                                        const Text(
+                                                            'Dr.Abiskar G')
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Container(
+                                                      height: 70,
+                                                      width: 100,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                              color:
+                                                                  Colors.black),
+                                                    ),
+                                                    const Text(
+                                                      'PHNEUMONIA \nDETECTED',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 27),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                          color: Colors.black12,
+                                          borderRadius:
+                                              BorderRadius.circular(17)),
+                                      child: const Center(
+                                          child: Text(
+                                        'Details',
+                                        style: TextStyle(color: Colors.black),
+                                      )),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ],
                           ),
                         )
