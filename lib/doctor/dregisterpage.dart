@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/api.dart';
-import 'dloginpage.dart'; // Assuming this is the login page after registration
+import 'dloginpage.dart';
 
 class Dregisterpage extends StatefulWidget {
   const Dregisterpage({super.key});
@@ -19,11 +19,12 @@ class _DregisterpageState extends State<Dregisterpage> {
   final _experience = TextEditingController();
   final _registrationId = TextEditingController();
   final _clinicAddress = TextEditingController();
-  final _specializationId = TextEditingController();
   final _password = TextEditingController();
 
+  int? _selectedSpecializationId;
+
   bool isLoading = false;
-  bool _isPasswordVisible = false; // 👁️ Password visibility toggle
+  bool _isPasswordVisible = false;
 
   Future<void> registerDoctor() async {
     if (_name.text.isEmpty ||
@@ -33,18 +34,16 @@ class _DregisterpageState extends State<Dregisterpage> {
         _experience.text.isEmpty ||
         _registrationId.text.isEmpty ||
         _clinicAddress.text.isEmpty ||
-        _specializationId.text.isEmpty ||
+        _selectedSpecializationId == null ||
         _password.text.isEmpty) {
       showErrorMessage("⚠️ Please fill all fields");
       return;
     }
 
     int? experience = int.tryParse(_experience.text);
-    int? specializationId = int.tryParse(_specializationId.text);
 
-    if (experience == null || specializationId == null) {
-      showErrorMessage(
-          "⚠️ Experience and Specialization ID must be valid numbers");
+    if (experience == null) {
+      showErrorMessage("⚠️ Experience must be a valid number");
       return;
     }
 
@@ -65,7 +64,7 @@ class _DregisterpageState extends State<Dregisterpage> {
           "experience": experience,
           "registrationId": _registrationId.text,
           "clinicAddress": _clinicAddress.text,
-          "specializationId": specializationId,
+          "specializationId": _selectedSpecializationId,
           "password": _password.text,
         }),
       );
@@ -104,11 +103,7 @@ class _DregisterpageState extends State<Dregisterpage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        icon: const Icon(
-          Icons.error_outline,
-          color: Colors.red,
-          size: 30,
-        ),
+        icon: const Icon(Icons.error_outline, color: Colors.red, size: 30),
         title: const Text('Something went wrong'),
         content: Text(msg),
         actions: [
@@ -152,28 +147,19 @@ class _DregisterpageState extends State<Dregisterpage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        icon: const Icon(
-          Icons.check_circle_outline,
-          color: Colors.green,
-          size: 30,
-        ),
+        icon: const Icon(Icons.check_circle_outline,
+            color: Colors.green, size: 30),
         title: Text(isError ? 'Login Error' : 'Success'),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              msg,
-              style: const TextStyle(color: Colors.green),
-            ),
+            Text(msg, style: const TextStyle(color: Colors.green)),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'OK',
-              style: TextStyle(color: Color(0xFF1CA4AC)),
-            ),
+            child: const Text('OK', style: TextStyle(color: Color(0xFF1CA4AC))),
           ),
         ],
       ),
@@ -189,7 +175,6 @@ class _DregisterpageState extends State<Dregisterpage> {
     _experience.dispose();
     _registrationId.dispose();
     _clinicAddress.dispose();
-    _specializationId.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -201,7 +186,7 @@ class _DregisterpageState extends State<Dregisterpage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 100),
+            const SizedBox(height: 30),
             Center(
               child: Image.asset('assets/image/startpage.png', height: 170),
             ),
@@ -221,10 +206,9 @@ class _DregisterpageState extends State<Dregisterpage> {
                   const Text(
                     'Register Now Dr.',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1CA4AC),
-                      fontSize: 30,
-                    ),
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1CA4AC),
+                        fontSize: 30),
                   ),
                   const Text(
                     'Create new account to Register',
@@ -240,8 +224,7 @@ class _DregisterpageState extends State<Dregisterpage> {
                       _registrationId, 'Registration ID', Icons.badge),
                   buildTextField(
                       _clinicAddress, 'Clinic Address', Icons.location_on),
-                  buildTextField(
-                      _specializationId, 'Specialization ID', Icons.star),
+                  buildDropdown(),
                   buildTextField(_password, 'Password', Icons.lock,
                       isPassword: true),
                   const SizedBox(height: 20),
@@ -331,6 +314,34 @@ class _DregisterpageState extends State<Dregisterpage> {
                 )
               : null,
         ),
+      ),
+    );
+  }
+
+  Widget buildDropdown() {
+    List<int> specializationOptions = [0, 1, 3, 4, 5];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      child: DropdownButtonFormField<int>(
+        value: _selectedSpecializationId,
+        items: specializationOptions.map((int value) {
+          return DropdownMenuItem<int>(
+            value: value,
+            child: Text("Specialization ID: $value"),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            _selectedSpecializationId = value;
+          });
+        },
+        decoration: const InputDecoration(
+          labelText: 'Specialization ID',
+          labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
+          icon: Icon(Icons.star),
+        ),
+        dropdownColor: Colors.white,
       ),
     );
   }

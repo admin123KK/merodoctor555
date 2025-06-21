@@ -17,9 +17,8 @@ class _PmessageState extends State<Pmessage> {
             height: 60,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
                   onTap: () {
@@ -30,9 +29,14 @@ class _PmessageState extends State<Pmessage> {
                     size: 27,
                   ),
                 ),
-                const Text(
-                  'Notification',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                const SizedBox(
+                  width: 20,
+                ),
+                const Expanded(
+                  child: const Text(
+                    'Notification',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
                 ),
                 const Icon(
                   Icons.more_vert,

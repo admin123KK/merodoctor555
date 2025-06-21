@@ -56,7 +56,7 @@ class _ReportcheckState extends State<Reportcheck> {
                   ),
                 ),
                 const SizedBox(
-                  width: 100,
+                  width: 20,
                 ),
                 const Text(
                   'Check X-RAY',

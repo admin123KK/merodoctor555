@@ -262,7 +262,7 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      'AI generated report diagonosis by\n licensed medical professional.',
+                                                      '© 2024 AI generated report diagonosis by\n licensed medical professional.',
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -290,7 +290,7 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                               0xFF1CA4AC)),
                                                     ),
                                                   ),
-                                                )
+                                                ),
                                               ],
                                             );
                                           });
