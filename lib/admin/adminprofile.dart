@@ -36,12 +36,17 @@ class _AdminprofileState extends State<Adminprofile> {
                         color: Colors.white,
                       ),
                     ),
-                    const Text(
-                      'Profile',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 26),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    const Expanded(
+                      child: const Text(
+                        'Profile',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 26),
+                      ),
                     ),
                     const Icon(
                       Icons.more_vert,

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class PAdminPage extends StatefulWidget {
@@ -104,9 +106,14 @@ class _PAdminPageState extends State<PAdminPage> {
                     size: 27,
                   ),
                 ),
-                const Text(
-                  'Manage Patient',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                const SizedBox(
+                  width: 20,
+                ),
+                const Expanded(
+                  child: const Text(
+                    'Manage Patient',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
                 ),
                 const Icon(
                   Icons.more_vert_outlined,

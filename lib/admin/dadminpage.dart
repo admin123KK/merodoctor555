@@ -104,9 +104,15 @@ class _DAdminPageState extends State<DAdminPage> {
                         color: Colors.black,
                         size: 27,
                       )),
-                  const Text(
-                    'Manage Doctors',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  const Expanded(
+                    child: const Text(
+                      'Manage Doctors',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
                   ),
                   const Icon(Icons.more_vert_outlined, size: 30),
                 ],

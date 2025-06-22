@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+
 import 'package:esewa_flutter_sdk/esewa_config.dart';
 import 'package:esewa_flutter_sdk/esewa_flutter_sdk.dart';
 import 'package:esewa_flutter_sdk/esewa_payment.dart';
@@ -106,9 +107,15 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                 builder: (context) => const Homepage()));
                       },
                       child: const Icon(Icons.arrow_back_ios, size: 30)),
-                  const Text(
-                    'Doctor Details',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  const Expanded(
+                    child: const Text(
+                      'Doctor Details',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+                    ),
                   ),
                   const Icon(Icons.more_vert, size: 30),
                 ],

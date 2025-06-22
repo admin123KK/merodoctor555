@@ -28,9 +28,14 @@ class _AmessageState extends State<Amessage> {
                     size: 27,
                   ),
                 ),
-                const Text(
-                  'Notification',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                const SizedBox(
+                  width: 20,
+                ),
+                const Expanded(
+                  child: const Text(
+                    'Notification',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
                 ),
                 const Icon(
                   Icons.more_vert_outlined,
