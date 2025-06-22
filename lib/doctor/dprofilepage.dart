@@ -25,7 +25,7 @@ class _DprofilepageState extends State<Dprofilepage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 80),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
                       onTap: () {
@@ -40,12 +40,17 @@ class _DprofilepageState extends State<Dprofilepage> {
                         color: Colors.white,
                       ),
                     ),
-                    const Text(
-                      'Profile',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 26),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    const Expanded(
+                      child: const Text(
+                        'Profile',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 26),
+                      ),
                     ),
                     const Icon(
                       Icons.more_vert,

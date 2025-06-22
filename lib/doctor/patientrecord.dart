@@ -27,9 +27,15 @@ class _PatientrecordState extends State<Patientrecord> {
                       },
                       child: const Icon(Icons.arrow_back_ios_new,
                           size: 25, color: Colors.black)),
-                  const Text(
-                    'Patient Record',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  const Expanded(
+                    child: const Text(
+                      'Patient Record',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    ),
                   ),
                   const Icon(Icons.more_vert_rounded,
                       size: 25, color: Colors.black),

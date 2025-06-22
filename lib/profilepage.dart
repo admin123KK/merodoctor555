@@ -498,9 +498,12 @@ class _ProfilepageState extends State<Profilepage> {
                         MaterialPageRoute(builder: (context) => Homepage()));
                   },
                   child: const Icon(Icons.home_outlined, size: 30)),
-              const Icon(
-                Icons.mail_outline,
-                size: 30,
+              InkWell(
+                onTap: () {},
+                child: const Icon(
+                  Icons.mail_outline,
+                  size: 30,
+                ),
               ),
               const Icon(Icons.calendar_month_outlined, size: 30),
               const Icon(Icons.person_outline,

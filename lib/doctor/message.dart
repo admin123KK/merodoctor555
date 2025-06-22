@@ -30,9 +30,14 @@ class _DmessageState extends State<Dmessage> {
                     size: 27,
                   ),
                 ),
-                const Text(
-                  'Notifications',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                const SizedBox(
+                  width: 20,
+                ),
+                const Expanded(
+                  child: const Text(
+                    'Notifications',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
                 ),
                 const Icon(
                   Icons.more_vert,
