@@ -138,9 +138,14 @@ class _DblogState extends State<Dblog> {
                 InkWell(
                     onTap: () => Navigator.pop(context),
                     child: Icon(Icons.arrow_back_ios)),
-                const Text(
-                  'Create Blog',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                const SizedBox(
+                  width: 20,
+                ),
+                const Expanded(
+                  child: const Text(
+                    'Create Blog',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
                 ),
                 const Icon(Icons.more_vert)
               ],

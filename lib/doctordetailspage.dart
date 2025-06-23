@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:esewa_flutter_sdk/esewa_config.dart';
 import 'package:esewa_flutter_sdk/esewa_flutter_sdk.dart';
 import 'package:esewa_flutter_sdk/esewa_payment.dart';
@@ -402,20 +401,8 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 45,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        color: const Color(0xFF1CA4AC),
-                        borderRadius: BorderRadius.circular(17)),
-                    child: const Icon(
-                      Icons.message_outlined,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
                   InkWell(
                     onTap: () {
                       final String dayText = selectedDayIndex != -1
@@ -445,11 +432,13 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                               children: [
                                 Text(
                                   'Date :  $dayText',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   'Time :  $timeText',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const Text(
                                   'Cost : Rs.1000',
@@ -459,7 +448,7 @@ class _DoctordetailspageState extends State<Doctordetailspage> {
                                   height: 20,
                                 ),
                                 const Divider(),
-                                Center(child: Text('Payement with')),
+                                const Center(child: Text('Payement with')),
                                 const SizedBox(
                                   height: 20,
                                 ),

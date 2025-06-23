@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/chatbotpage.dart';
 import 'package:merodoctor/doctor/dhomepage.dart';
 import 'package:merodoctor/historyorsavedpage.dart';
@@ -502,9 +503,15 @@ class _AdminprofileState extends State<Adminprofile> {
                         MaterialPageRoute(builder: (context) => Dhomepage()));
                   },
                   child: const Icon(Icons.home_outlined, size: 30)),
-              const Icon(
-                Icons.mail_outline,
-                size: 30,
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Amessage()));
+                },
+                child: const Icon(
+                  Icons.mail_outline,
+                  size: 30,
+                ),
               ),
               const Icon(Icons.calendar_month_outlined, size: 30),
               const Icon(Icons.person_outline,
