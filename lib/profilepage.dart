@@ -217,7 +217,7 @@ class _ProfilepageState extends State<Profilepage> {
                             color: const Color.fromARGB(90, 28, 165, 172),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: const Icon(Icons.receipt_long_outlined),
+                          child: const Icon(Icons.qr_code_rounded),
                         ),
                       ),
                       const Text(
@@ -499,9 +499,12 @@ class _ProfilepageState extends State<Profilepage> {
                   },
                   child: const Icon(Icons.home_outlined, size: 30)),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Reportcheck()));
+                },
                 child: const Icon(
-                  Icons.mail_outline,
+                  Icons.qr_code_rounded,
                   size: 30,
                 ),
               ),

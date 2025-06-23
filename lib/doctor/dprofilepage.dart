@@ -219,7 +219,7 @@ class _DprofilepageState extends State<Dprofilepage> {
                             color: const Color.fromARGB(90, 28, 165, 172),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: const Icon(Icons.receipt_long_outlined),
+                          child: const Icon(Icons.qr_code_rounded),
                         ),
                       ),
                       const Text(
@@ -498,13 +498,23 @@ class _DprofilepageState extends State<Dprofilepage> {
             children: [
               InkWell(
                   onTap: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => Dhomepage()));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Dhomepage()));
                   },
                   child: const Icon(Icons.home_outlined, size: 30)),
-              const Icon(
-                Icons.mail_outline,
-                size: 30,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Reportcheck()));
+                },
+                child: const Icon(
+                  Icons.qr_code_scanner_rounded,
+                  size: 30,
+                ),
               ),
               const Icon(Icons.calendar_month_outlined, size: 30),
               const Icon(Icons.person_outline,

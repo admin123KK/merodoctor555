@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/aloginpage.dart';
@@ -381,7 +382,7 @@ class _LoginpageState extends State<Loginpage> {
                               children: [
                                 Icon(Icons.admin_panel_settings_outlined),
                                 Text(
-                                  'Merchant \nLogin',
+                                  'Admin \nLogin',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )

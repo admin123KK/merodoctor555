@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/doctor/Dblog.dart';
 import 'package:merodoctor/doctor/dprofilepage.dart';
 import 'package:merodoctor/doctor/message.dart';
 import 'package:merodoctor/doctor/patientrecord.dart';
+import 'package:merodoctor/reportcheck.dart';
 
 class Dhomepage extends StatefulWidget {
   const Dhomepage({super.key});
@@ -526,13 +528,21 @@ class _DhomepageState extends State<Dhomepage> {
                   ),
                 ],
               ),
-              const Positioned(
+              Positioned(
                 top: 0,
                 right: 0,
-                child: const Icon(
-                  Icons.notifications_active_outlined,
-                  color: Colors.black,
-                  size: 33,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Amessage()));
+                  },
+                  child: const Icon(
+                    Icons.notifications_active_outlined,
+                    color: Colors.black,
+                    size: 33,
+                  ),
                 ),
               ),
             ],
@@ -571,10 +581,10 @@ class _DhomepageState extends State<Dhomepage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Dmessage()));
+                          builder: (context) => const Reportcheck()));
                 },
                 child: const Icon(
-                  Icons.mail_outline,
+                  Icons.qr_code_scanner_rounded,
                   size: 30,
                 ),
               ),

@@ -364,7 +364,7 @@ class _LoginpageState extends State<Aloginpage> {
                                   color: Colors.white,
                                 ),
                                 Text(
-                                  'Merchant \nLogin',
+                                  'Admin \nLogin',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,

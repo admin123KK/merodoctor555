@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:merodoctor/doctordetailspage.dart';
 import 'package:merodoctor/message.dart';
 import 'package:merodoctor/profilepage.dart';
+import 'package:merodoctor/reportcheck.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -371,10 +372,19 @@ class _HomepageState extends State<Homepage> {
             const Icon(Icons.home_outlined, size: 30, color: Color(0xFF1CA4AC)),
             InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Pmessage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Pmessage()));
                 },
-                child: const Icon(Icons.mail_outline, size: 30)),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Reportcheck()));
+                    },
+                    child: const Icon(Icons.qr_code_outlined, size: 30))),
             const InkWell(child: Icon(Icons.calendar_month_outlined, size: 30)),
             InkWell(
                 onTap: () {
