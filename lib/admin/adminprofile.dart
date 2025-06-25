@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/chatbotpage.dart';
 import 'package:merodoctor/doctor/dhomepage.dart';
@@ -14,6 +17,17 @@ class Adminprofile extends StatefulWidget {
 }
 
 class _AdminprofileState extends State<Adminprofile> {
+  File? _profileImage;
+  Future<void> _pickImage() async {
+    final PickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (PickedFile != null) {
+      setState(() {
+        _profileImage = File(PickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,10 +70,32 @@ class _AdminprofileState extends State<Adminprofile> {
                     ),
                   ],
                 )),
-            const CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 55,
-              backgroundImage: AssetImage('assets/image/startpage3.png'),
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 55,
+                  backgroundImage: _profileImage != null
+                      ? FileImage(_profileImage!)
+                      : const AssetImage('assets/image/startpage3.png')
+                          as ImageProvider,
+                ),
+                Positioned(
+                  child: GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.white),
+                      child: const Icon(
+                        Icons.edit,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 15,

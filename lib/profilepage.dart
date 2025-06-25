@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:merodoctor/chatbotpage.dart';
 import 'package:merodoctor/historyorsavedpage.dart';
 import 'package:merodoctor/homepage.dart';
@@ -13,6 +15,18 @@ class Profilepage extends StatefulWidget {
 }
 
 class _ProfilepageState extends State<Profilepage> {
+  File? _profileImage;
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,136 +35,108 @@ class _ProfilepageState extends State<Profilepage> {
         child: Column(
           children: [
             Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 80),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Homepage()));
-                      },
-                      child: const Icon(
-                        Icons.arrow_back_ios_new_outlined,
-                        size: 27,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    const Expanded(
-                      child: const Text(
-                        'Profile',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 26),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.more_vert,
-                      size: 26,
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 80),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Homepage()));
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                      size: 27,
                       color: Colors.white,
                     ),
-                  ],
-                )),
-            const CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 55,
-              backgroundImage: AssetImage('assets/image/startpage3.png'),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            const Text(
-              'Dr.Sky Karki',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: 50,
-                  width: 1,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      gradient: LinearGradient(
-                          colors: [Colors.white, Colors.grey],
-                          stops: [0.0, 1.0],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter)),
-                ),
-                const Column(
-                  children: [
-                    const Text(
-                      'Sex',
+                  ),
+                  const SizedBox(width: 30),
+                  const Expanded(
+                    child: Text(
+                      'Profile',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontSize: 16),
+                          fontSize: 26),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Male',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                Container(
-                  height: 60,
-                  width: 1,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.white, Colors.grey],
-                        stops: [0.0, 1.0],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter),
-                    color: Colors.white,
                   ),
+                  const Icon(Icons.more_vert, size: 26, color: Colors.white),
+                ],
+              ),
+            ),
+
+            // Profile Image Section
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                CircleAvatar(
+                  radius: 55,
+                  backgroundColor: Colors.white,
+                  backgroundImage: _profileImage != null
+                      ? FileImage(_profileImage!)
+                      : const AssetImage('assets/image/startpage3.png')
+                          as ImageProvider,
                 ),
-                const Column(
-                  children: [
-                    const Text(
-                      'Age',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child:
+                          const Icon(Icons.edit, size: 18, color: Colors.black),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      '27',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                Container(
-                  height: 60,
-                  width: 1,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      gradient: LinearGradient(
-                          colors: [Colors.white, Colors.grey],
-                          stops: [0.0, 1.0],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter)),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 50,
+
+            const SizedBox(height: 15),
+            const Text('Dr.Sky Karki',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            const SizedBox(height: 30),
+
+            // Sex and Age Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(height: 60, width: 1, color: Colors.white),
+                const Column(
+                  children: [
+                    Text('Sex',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 16)),
+                    SizedBox(height: 10),
+                    Text('Male', style: TextStyle(fontWeight: FontWeight.bold))
+                  ],
+                ),
+                Container(height: 60, width: 1, color: Colors.white),
+                const Column(
+                  children: [
+                    Text('Age',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.white)),
+                    SizedBox(height: 10),
+                    Text('27', style: TextStyle(fontWeight: FontWeight.bold))
+                  ],
+                ),
+                Container(height: 60, width: 1, color: Colors.white),
+              ],
             ),
+
+            const SizedBox(height: 50),
+
+            // White Container Section
             Container(
               height: 480,
               width: double.infinity,
@@ -162,310 +148,108 @@ class _ProfilepageState extends State<Profilepage> {
               ),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color.fromARGB(90, 28, 165, 172)),
-                          child: const Icon(Icons.favorite_outline),
-                        ),
-                      ),
-                      const Text(
-                        'My Saved',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Historyorsavedpage()));
-                          },
-                          child: const Icon(
-                            Icons.chevron_right_rounded,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ],
+                  profileTile(
+                    icon: Icons.favorite_outline,
+                    text: 'My Saved',
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const Historyorsavedpage()));
+                    },
                   ),
-                  const Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                    ),
-                    child: Divider(),
+                  profileTile(
+                    icon: Icons.qr_code_rounded,
+                    text: 'Report Check',
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Reportcheck()));
+                    },
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(90, 28, 165, 172),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Icon(Icons.qr_code_rounded),
-                        ),
-                      ),
-                      const Text(
-                        'Report Check',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Reportcheck()));
-                          },
-                          child: const Icon(
-                            Icons.chevron_right_outlined,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Divider(),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(90, 28, 165, 172),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Icon(Icons.person_search_outlined),
-                        ),
-                      ),
-                      const Text(
-                        'Appointment',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-                      const Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: const Icon(
-                          Icons.chevron_right_outlined,
-                          size: 30,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Divider(),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(90, 28, 165, 172),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Icon(Icons.settings_outlined),
-                        ),
-                      ),
-                      const Text(
-                        'Settings',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-                      const Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: const Icon(
-                          Icons.chevron_right_outlined,
-                          size: 30,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Divider(),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(90, 28, 165, 172),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Icon(Icons.message_outlined),
-                        ),
-                      ),
-                      const Text(
-                        "FAQs",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Chatbotpage()));
-                          },
-                          child: const Icon(
-                            Icons.chevron_right_outlined,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Divider(),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(90, 28, 165, 172),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Icon(
-                            Icons.logout_outlined,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                      const Text(
-                        'Log out',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.red),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      'Are you sure?',
-                                    ),
-                                    icon: const Icon(
-                                      Icons.logout_outlined,
-                                      size: 30,
-                                      color: Colors.red,
-                                    ),
-                                    content: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 20),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          InkWell(
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'Cancel',
-                                                style: TextStyle(
-                                                    color: Color(0xFF1CA4AC)),
-                                              )),
-                                          InkWell(
-                                            onTap: () async {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return const Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                      color: Color(0xFF1CA4AC),
-                                                    ));
-                                                  });
-                                              await Future.delayed(
-                                                  const Duration(seconds: 2));
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const Loginpage()));
-                                            },
-                                            child: Container(
-                                              height: 33,
-                                              width: 80,
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xFF1CA4AC),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              child: const Center(
-                                                child: Text(
-                                                  'Log out ',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                  profileTile(
+                      icon: Icons.person_search_outlined, text: 'Appointment'),
+                  profileTile(icon: Icons.settings_outlined, text: 'Settings'),
+                  profileTile(
+                      icon: Icons.message_outlined,
+                      text: 'FAQs',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Chatbotpage()));
+                      }),
+                  profileTile(
+                    icon: Icons.logout_outlined,
+                    text: 'Log out',
+                    textColor: Colors.red,
+                    iconColor: Colors.red,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Are you sure?'),
+                            icon: const Icon(Icons.logout_outlined,
+                                size: 30, color: Colors.red),
+                            content: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Cancel',
+                                        style: TextStyle(
+                                            color: Color(0xFF1CA4AC))),
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color:
+                                                            Color(0xFF1CA4AC)));
+                                          });
+                                      await Future.delayed(
+                                          const Duration(seconds: 2));
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const Loginpage()));
+                                    },
+                                    child: Container(
+                                      height: 33,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFF1CA4AC),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: const Center(
+                                        child: Text('Log out ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
                                       ),
                                     ),
-                                  );
-                                });
-                          },
-                          child: const Icon(
-                            Icons.chevron_right_outlined,
-                            color: Colors.red,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Divider(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 ],
               ),
@@ -473,12 +257,13 @@ class _ProfilepageState extends State<Profilepage> {
           ],
         ),
       ),
+
+      // Bottom Navigation Bar
       bottomNavigationBar: Container(
         height: 90,
         width: double.infinity,
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(),
           boxShadow: [
             BoxShadow(
                 color: Colors.grey,
@@ -493,20 +278,18 @@ class _ProfilepageState extends State<Profilepage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => Homepage()));
-                  },
-                  child: const Icon(Icons.home_outlined, size: 30)),
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Homepage()));
+                },
+                child: const Icon(Icons.home_outlined, size: 30),
+              ),
               InkWell(
                 onTap: () {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Reportcheck()));
                 },
-                child: const Icon(
-                  Icons.qr_code_rounded,
-                  size: 30,
-                ),
+                child: const Icon(Icons.qr_code_rounded, size: 30),
               ),
               const Icon(Icons.calendar_month_outlined, size: 30),
               const Icon(Icons.person_outline,
@@ -515,6 +298,51 @@ class _ProfilepageState extends State<Profilepage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget profileTile({
+    required IconData icon,
+    required String text,
+    Color textColor = Colors.black,
+    Color iconColor = Colors.black,
+    VoidCallback? onTap,
+  }) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Container(
+                height: 35,
+                width: 35,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(90, 28, 165, 172),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(icon, color: iconColor),
+              ),
+            ),
+            Text(text,
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: textColor)),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: InkWell(
+                onTap: onTap,
+                child: Icon(Icons.chevron_right_outlined,
+                    color: iconColor, size: 30),
+              ),
+            ),
+          ],
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30),
+          child: Divider(),
+        ),
+      ],
     );
   }
 }

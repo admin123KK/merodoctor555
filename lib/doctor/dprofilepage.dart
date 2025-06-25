@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:merodoctor/chatbotpage.dart';
 import 'package:merodoctor/doctor/dhomepage.dart';
 import 'package:merodoctor/historyorsavedpage.dart';
@@ -14,6 +16,17 @@ class Dprofilepage extends StatefulWidget {
 }
 
 class _DprofilepageState extends State<Dprofilepage> {
+  File? _profileImage;
+  Future<void> _pickImage() async {
+    final PickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (PickedFile != null) {
+      setState(() {
+        _profileImage = File(PickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +72,34 @@ class _DprofilepageState extends State<Dprofilepage> {
                     ),
                   ],
                 )),
-            const CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 55,
-              backgroundImage: AssetImage('assets/image/startpage3.png'),
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CircleAvatar(
+                  radius: 55,
+                  backgroundColor: Colors.white,
+                  backgroundImage: _profileImage != null
+                      ? FileImage(_profileImage!)
+                      : const AssetImage('assets/image/startpage3.png')
+                          as ImageProvider,
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.white),
+                      child: const Icon(
+                        Icons.edit,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
             const SizedBox(
               height: 15,
@@ -81,13 +118,14 @@ class _DprofilepageState extends State<Dprofilepage> {
                   height: 60,
                   width: 1,
                   decoration: const BoxDecoration(
-                      color: Colors.white,
-                      gradient: LinearGradient(
-                        colors: [Colors.white, Colors.grey],
-                        stops: [0.0, 1.0],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      )),
+                    color: Colors.white,
+                    gradient: LinearGradient(
+                      colors: [Colors.white, Colors.grey],
+                      stops: [0.0, 1.0],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
                 ),
                 const Column(
                   children: [
