@@ -153,13 +153,19 @@ class _HomepageState extends State<Homepage> {
                   ),
                 ],
               ),
-              const Positioned(
+              Positioned(
                 top: 0,
                 right: 0,
-                child: Icon(
-                  Icons.notifications_active_outlined,
-                  color: Colors.black,
-                  size: 33,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Pmessage()));
+                  },
+                  child: const Icon(
+                    Icons.notifications_active_outlined,
+                    color: Colors.black,
+                    size: 33,
+                  ),
                 ),
               ),
             ],
