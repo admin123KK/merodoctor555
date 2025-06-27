@@ -10,7 +10,7 @@ class Historyorsavedpage extends StatefulWidget {
 class _HistoryorsavedpageState extends State<Historyorsavedpage> {
   final List<Map<String, dynamic>> patients = [
     {
-      'name': 'Joe Ramg',
+      'name': 'Hari Bdr Darlami',
       'age': 28,
       "id": 'ETH101',
       'image': 'assets/image/startpage1.png'
@@ -127,12 +127,11 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                         Text(
                                                           patient['name'],
                                                           style: const TextStyle(
+                                                              fontSize: 22,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
                                                         ),
-                                                        Text(
-                                                            'ID: ${patient['id']}'),
                                                       ],
                                                     ),
                                                     Row(
@@ -142,7 +141,8 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                       children: [
                                                         Text(
                                                             'Age: ${patient['age']}'),
-                                                        Text('Referring Doctor')
+                                                        const Text(
+                                                            'Referring Hospital')
                                                       ],
                                                     ),
                                                     const Row(
@@ -153,7 +153,7 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                         Text(
                                                             'Date: 1977/20/21'),
                                                         const Text(
-                                                            'Dr.Abiskar G')
+                                                            'Lumibini Anchal H')
                                                       ],
                                                     ),
                                                   ],
@@ -202,8 +202,6 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                         ),
                                                         Text(
                                                             'Confidence:   98%'),
-                                                        Text(
-                                                            'Severity: Moderate')
                                                       ],
                                                     ),
                                                   ],
@@ -230,23 +228,6 @@ class _HistoryorsavedpageState extends State<Historyorsavedpage> {
                                                 ),
                                                 const SizedBox(
                                                   height: 15,
-                                                ),
-                                                const Row(
-                                                  children: [
-                                                    Text(
-                                                      'Prescription',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18),
-                                                    )
-                                                  ],
-                                                ),
-                                                const Row(
-                                                  children: [
-                                                    Text(
-                                                        'Tab Azithromycin 500mg – 1 tablet once \ndaily for 5 days'),
-                                                  ],
                                                 ),
                                                 const Row(
                                                   children: [
