@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:merodoctor/doctordetailspage.dart';
@@ -77,14 +79,10 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildCategory('Doctor', Icons.person_search_outlined),
-                      _buildCategory('Pharmacy', Icons.medication_outlined),
-                      _buildCategory('Emergency', Icons.warning_amber_outlined),
-                      _buildCategory('Hospital', Icons.local_hospital_outlined),
-                    ],
+                  Container(
+                    height: 120,
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _AutoSlidingAdBanner(),
                   ),
                   const SizedBox(height: 30),
                   _buildPromoCard(),
@@ -395,6 +393,63 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _AutoSlidingAdBanner extends StatefulWidget {
+  @override
+  State<_AutoSlidingAdBanner> createState() => _AutoSlidingAdBannerState();
+}
+
+class _AutoSlidingAdBannerState extends State<_AutoSlidingAdBanner> {
+  final PageController _controller = PageController();
+  int _currentPage = 0;
+  final List<String> _ads = [
+    'assets/image/condom.png',
+    'assets/image/operation.png',
+    'assets/image/hospital.png',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+      if (_currentPage < _ads.length - 1) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+      if (mounted) {
+        _controller.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+      controller: _controller,
+      itemCount: _ads.length,
+      itemBuilder: (context, index) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.asset(
+            _ads[index],
+            fit: BoxFit.cover,
+          ),
+        );
+      },
     );
   }
 }
