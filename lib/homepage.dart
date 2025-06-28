@@ -7,6 +7,18 @@ import 'package:merodoctor/message.dart';
 import 'package:merodoctor/profilepage.dart';
 import 'package:merodoctor/reportcheck.dart';
 
+class Doctor {
+  final String name;
+  final String specialty;
+  final double rating;
+
+  Doctor({
+    required this.name,
+    required this.specialty,
+    required this.rating,
+  });
+}
+
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -16,12 +28,21 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   String greeting = "";
+  List<Doctor> _filteredDoctors = [];
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     updateGreeting();
     super.initState();
+    _filteredDoctors = _allDoctors;
   }
+
+  final List<Doctor> _allDoctors = [
+    Doctor(name: 'Dr.Sky Karki', specialty: 'Cardiologist', rating: 4.8),
+    Doctor(name: 'Dr. Abiskar Gyawali', specialty: 'Orthopedist', rating: 4.6),
+    Doctor(name: 'Ritesh Ac', specialty: 'Psychologist', rating: 4.9),
+  ];
 
   void updateGreeting() {
     DateTime now = DateTime.now();
@@ -58,26 +79,39 @@ class _HomepageState extends State<Homepage> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        topRight: Radius.circular(22),
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          topRight: Radius.circular(22),
+                        ),
                       ),
-                    ),
-                    child: const TextField(
-                      style: TextStyle(color: Colors.white),
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search, color: Colors.white),
-                        hintText: 'Search...',
-                        hintStyle: TextStyle(color: Colors.white70),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 10),
-                      ),
-                    ),
-                  ),
+                      child: TextField(
+                        controller: _searchController,
+                        style: const TextStyle(color: Colors.white),
+                        cursorColor: Colors.white,
+                        onChanged: (value) {
+                          setState(() {
+                            _filteredDoctors = _allDoctors
+                                .where((doctor) =>
+                                    doctor.name
+                                        .toLowerCase()
+                                        .contains(value.toLowerCase()) ||
+                                    doctor.specialty
+                                        .toLowerCase()
+                                        .contains(value.toLowerCase()))
+                                .toList();
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.search, color: Colors.white),
+                          hintText: 'Search...',
+                          hintStyle: TextStyle(color: Colors.white70),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(vertical: 10),
+                        ),
+                      )),
                   const SizedBox(height: 30),
                   Container(
                     height: 120,
