@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:merodoctor/blogpage.dart';
 import 'package:merodoctor/doctordetailspage.dart';
 import 'package:merodoctor/message.dart';
 import 'package:merodoctor/profilepage.dart';
@@ -364,20 +365,35 @@ class _HomepageState extends State<Homepage> {
                   height: 80, width: 80, fit: BoxFit.cover),
             ),
             const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 5),
-                  Text(description,
-                      maxLines: 2, overflow: TextOverflow.ellipsis),
-                  const SizedBox(height: 5),
-                  Text('$doctorName • $category • $time',
-                      style: const TextStyle(color: Colors.grey, fontSize: 12)),
-                ],
+            InkWell(
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BlogDetailsPage(
+                            imagePath: imagePath,
+                            title: title,
+                            description: description,
+                            doctorName: doctorName,
+                            time: time,
+                            category: category)));
+              },
+              child: Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 5),
+                    Text(description,
+                        maxLines: 2, overflow: TextOverflow.ellipsis),
+                    const SizedBox(height: 5),
+                    Text('$doctorName • $category • $time',
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 12)),
+                  ],
+                ),
               ),
             ),
           ],
