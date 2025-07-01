@@ -3,6 +3,9 @@ import 'package:merodoctor/admin/adminprofile.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/admin/dadminpage.dart';
 import 'package:merodoctor/admin/patiadminpage.dart';
+import 'package:merodoctor/admin/patientpendingpage.dart';
+import 'package:merodoctor/admin/patientrejectedpage.dart';
+import 'package:merodoctor/admin/patientverifiedpage.dart';
 
 class Ahomepage extends StatefulWidget {
   const Ahomepage({super.key});
@@ -191,63 +194,61 @@ class _AhomepageState extends State<Ahomepage> {
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
-                          height: 60,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(93, 28, 165, 172),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Text(
-                                  'Doctor',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
+                        height: 60,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(93, 28, 165, 172),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'Doctor',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: InkWell(
-                                  onTap: () async {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => const Center(
-                                              child: CircularProgressIndicator(
-                                                color: Color(0xFF1CA4AC),
-                                              ),
-                                            ));
-                                    await Future.delayed(Duration(seconds: 2));
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DAdminPage()));
-                                  },
-                                  child: Container(
-                                    height: 30,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xFF1CA4AC),
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: const Center(
-                                      child: Text(
-                                        'EDIT',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: InkWell(
+                                onTap: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xFF1CA4AC),
+                                            ),
+                                          ));
+                                  await Future.delayed(Duration(seconds: 2));
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DAdminPage()));
+                                },
+                                child: Container(
+                                  height: 30,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFF1CA4AC),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const Center(
+                                    child: Text(
+                                      'EDIT',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ))),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
                   const SizedBox(
                     height: 15,
                   ),
@@ -295,6 +296,186 @@ class _AhomepageState extends State<Ahomepage> {
                                 child: const Center(
                                   child: Text(
                                     'EDIT',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Container(
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(93, 28, 165, 172),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              'Verified Patients',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: InkWell(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => const Center(
+                                            child: CircularProgressIndicator(
+                                          color: Color(0xFF1CA4AC),
+                                        )));
+                                await Future.delayed(Duration(seconds: 2));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            VerifiedPatientsPage()));
+                              },
+                              child: Container(
+                                height: 30,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF1CA4AC),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Center(
+                                  child: Text(
+                                    'VIEW',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Container(
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(93, 28, 165, 172),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              'Rejected Patients',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: InkWell(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => const Center(
+                                            child: CircularProgressIndicator(
+                                          color: Color(0xFF1CA4AC),
+                                        )));
+                                await Future.delayed(Duration(seconds: 2));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            RejectedPatientsPage()));
+                              },
+                              child: Container(
+                                height: 30,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF1CA4AC),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Center(
+                                  child: Text(
+                                    'VIEW',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Container(
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(93, 28, 165, 172),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              'Pending Patients',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: InkWell(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => const Center(
+                                            child: CircularProgressIndicator(
+                                          color: Color(0xFF1CA4AC),
+                                        )));
+                                await Future.delayed(Duration(seconds: 2));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PendingPatientsPage()));
+                              },
+                              child: Container(
+                                height: 30,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF1CA4AC),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Center(
+                                  child: Text(
+                                    'VIEW',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold),

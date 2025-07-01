@@ -34,8 +34,8 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
-    updateGreeting();
     super.initState();
+    updateGreeting();
     _filteredDoctors = _allDoctors;
   }
 
@@ -80,39 +80,41 @@ class _HomepageState extends State<Homepage> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          topRight: Radius.circular(22),
-                        ),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        topRight: Radius.circular(22),
                       ),
-                      child: TextField(
-                        controller: _searchController,
-                        style: const TextStyle(color: Colors.white),
-                        cursorColor: Colors.white,
-                        onChanged: (value) {
-                          setState(() {
-                            _filteredDoctors = _allDoctors
-                                .where((doctor) =>
-                                    doctor.name
-                                        .toLowerCase()
-                                        .contains(value.toLowerCase()) ||
-                                    doctor.specialty
-                                        .toLowerCase()
-                                        .contains(value.toLowerCase()))
-                                .toList();
-                          });
-                        },
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.search, color: Colors.white),
-                          hintText: 'Search...',
-                          hintStyle: TextStyle(color: Colors.white70),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 10),
-                        ),
-                      )),
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      style:
+                          const TextStyle(color: Colors.black), // Fixed color
+                      cursorColor: Colors.black, // Fixed color
+                      onChanged: (value) {
+                        setState(() {
+                          _filteredDoctors = _allDoctors
+                              .where((doctor) =>
+                                  doctor.name
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase()) ||
+                                  doctor.specialty
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase()))
+                              .toList();
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.search, color: Colors.black),
+                        hintText: 'Search...',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 10),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 30),
                   Container(
                     height: 120,
@@ -141,26 +143,14 @@ class _HomepageState extends State<Homepage> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: [
-                        _buildDoctorCard(
-                          'assets/image/startpage1.png',
-                          'Dr.Sky Karki',
-                          'Cardiologist',
-                          4.8,
-                        ),
-                        _buildDoctorCard(
-                          'assets/image/startpage3.png',
-                          'Dr. Abiskar Gyawali',
-                          'Orthopedist',
-                          4.6,
-                        ),
-                        _buildDoctorCard(
-                          'assets/image/startpage3.png',
-                          'Ritesh Ac',
-                          'Psychologist',
-                          4.9,
-                        ),
-                      ],
+                      children: _filteredDoctors.map((doctor) {
+                        return _buildDoctorCard(
+                          'assets/image/startpage3.png', // You can change to dynamic if you want
+                          doctor.name,
+                          doctor.specialty,
+                          doctor.rating,
+                        );
+                      }).toList(),
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -174,16 +164,16 @@ class _HomepageState extends State<Homepage> {
                     title: 'Heart Care Tips',
                     description: 'Simple tips to keep your heart healthy...',
                     doctorName: 'Dr. Sky Karki',
-                    category: 'Cardiology',
+                    category: '\nCardiology',
                     time: DateFormat('MMM d, h:mm a').format(DateTime.now()),
                   ),
                   _buildBlogCard(
                     imagePath: 'assets/image/startpage3.png',
                     title: 'Joint Pain Relief',
                     description:
-                        'How to relieve knee and joint pain naturally.',
+                        'How to relieve knee and joint pain \nnaturally',
                     doctorName: 'Dr. Abiskar Gyawali',
-                    category: 'Orthopedics',
+                    category: '\nOrthopedics',
                     time: DateFormat('MMM d, h:mm a').format(DateTime.now()),
                   ),
                 ],
@@ -365,20 +355,21 @@ class _HomepageState extends State<Homepage> {
                   height: 80, width: 80, fit: BoxFit.cover),
             ),
             const SizedBox(width: 12),
-            InkWell(
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BlogDetailsPage(
-                            imagePath: imagePath,
-                            title: title,
-                            description: description,
-                            doctorName: doctorName,
-                            time: time,
-                            category: category)));
-              },
-              child: Expanded(
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BlogDetailsPage(
+                                imagePath: imagePath,
+                                title: title,
+                                description: description,
+                                doctorName: doctorName,
+                                time: time,
+                                category: category,
+                              )));
+                },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -425,27 +416,22 @@ class _HomepageState extends State<Homepage> {
           children: [
             const Icon(Icons.home_outlined, size: 30, color: Color(0xFF1CA4AC)),
             InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Pmessage()));
-                },
-                child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Reportcheck()));
-                    },
-                    child: const Icon(Icons.qr_code_outlined, size: 30))),
-            const InkWell(child: Icon(Icons.calendar_month_outlined, size: 30)),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Reportcheck()));
+              },
+              child: const Icon(Icons.qr_code_outlined, size: 30),
+            ),
+            const Icon(Icons.calendar_month_outlined, size: 30),
             InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Profilepage()));
-                },
-                child: const Icon(Icons.person_outline_rounded, size: 30)),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Profilepage()));
+              },
+              child: const Icon(Icons.person_outline_rounded, size: 30),
+            ),
           ],
         ),
       ),
