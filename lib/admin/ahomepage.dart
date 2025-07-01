@@ -204,7 +204,7 @@ class _AhomepageState extends State<Ahomepage> {
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Container(
-                          height: 60,
+                          height: 50,
                           width: double.infinity,
                           decoration: BoxDecoration(
                               color: const Color.fromARGB(93, 28, 165, 172),
@@ -243,7 +243,7 @@ class _AhomepageState extends State<Ahomepage> {
                                   },
                                   child: Container(
                                     height: 30,
-                                    width: 70,
+                                    width: 60,
                                     decoration: BoxDecoration(
                                         color: Color(0xFF1CA4AC),
                                         borderRadius:
@@ -268,7 +268,7 @@ class _AhomepageState extends State<Ahomepage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
-                        height: 60,
+                        height: 50,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: const Color.fromARGB(93, 28, 165, 172),
@@ -304,7 +304,7 @@ class _AhomepageState extends State<Ahomepage> {
                                 },
                                 child: Container(
                                   height: 30,
-                                  width: 70,
+                                  width: 60,
                                   decoration: BoxDecoration(
                                       color: const Color(0xFF1CA4AC),
                                       borderRadius: BorderRadius.circular(20)),
@@ -329,7 +329,7 @@ class _AhomepageState extends State<Ahomepage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
-                        height: 60,
+                        height: 50,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: const Color.fromARGB(93, 28, 165, 172),
@@ -366,7 +366,7 @@ class _AhomepageState extends State<Ahomepage> {
                                 },
                                 child: Container(
                                   height: 30,
-                                  width: 70,
+                                  width: 60,
                                   decoration: BoxDecoration(
                                       color: const Color(0xFF1CA4AC),
                                       borderRadius: BorderRadius.circular(20)),
@@ -391,7 +391,7 @@ class _AhomepageState extends State<Ahomepage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
-                        height: 60,
+                        height: 50,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: const Color.fromARGB(93, 28, 165, 172),
@@ -428,7 +428,7 @@ class _AhomepageState extends State<Ahomepage> {
                                 },
                                 child: Container(
                                   height: 30,
-                                  width: 70,
+                                  width: 60,
                                   decoration: BoxDecoration(
                                       color: const Color(0xFF1CA4AC),
                                       borderRadius: BorderRadius.circular(20)),
@@ -453,7 +453,7 @@ class _AhomepageState extends State<Ahomepage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
-                        height: 60,
+                        height: 50,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: const Color.fromARGB(93, 28, 165, 172),
@@ -490,7 +490,7 @@ class _AhomepageState extends State<Ahomepage> {
                                 },
                                 child: Container(
                                   height: 30,
-                                  width: 70,
+                                  width: 60,
                                   decoration: BoxDecoration(
                                       color: const Color(0xFF1CA4AC),
                                       borderRadius: BorderRadius.circular(20)),
@@ -515,7 +515,7 @@ class _AhomepageState extends State<Ahomepage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
-                        height: 60,
+                        height: 50,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: const Color.fromARGB(93, 28, 165, 172),
@@ -552,7 +552,7 @@ class _AhomepageState extends State<Ahomepage> {
                                 },
                                 child: Container(
                                   height: 30,
-                                  width: 70,
+                                  width: 60,
                                   decoration: BoxDecoration(
                                       color: const Color(0xFF1CA4AC),
                                       borderRadius: BorderRadius.circular(20)),
@@ -577,7 +577,7 @@ class _AhomepageState extends State<Ahomepage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
-                        height: 60,
+                        height: 50,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: const Color.fromARGB(93, 28, 165, 172),
@@ -614,7 +614,7 @@ class _AhomepageState extends State<Ahomepage> {
                                 },
                                 child: Container(
                                   height: 30,
-                                  width: 70,
+                                  width: 60,
                                   decoration: BoxDecoration(
                                       color: const Color(0xFF1CA4AC),
                                       borderRadius: BorderRadius.circular(20)),
