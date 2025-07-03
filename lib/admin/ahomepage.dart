@@ -3,6 +3,8 @@ import 'package:merodoctor/admin/adminprofile.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/admin/dadminpage.dart';
 import 'package:merodoctor/admin/patiadminpage.dart';
+import 'package:merodoctor/admin/totalblogpage.dart';
+import 'package:merodoctor/admin/totalphneumpage.dart';
 import 'package:merodoctor/doctor/doctorrejectepage.dart';
 import 'package:merodoctor/doctor/doctorverifiedpage.dart';
 import 'package:merodoctor/doctor/drpendingpage.dart';
@@ -204,73 +206,90 @@ class _AhomepageState extends State<Ahomepage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 0),
-                          child: Container(
-                            height: 130,
-                            width: 170,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(93, 28, 165, 172),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: const Column(
-                              children: [
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Icon(
-                                  Icons.document_scanner_sharp,
-                                  size: 30,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(0),
-                                  child: Text(
-                                    'Total Phneumonia',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Totalphneumpage()));
+                            },
+                            child: Container(
+                              height: 130,
+                              width: 170,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(93, 28, 165, 172),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: const Column(
+                                children: [
+                                  SizedBox(
+                                    height: 15,
                                   ),
-                                ),
-                                Text(
-                                  '369',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
-                                ),
-                              ],
+                                  Icon(
+                                    Icons.document_scanner_sharp,
+                                    size: 30,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(0),
+                                    child: Text(
+                                      'Total Phneumonia',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Text(
+                                    '369',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 0),
-                          child: Container(
-                            height: 130,
-                            width: 170,
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(93, 28, 165, 172),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: const Column(
-                              children: [
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Icon(
-                                  Icons.article_outlined,
-                                  size: 30,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(0),
-                                  child: Text(
-                                    'Total Blog',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Totalblogpage()));
+                            },
+                            child: Container(
+                              height: 130,
+                              width: 170,
+                              decoration: BoxDecoration(
+                                  color: const Color.fromARGB(93, 28, 165, 172),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: const Column(
+                                children: [
+                                  SizedBox(
+                                    height: 15,
                                   ),
-                                ),
-                                Text(
-                                  '369',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
-                                ),
-                              ],
+                                  Icon(
+                                    Icons.article_outlined,
+                                    size: 30,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(0),
+                                    child: Text(
+                                      'Total Blog',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Text(
+                                    '369',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
