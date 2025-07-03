@@ -3,8 +3,6 @@ import 'package:merodoctor/admin/adminprofile.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/admin/dadminpage.dart';
 import 'package:merodoctor/admin/patiadminpage.dart';
-import 'package:merodoctor/admin/patientrejectedpage.dart';
-import 'package:merodoctor/admin/patientverifiedpage.dart';
 import 'package:merodoctor/doctor/doctorrejectepage.dart';
 import 'package:merodoctor/doctor/doctorverifiedpage.dart';
 import 'package:merodoctor/doctor/drpendingpage.dart';
@@ -201,6 +199,86 @@ class _AhomepageState extends State<Ahomepage> {
                     const SizedBox(
                       height: 20,
                     ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0),
+                          child: Container(
+                            height: 130,
+                            width: 170,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(93, 28, 165, 172),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: const Column(
+                              children: [
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Icon(
+                                  Icons.document_scanner_sharp,
+                                  size: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Text(
+                                    'Total Phneumonia',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Text(
+                                  '369',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+                          child: Container(
+                            height: 130,
+                            width: 170,
+                            decoration: BoxDecoration(
+                                color: const Color.fromARGB(93, 28, 165, 172),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Column(
+                              children: [
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Icon(
+                                  Icons.article_outlined,
+                                  size: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(0),
+                                  child: Text(
+                                    'Total Blog',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Text(
+                                  '369',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Container(
@@ -239,7 +317,7 @@ class _AhomepageState extends State<Ahomepage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                DAdminPage()));
+                                                const DAdminPage()));
                                   },
                                   child: Container(
                                     height: 30,
@@ -300,7 +378,8 @@ class _AhomepageState extends State<Ahomepage> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => PAdminPage()));
+                                          builder: (context) =>
+                                              const PAdminPage()));
                                 },
                                 child: Container(
                                   height: 30,
@@ -311,130 +390,6 @@ class _AhomepageState extends State<Ahomepage> {
                                   child: const Center(
                                     child: Text(
                                       'EDIT',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Container(
-                        height: 50,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(93, 28, 165, 172),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'Verified Patients',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: InkWell(
-                                onTap: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => const Center(
-                                              child: CircularProgressIndicator(
-                                            color: Color(0xFF1CA4AC),
-                                          )));
-                                  await Future.delayed(Duration(seconds: 2));
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              VerifiedPatientsPage()));
-                                },
-                                child: Container(
-                                  height: 30,
-                                  width: 60,
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFF1CA4AC),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: const Center(
-                                    child: Text(
-                                      'VIEW',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Container(
-                        height: 50,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(93, 28, 165, 172),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'Rejected Patients',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: InkWell(
-                                onTap: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => const Center(
-                                              child: CircularProgressIndicator(
-                                            color: Color(0xFF1CA4AC),
-                                          )));
-                                  await Future.delayed(Duration(seconds: 2));
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              RejectedPatientsPage()));
-                                },
-                                child: Container(
-                                  height: 30,
-                                  width: 60,
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFF1CA4AC),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: const Center(
-                                    child: Text(
-                                      'VIEW',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
@@ -481,12 +436,13 @@ class _AhomepageState extends State<Ahomepage> {
                                               child: CircularProgressIndicator(
                                             color: Color(0xFF1CA4AC),
                                           )));
-                                  await Future.delayed(Duration(seconds: 2));
+                                  await Future.delayed(
+                                      const Duration(seconds: 2));
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              VerifiedDoctorsPage()));
+                                              const VerifiedDoctorsPage()));
                                 },
                                 child: Container(
                                   height: 30,
@@ -527,7 +483,7 @@ class _AhomepageState extends State<Ahomepage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                'Rejected Patients',
+                                'Rejected Doctors',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
