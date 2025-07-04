@@ -4,7 +4,6 @@ import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/admin/dadminpage.dart';
 import 'package:merodoctor/admin/patiadminpage.dart';
 import 'package:merodoctor/admin/totalblogpage.dart';
-import 'package:merodoctor/admin/totalphneumpage.dart';
 import 'package:merodoctor/doctor/doctorrejectepage.dart';
 import 'package:merodoctor/doctor/doctorverifiedpage.dart';
 import 'package:merodoctor/doctor/drpendingpage.dart';
@@ -46,7 +45,7 @@ class _AhomepageState extends State<Ahomepage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 60,
+              height: 50,
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
@@ -69,7 +68,7 @@ class _AhomepageState extends State<Ahomepage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
-                height: 750,
+                height: double.infinity,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -186,6 +185,9 @@ class _AhomepageState extends State<Ahomepage> {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Text(
                                   '369',
                                   style: TextStyle(
@@ -207,13 +209,6 @@ class _AhomepageState extends State<Ahomepage> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 0),
                           child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Totalphneumpage()));
-                            },
                             child: Container(
                               height: 130,
                               width: 170,
@@ -253,12 +248,6 @@ class _AhomepageState extends State<Ahomepage> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 0),
                           child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Totalblogpage()));
-                            },
                             child: Container(
                               height: 130,
                               width: 170,
@@ -316,7 +305,7 @@ class _AhomepageState extends State<Ahomepage> {
                                   'Doctor',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: 18),
                                 ),
                               ),
                               Padding(
@@ -379,7 +368,7 @@ class _AhomepageState extends State<Ahomepage> {
                               child: Text(
                                 'Patients',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                                    fontWeight: FontWeight.bold, fontSize: 18),
                               ),
                             ),
                             Padding(
@@ -441,7 +430,7 @@ class _AhomepageState extends State<Ahomepage> {
                               child: Text(
                                 'Verified Doctor',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                                    fontWeight: FontWeight.bold, fontSize: 18),
                               ),
                             ),
                             Padding(
@@ -504,7 +493,7 @@ class _AhomepageState extends State<Ahomepage> {
                               child: Text(
                                 'Rejected Doctors',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                                    fontWeight: FontWeight.bold, fontSize: 18),
                               ),
                             ),
                             Padding(
@@ -566,7 +555,7 @@ class _AhomepageState extends State<Ahomepage> {
                               child: Text(
                                 'Pending Doctor',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                                    fontWeight: FontWeight.bold, fontSize: 18),
                               ),
                             ),
                             Padding(
@@ -596,6 +585,68 @@ class _AhomepageState extends State<Ahomepage> {
                                   child: const Center(
                                     child: Text(
                                       'VIEW',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(93, 28, 165, 172),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'Blog Post',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: InkWell(
+                                onTap: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => const Center(
+                                              child: CircularProgressIndicator(
+                                            color: Color(0xFF1CA4AC),
+                                          )));
+                                  await Future.delayed(Duration(seconds: 2));
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Totalblogpage()));
+                                },
+                                child: Container(
+                                  height: 30,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFF1CA4AC),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const Center(
+                                    child: Text(
+                                      'EDIT',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
