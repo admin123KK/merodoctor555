@@ -1,10 +1,10 @@
+// keep your imports the same
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:merodoctor/blogpage.dart';
 import 'package:merodoctor/doctordetailspage.dart';
-import 'package:merodoctor/message.dart';
 import 'package:merodoctor/profilepage.dart';
 import 'package:merodoctor/reportcheck.dart';
 
@@ -29,21 +29,22 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   String greeting = "";
+  List<Doctor> _allDoctors = [
+    Doctor(name: 'Dr. Sky Karki', specialty: 'Cardiologist', rating: 4.9),
+    Doctor(name: 'Dr. Abiskar Gyawali', specialty: 'Orthopedic', rating: 4.7),
+    Doctor(name: 'Dr. Sita Sharma', specialty: 'Neurologist', rating: 4.6),
+    Doctor(name: 'Dr. Ram Kharel', specialty: 'Dermatologist', rating: 4.8),
+  ];
+
   List<Doctor> _filteredDoctors = [];
+
   TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     updateGreeting();
-    _filteredDoctors = _allDoctors;
   }
-
-  final List<Doctor> _allDoctors = [
-    Doctor(name: 'Dr.Sky Karki', specialty: 'Cardiologist', rating: 4.8),
-    Doctor(name: 'Dr. Abiskar Gyawali', specialty: 'Orthopedist', rating: 4.6),
-    Doctor(name: 'Ritesh Ac', specialty: 'Psychologist', rating: 4.9),
-  ];
 
   void updateGreeting() {
     DateTime now = DateTime.now();
@@ -57,168 +58,146 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  void _filterDoctors(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredDoctors = [];
+      } else {
+        _filteredDoctors = _allDoctors
+            .where((doc) =>
+                doc.name.toLowerCase().contains(query.toLowerCase()) ||
+                doc.specialty.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 65),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Find your desire \nhealth Solution',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '$greeting, Sky',
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        topRight: Radius.circular(22),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _searchController,
-                      style:
-                          const TextStyle(color: Colors.black), // Fixed color
-                      cursorColor: Colors.black, // Fixed color
-                      onChanged: (value) {
-                        setState(() {
-                          _filteredDoctors = _allDoctors
-                              .where((doctor) =>
-                                  doctor.name
-                                      .toLowerCase()
-                                      .contains(value.toLowerCase()) ||
-                                  doctor.specialty
-                                      .toLowerCase()
-                                      .contains(value.toLowerCase()))
-                              .toList();
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.search, color: Colors.black),
-                        hintText: 'Search...',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 10),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Container(
-                    height: 120,
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _AutoSlidingAdBanner(),
-                  ),
-                  const SizedBox(height: 30),
-                  _buildPromoCard(),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'See all',
-                          style: TextStyle(color: Color(0xFF1CA4AC)),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Text(
-                    'Top Doctor',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  const SizedBox(height: 10),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: _filteredDoctors.map((doctor) {
-                        return _buildDoctorCard(
-                          'assets/image/startpage3.png', // You can change to dynamic if you want
-                          doctor.name,
-                          doctor.specialty,
-                          doctor.rating,
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  const Text(
-                    'Doctor Blogs',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  const SizedBox(height: 10),
-                  _buildBlogCard(
-                    imagePath: 'assets/image/startpage1.png',
-                    title: 'Heart Care Tips',
-                    description: 'Simple tips to keep your heart healthy...',
-                    doctorName: 'Dr. Sky Karki',
-                    category: '\nCardiology',
-                    time: DateFormat('MMM d, h:mm a').format(DateTime.now()),
-                  ),
-                  _buildBlogCard(
-                    imagePath: 'assets/image/startpage3.png',
-                    title: 'Joint Pain Relief',
-                    description:
-                        'How to relieve knee and joint pain \nnaturally',
-                    doctorName: 'Dr. Abiskar Gyawali',
-                    category: '\nOrthopedics',
-                    time: DateFormat('MMM d, h:mm a').format(DateTime.now()),
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Pmessage()));
-                  },
-                  child: const Icon(
-                    Icons.notifications_active_outlined,
-                    color: Colors.black,
-                    size: 33,
-                  ),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 65),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Find your desire \nhealth Solution',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 6),
+            Text('$greeting, Sky', style: const TextStyle(color: Colors.grey)),
+            const SizedBox(height: 20),
+            Container(
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  topRight: Radius.circular(22),
                 ),
               ),
-            ],
-          ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _filterDoctors,
+                style: const TextStyle(color: Colors.black),
+                cursorColor: Colors.black,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search, color: Colors.black),
+                  hintText: 'Search...',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 10),
+                ),
+              ),
+            ),
+
+            // ⬇️ Show filtered doctor list inline
+            if (_filteredDoctors.isNotEmpty)
+              ListView.builder(
+                itemCount: _filteredDoctors.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final doctor = _filteredDoctors[index];
+                  return ListTile(
+                    leading: const Icon(Icons.person),
+                    title: Text(doctor.name),
+                    subtitle: Text(doctor.specialty),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Doctordetailspage(),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+
+            const SizedBox(height: 30),
+            Container(
+              height: 120,
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: _AutoSlidingAdBanner(),
+            ),
+            const SizedBox(height: 30),
+            _buildPromoCard(),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('See all',
+                      style: TextStyle(color: Color(0xFF1CA4AC))),
+                ),
+              ],
+            ),
+            const Text(
+              'Top Doctor',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: _allDoctors.map((doctor) {
+                  return _buildDoctorCard(
+                    'assets/image/startpage3.png',
+                    doctor.name,
+                    doctor.specialty,
+                    doctor.rating,
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 30),
+            const Text(
+              'Doctor Blogs',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const SizedBox(height: 10),
+            _buildBlogCard(
+              imagePath: 'assets/image/startpage1.png',
+              title: 'Heart Care Tips',
+              description: 'Simple tips to keep your heart healthy...',
+              doctorName: 'Dr. Sky Karki',
+              category: '\nCardiology',
+              time: DateFormat('MMM d, h:mm a').format(DateTime.now()),
+            ),
+            _buildBlogCard(
+              imagePath: 'assets/image/startpage3.png',
+              title: 'Joint Pain Relief',
+              description: 'How to relieve knee and joint pain \nnaturally',
+              doctorName: 'Dr. Abiskar Gyawali',
+              category: '\nOrthopedics',
+              time: DateFormat('MMM d, h:mm a').format(DateTime.now()),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: _buildBottomNavBar(context),
-    );
-  }
-
-  Widget _buildCategory(String title, IconData icon) {
-    return Column(
-      children: [
-        Container(
-          height: 55,
-          width: 55,
-          decoration: BoxDecoration(
-            color: Colors.amber,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Icon(icon, size: 30),
-        ),
-        Text(
-          title,
-          style:
-              const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-        )
-      ],
     );
   }
 
@@ -254,10 +233,8 @@ class _HomepageState extends State<Homepage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Center(
-                    child: Text(
-                      'Learn more',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: Text('Learn more',
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ),
@@ -291,9 +268,10 @@ class _HomepageState extends State<Homepage> {
         child: InkWell(
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const Doctordetailspage()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const Doctordetailspage()),
+            );
           },
           child: Container(
             width: 160,
@@ -486,10 +464,7 @@ class _AutoSlidingAdBannerState extends State<_AutoSlidingAdBanner> {
       itemBuilder: (context, index) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(16),
-          child: Image.asset(
-            _ads[index],
-            fit: BoxFit.cover,
-          ),
+          child: Image.asset(_ads[index], fit: BoxFit.cover),
         );
       },
     );

@@ -194,7 +194,8 @@ class _DhomepageState extends State<Dhomepage> {
                                 height: 80,
                                 width: 80,
                                 decoration: BoxDecoration(
-                                    color: Color.fromARGB(93, 28, 165, 172),
+                                    color:
+                                        const Color.fromARGB(93, 28, 165, 172),
                                     borderRadius: BorderRadius.circular(15)),
                                 child: const Padding(
                                   padding:
@@ -232,7 +233,8 @@ class _DhomepageState extends State<Dhomepage> {
                                   height: 80,
                                   width: 80,
                                   decoration: BoxDecoration(
-                                      color: Color.fromARGB(93, 28, 165, 172),
+                                      color: const Color.fromARGB(
+                                          93, 28, 165, 172),
                                       borderRadius: BorderRadius.circular(15)),
                                   child: const Padding(
                                     padding: const EdgeInsets.symmetric(

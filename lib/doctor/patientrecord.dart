@@ -98,7 +98,6 @@ class _PatientrecordState extends State<Patientrecord> {
               indicatorColor: Color(0xFF1CA4AC),
               tabs: [
                 Tab(text: 'Overview'),
-                Tab(text: 'Medications'),
                 Tab(text: 'Appointments'),
               ],
             ),
@@ -109,7 +108,6 @@ class _PatientrecordState extends State<Patientrecord> {
                   Center(
                     child: Text('Vitals, Allergies, Diagnosis...'),
                   ),
-                  Center(child: Text('List of medications with dose/timing.')),
                   Center(child: Text('Upcoming and past appointments.')),
                 ],
               ),

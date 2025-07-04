@@ -27,7 +27,7 @@ class _TotalblogpageState extends State<Totalblogpage> {
                   'Total Blog',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 ),
-                Icon(Icons.more_vert),
+                const Icon(Icons.more_vert),
               ],
             ),
           )
