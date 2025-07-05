@@ -1,6 +1,6 @@
 class ApiConfig {
   static const String baseUrl =
-      "https://190c-2400-1a00-bb20-e295-a07c-1462-8730-847f.ngrok-free.app";
+      "https://96ba-2400-1a00-bb20-a771-f85e-754e-8d81-1339.ngrok-free.app";
 
   static String get loginUrl => "$baseUrl/api/Auth/login";
   static String get registerPatientUrl =>

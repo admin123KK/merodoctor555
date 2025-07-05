@@ -68,7 +68,6 @@ class _AhomepageState extends State<Ahomepage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
-                height: double.infinity,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -636,7 +635,7 @@ class _AhomepageState extends State<Ahomepage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const Totalblogpage()));
+                                              const AdminBlogPage()));
                                 },
                                 child: Container(
                                   height: 30,
