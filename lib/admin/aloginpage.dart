@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/ahomepage.dart';
@@ -6,6 +7,7 @@ import 'package:merodoctor/api.dart';
 import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/loginpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Aloginpage extends StatefulWidget {
   const Aloginpage({super.key});
@@ -20,11 +22,27 @@ class _LoginpageState extends State<Aloginpage> {
   bool _isPasswordVisible = false;
   bool isLoading = false;
 
-  Future<void> loginDoctor() async {
-    if (_email.text.isEmpty || _password.text.isEmpty) {
-      showErrorMessage(
-        "Please fill in both fields",
+  @override
+  void initState() {
+    super.initState();
+    _checkToken();
+  }
+
+  Future<void> _checkToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    print('Admin login - Token found on init: $token');
+    if (token != null && token.isNotEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const Ahomepage()),
       );
+    }
+  }
+
+  Future<void> loginAdmin() async {
+    if (_email.text.isEmpty || _password.text.isEmpty) {
+      showErrorMessage("Please fill in both fields");
       return;
     }
 
@@ -48,24 +66,31 @@ class _LoginpageState extends State<Aloginpage> {
       });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        final body = jsonDecode(response.body);
+        final token = body['data'];
+
+        print(
+            'Admin login successful, token: $token'); // print token before saving
+
+        // Save token locally
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+
         showSuccessMessage("Login successful", isError: false);
+
         await Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const Ahomepage()));
         });
       } else {
         final body = jsonDecode(response.body);
-        showErrorMessage(
-          body["message"] ?? "Login failed",
-        );
+        showErrorMessage(body["message"] ?? "Login failed");
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      showErrorMessage(
-        " $e",
-      );
+      showErrorMessage(" $e");
     }
   }
 
@@ -125,6 +150,13 @@ class _LoginpageState extends State<Aloginpage> {
   }
 
   @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF1CA4AC),
@@ -175,7 +207,7 @@ class _LoginpageState extends State<Aloginpage> {
                       controller: _email,
                       cursorColor: Colors.blue,
                       decoration: const InputDecoration(
-                        hintText: 'Enter your email addresss',
+                        hintText: 'Enter your email address',
                         hintStyle: TextStyle(color: Colors.grey),
                         labelText: 'Email',
                         labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
@@ -190,11 +222,11 @@ class _LoginpageState extends State<Aloginpage> {
                       controller: _password,
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
-                        icon: Icon(Icons.lock_outline),
+                        icon: const Icon(Icons.lock_outline),
                         hintText: 'Enter your password',
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         labelText: 'Password',
-                        labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
+                        labelStyle: const TextStyle(color: Color(0xFF1CA4AC)),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -251,7 +283,7 @@ class _LoginpageState extends State<Aloginpage> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 40, vertical: 10),
                           ),
-                          onPressed: loginDoctor,
+                          onPressed: loginAdmin,
                           child: const Text(
                             'Login',
                             style: TextStyle(color: Colors.white),
@@ -280,7 +312,7 @@ class _LoginpageState extends State<Aloginpage> {
                                         color: Color(0xFF1CA4AC),
                                       ),
                                     ));
-                            await Future.delayed(Duration(seconds: 1));
+                            await Future.delayed(const Duration(seconds: 1));
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

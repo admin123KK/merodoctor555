@@ -8,6 +8,7 @@ import 'package:merodoctor/doctor/dloginpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/registerpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -21,6 +22,26 @@ class _LoginpageState extends State<Loginpage> {
   final _password = TextEditingController();
   bool _isPasswordVisible = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _checkToken();
+  }
+
+  Future<void> _checkToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    print('Token found on init: $token'); // print token to terminal
+
+    if (token != null && token.isNotEmpty) {
+      // Token exists, navigate directly to homepage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const Homepage()),
+      );
+    }
+  }
+
   Future<void> loginUser(String email, String password) async {
     try {
       final response = await http.post(
@@ -33,22 +54,24 @@ class _LoginpageState extends State<Loginpage> {
       );
       final data = jsonDecode(response.body);
 
-      // Close the loading dialog
-      Navigator.pop(context);
+      Navigator.pop(context); // close loading dialog
 
       if (response.statusCode == 200 && data['success']) {
         final token = data['data'];
-        print("Login Successful! JWT Token: $token");
+        print('Login success, token: $token'); // print token before saving
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token); // Save token with correct key
+
         showSuccessMessage('Login Successful');
         await Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => Homepage()));
+              context, MaterialPageRoute(builder: (_) => const Homepage()));
         });
       } else {
         showErrorMessage(data['message'] ?? 'Login failed');
       }
     } catch (e) {
-      // Close the loading dialog
       Navigator.pop(context);
       showErrorMessage('Something went wrong on server');
     }
@@ -58,16 +81,10 @@ class _LoginpageState extends State<Loginpage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        icon: const Icon(
-          Icons.check_circle_outline,
-          color: Colors.green,
-          size: 30,
-        ),
+        icon: const Icon(Icons.check_circle_outline,
+            color: Colors.green, size: 30),
         title: const Text('Success'),
-        content: Text(
-          msg,
-          style: const TextStyle(color: Colors.green),
-        ),
+        content: Text(msg, style: const TextStyle(color: Colors.green)),
         actions: [
           InkWell(
             onTap: () => Navigator.pop(context),
@@ -86,23 +103,13 @@ class _LoginpageState extends State<Loginpage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        icon: const Icon(
-          Icons.error_outline,
-          color: Colors.red,
-          size: 30,
-        ),
+        icon: const Icon(Icons.error_outline, color: Colors.red, size: 30),
         title: const Text('Login Error'),
-        content: Text(
-          msg,
-          style: const TextStyle(color: Colors.red),
-        ),
+        content: Text(msg, style: const TextStyle(color: Colors.red)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'OK',
-              style: TextStyle(color: Color(0xFF1CA4AC)),
-            ),
+            child: const Text('OK', style: TextStyle(color: Color(0xFF1CA4AC))),
           ),
         ],
       ),
@@ -149,10 +156,8 @@ class _LoginpageState extends State<Loginpage> {
                         fontSize: 30,
                         color: Color(0xFF1CA4AC)),
                   ),
-                  const Text(
-                    'Login to Your Account',
-                    style: TextStyle(color: Color(0xFF1CA4AC)),
-                  ),
+                  const Text('Login to Your Account',
+                      style: TextStyle(color: Color(0xFF1CA4AC))),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 27, vertical: 50),
@@ -160,7 +165,7 @@ class _LoginpageState extends State<Loginpage> {
                       controller: _email,
                       cursorColor: Colors.blue,
                       decoration: const InputDecoration(
-                        hintText: 'Enter your email addresss',
+                        hintText: 'Enter your email address',
                         hintStyle: TextStyle(color: Colors.grey),
                         labelText: 'Email',
                         labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
@@ -171,15 +176,15 @@ class _LoginpageState extends State<Loginpage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextField(
-                      cursorColor: const Color(0xFF1CA4AC),
                       controller: _password,
+                      cursorColor: const Color(0xFF1CA4AC),
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
                         icon: const Icon(Icons.lock_outline),
                         hintText: 'Enter your password',
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         labelText: 'Password',
-                        labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
+                        labelStyle: const TextStyle(color: Color(0xFF1CA4AC)),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -202,23 +207,21 @@ class _LoginpageState extends State<Loginpage> {
                           onTap: () async {
                             showDialog(
                               context: context,
-                              builder: (context) => const Center(
-                                  child: CircularProgressIndicator(
-                                      color: Color(0xFF1CA4AC))),
+                              builder: (_) => const Center(
+                                child: CircularProgressIndicator(
+                                    color: Color(0xFF1CA4AC)),
+                              ),
                             );
                             await Future.delayed(const Duration(seconds: 1));
                             Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Forgotpassword()),
-                            );
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const Forgotpassword()));
                           },
-                          child: const Text(
-                            'Forgot password?',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF1CA4AC)),
-                          ),
+                          child: const Text('Forgot password?',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF1CA4AC))),
                         ),
                       ),
                     ],
@@ -228,21 +231,16 @@ class _LoginpageState extends State<Loginpage> {
                     onTap: () async {
                       final email = _email.text.trim();
                       final password = _password.text.trim();
-
-                      // Show loading dialog
                       showDialog(
                         context: context,
-                        builder: (BuildContext context) => const Center(
+                        builder: (_) => const Center(
                           child: CircularProgressIndicator(
                             color: Color(0xFF1CA4AC),
                           ),
                         ),
                       );
 
-                      // Simulate a 2-second delay for processing login
                       await Future.delayed(const Duration(seconds: 2));
-
-                      // Perform the login request
                       await loginUser(email, password);
                     },
                     child: Container(
@@ -271,7 +269,7 @@ class _LoginpageState extends State<Loginpage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Registerpage()),
+                                builder: (_) => const Registerpage()),
                           );
                         },
                         child: const Text(
@@ -322,7 +320,7 @@ class _LoginpageState extends State<Loginpage> {
                           onTap: () async {
                             showDialog(
                               context: context,
-                              builder: (context) => const Center(
+                              builder: (_) => const Center(
                                   child: CircularProgressIndicator(
                                       color: Color(0xFF1CA4AC))),
                             );
@@ -330,7 +328,7 @@ class _LoginpageState extends State<Loginpage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Dloginpage()),
+                                  builder: (_) => const Dloginpage()),
                             );
                           },
                           child: Container(
@@ -358,7 +356,7 @@ class _LoginpageState extends State<Loginpage> {
                           onTap: () async {
                             showDialog(
                               context: context,
-                              builder: (context) => const Center(
+                              builder: (_) => const Center(
                                   child: CircularProgressIndicator(
                                       color: Color(0xFF1CA4AC))),
                             );
@@ -366,7 +364,7 @@ class _LoginpageState extends State<Loginpage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Aloginpage()),
+                                  builder: (_) => const Aloginpage()),
                             );
                           },
                           child: Container(

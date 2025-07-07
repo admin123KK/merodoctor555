@@ -8,6 +8,7 @@ import 'package:merodoctor/historyorsavedpage.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/loginpage.dart';
 import 'package:merodoctor/reportcheck.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dprofilepage extends StatefulWidget {
   const Dprofilepage({super.key});
@@ -454,6 +455,10 @@ class _DprofilepageState extends State<Dprofilepage> {
                                               )),
                                           InkWell(
                                             onTap: () async {
+                                              final prefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              await prefs.remove('token');
                                               showDialog(
                                                   context: context,
                                                   builder: (context) {

@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:merodoctor/chatbotpage.dart';
@@ -6,6 +7,7 @@ import 'package:merodoctor/historyorsavedpage.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/loginpage.dart';
 import 'package:merodoctor/reportcheck.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profilepage extends StatefulWidget {
   const Profilepage({super.key});
@@ -211,6 +213,10 @@ class _ProfilepageState extends State<Profilepage> {
                                   ),
                                   InkWell(
                                     onTap: () async {
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      await prefs.remove('token');
+
                                       showDialog(
                                           context: context,
                                           builder: (context) {

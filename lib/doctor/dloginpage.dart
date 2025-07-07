@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/aloginpage.dart';
@@ -7,6 +8,7 @@ import 'package:merodoctor/doctor/dhomepage.dart';
 import 'package:merodoctor/doctor/dregisterpage.dart';
 import 'package:merodoctor/forgotpassword.dart';
 import 'package:merodoctor/loginpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dloginpage extends StatefulWidget {
   const Dloginpage({super.key});
@@ -20,6 +22,24 @@ class _DloginpageState extends State<Dloginpage> {
   final _registrationId = TextEditingController();
   bool isLoading = false;
   bool _isPasswordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkToken();
+  }
+
+  Future<void> _checkToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    print('Doctor login - Token found on init: $token');
+    if (token != null && token.isNotEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => Dhomepage()),
+      );
+    }
+  }
 
   Future<void> loginDoctor() async {
     if (_registrationId.text.isEmpty || _password.text.isEmpty) {
@@ -42,10 +62,27 @@ class _DloginpageState extends State<Dloginpage> {
         }),
       );
 
+      setState(() {
+        isLoading = false;
+      });
+
       print('Status code: ${response.statusCode}');
       print('Body: ${response.body}');
 
       if (response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        final token = body['data'];
+
+        print(
+            'Doctor login successful, token: $token'); // print token before saving
+
+        // ✅ Save token locally
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+
+        showSuccessMessage("Login successful", isError: false);
+
+        await Future.delayed(const Duration(seconds: 2));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Dhomepage()),
@@ -53,40 +90,12 @@ class _DloginpageState extends State<Dloginpage> {
       } else {
         final errorMessage =
             jsonDecode(response.body)['message'] ?? 'Login failed';
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Login Failed'),
-            content: Text(errorMessage),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
+        showErrorMessage(errorMessage, isError: true);
       }
     } catch (e) {
       print("Login error: $e");
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('An error occurred. Please try again later.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
+      showErrorMessage("An error occurred. Please try again.", isError: true);
     }
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   void showErrorMessage(String msg, {required bool isError}) {
@@ -104,7 +113,7 @@ class _DloginpageState extends State<Dloginpage> {
           children: [
             Text(
               msg,
-              style: const TextStyle(color: Colors.red),
+              style: TextStyle(color: isError ? Colors.red : Colors.green),
             ),
           ],
         ),
@@ -122,6 +131,10 @@ class _DloginpageState extends State<Dloginpage> {
         ],
       ),
     );
+  }
+
+  void showSuccessMessage(String msg, {required bool isError}) {
+    showErrorMessage(msg, isError: isError);
   }
 
   @override
