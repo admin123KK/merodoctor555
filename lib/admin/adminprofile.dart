@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart'; // For MediaType
 import 'package:image_picker/image_picker.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/api.dart';
@@ -24,6 +25,8 @@ class _AdminprofileState extends State<Adminprofile> {
   File? _profileImage;
   String fullName = '';
   String email = '';
+  String profilePictureUrl = '';
+  Timer? _profilePollingTimer; //
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -32,7 +35,19 @@ class _AdminprofileState extends State<Adminprofile> {
       setState(() {
         _profileImage = File(pickedFile.path);
       });
+      await _uploadImage(_profileImage!);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAdminProfile();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> fetchAdminProfile() async {
@@ -55,16 +70,71 @@ class _AdminprofileState extends State<Adminprofile> {
       setState(() {
         fullName = data['data']['fullName'] ?? '';
         email = data['data']['email'] ?? '';
+        profilePictureUrl = data['data']['profilePictureUrl'] ?? '';
       });
     } else {
       print('Failed to fetch admin profile');
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    fetchAdminProfile();
+  Future<void> _uploadImage(File imageFile) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      print('❌ No token found');
+      return;
+    }
+
+    final uri = Uri.parse(ApiConfig.imagelUrl);
+    final request = http.MultipartRequest('POST', uri);
+    request.headers['Authorization'] = 'Bearer $token';
+
+    final extension = imageFile.path.split('.').last.toLowerCase();
+    String mimeType = 'image/jpeg';
+    if (extension == 'png') mimeType = 'image/png';
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'file',
+        imageFile.path,
+        contentType: MediaType.parse(mimeType),
+      ),
+    );
+
+    try {
+      final response = await request.send();
+      final res = await http.Response.fromStream(response);
+      print("🔁 Status Code: ${res.statusCode}");
+      print("📨 Response: ${res.body}");
+
+      if (res.statusCode == 200) {
+        // ✅ Fetch updated profile data from backend
+        await fetchAdminProfile();
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Image uploaded successfully'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } else {
+        final message = jsonDecode(res.body)['message'] ?? 'Upload failed';
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message), backgroundColor: Colors.red),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+        );
+      }
+    }
   }
 
   @override
@@ -115,8 +185,11 @@ class _AdminprofileState extends State<Adminprofile> {
                   radius: 55,
                   backgroundImage: _profileImage != null
                       ? FileImage(_profileImage!)
-                      : const AssetImage('assets/image/startpage3.png')
-                          as ImageProvider,
+                      : (profilePictureUrl.isNotEmpty
+                          ? NetworkImage(
+                              '${ApiConfig.baseUrl}$profilePictureUrl?v=${DateTime.now().millisecondsSinceEpoch}')
+                          : const AssetImage(
+                              'assets/image/startpage3.png')) as ImageProvider,
                 ),
                 Positioned(
                   child: GestureDetector(
@@ -141,11 +214,12 @@ class _AdminprofileState extends State<Adminprofile> {
               fullName.isNotEmpty ? fullName : 'Loading...',
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
+            const SizedBox(height: 8),
             Text(
-              email.isNotEmpty ? email : 'Loading...',
-              style: TextStyle(color: Colors.white),
+              email.isNotEmpty ? email : '',
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
-            const SizedBox(height: 70),
+            const SizedBox(height: 30),
             Container(
               height: 480,
               width: double.infinity,
@@ -157,9 +231,6 @@ class _AdminprofileState extends State<Adminprofile> {
               ),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
                   buildProfileItem(Icons.favorite_outline, 'Patient Record',
                       () {
                     Navigator.push(

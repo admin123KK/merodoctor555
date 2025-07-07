@@ -65,6 +65,7 @@ class _AhomepageState extends State<Ahomepage> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data'];
+        print('Data: ${response.body}');
         setState(() {
           totalDoctors = data['totalDoctors'];
           totalPatients = data['totalPatients'];
@@ -160,21 +161,21 @@ class _AhomepageState extends State<Ahomepage> {
                     ),
                     const SizedBox(height: 20),
                     navTile(
-                        'Doctor',
-                        'EDIT',
+                        'Doctors',
+                        'VIEW',
                         () => Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => const DAdminPage()))),
                     navTile(
                         'Patients',
-                        'EDIT',
+                        'VIEW',
                         () => Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (_) => const PAdminPage()))),
                     navTile(
-                        'Verified Doctor',
+                        'Verified Doctors',
                         'VIEW',
                         () => Navigator.pushReplacement(
                             context,
@@ -188,7 +189,7 @@ class _AhomepageState extends State<Ahomepage> {
                             MaterialPageRoute(
                                 builder: (_) => const RejectedDoctorsPage()))),
                     navTile(
-                        'Pending Doctor',
+                        'Pending Doctors',
                         'VIEW',
                         () => Navigator.pushReplacement(
                             context,
@@ -196,7 +197,7 @@ class _AhomepageState extends State<Ahomepage> {
                                 builder: (_) => const PendingDoctorsPage()))),
                     navTile(
                         'Blog Post',
-                        'EDIT',
+                        'VIEW',
                         () => Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

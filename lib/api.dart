@@ -13,6 +13,7 @@ class ApiConfig {
   static const String ratingUrl = "$baseUrl/api/Ratings/UserRating/{doctorId}";
   static String adminProfileUrl = "$baseUrl/api/Admin/profile";
   static String adminDashbordeUrl = "$baseUrl/api/Admin/dashboard";
+  static String imagelUrl = "$baseUrl/api/Image/uploadOrReplaceProfilePicture";
 
   static String getCommentsByBlog(String blogId) =>
       "$baseUrl/api/BlogComments/ByBlog/$blogId";
