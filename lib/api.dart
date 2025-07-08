@@ -1,6 +1,5 @@
 class ApiConfig {
-  static const String baseUrl =
-      "https://0ac4-2400-1a00-bb20-88e5-7d42-8e52-835c-983b.ngrok-free.app";
+  static const String baseUrl = "https://5714717d3200.ngrok-free.app";
 
   static String get loginUrl => "$baseUrl/api/Auth/login";
   static String get registerPatientUrl =>
@@ -14,7 +13,9 @@ class ApiConfig {
   static String adminProfileUrl = "$baseUrl/api/Admin/profile";
   static String adminDashbordeUrl = "$baseUrl/api/Admin/dashboard";
   static String imagelUrl = "$baseUrl/api/Image/uploadOrReplaceProfilePicture";
-
+  static String pendingDoctors = "$baseUrl/api/Admin/pending";
+  static String updateDoctorStatusUrl(String id) =>
+      "$baseUrl/api/Admin/verify/$id";
   static String getCommentsByBlog(String blogId) =>
       "$baseUrl/api/BlogComments/ByBlog/$blogId";
 

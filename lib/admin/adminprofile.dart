@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart'; // For MediaType
 import 'package:image_picker/image_picker.dart';
+import 'package:merodoctor/admin/ahomepage.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/api.dart';
 import 'package:merodoctor/chatbotpage.dart';
@@ -151,7 +152,8 @@ class _AdminprofileState extends State<Adminprofile> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Ahomepage()));
                     },
                     child: const Icon(
                       Icons.arrow_back_ios_new_outlined,

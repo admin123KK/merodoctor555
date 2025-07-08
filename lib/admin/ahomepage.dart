@@ -194,7 +194,7 @@ class _AhomepageState extends State<Ahomepage> {
                         () => Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => const PendingDoctorsPage()))),
+                                builder: (_) => const PendingPatientsPage()))),
                     navTile(
                         'Blog Post',
                         'VIEW',
