@@ -110,7 +110,7 @@ class _SpecializationAdminPageState extends State<SpecializationAdminPage> {
                   width: 120,
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: () => openSpecializationDialog(),
                 ),
               ],
