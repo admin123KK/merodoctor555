@@ -6,6 +6,7 @@ import 'package:merodoctor/admin/adminprofile.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/admin/dadminpage.dart';
 import 'package:merodoctor/admin/patiadminpage.dart';
+import 'package:merodoctor/admin/specializedpage.dart';
 import 'package:merodoctor/admin/totalblogpage.dart';
 import 'package:merodoctor/api.dart';
 import 'package:merodoctor/doctor/doctorrejectepage.dart';
@@ -195,6 +196,14 @@ class _AhomepageState extends State<Ahomepage> {
                             context,
                             MaterialPageRoute(
                                 builder: (_) => const PendingPatientsPage()))),
+                    navTile(
+                        'Specialized Doctors',
+                        'VIEW',
+                        () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    const SpecializationAdminPage()))),
                     navTile(
                         'Blog Post',
                         'VIEW',

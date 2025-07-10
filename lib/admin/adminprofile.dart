@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart'; // For MediaType
@@ -9,7 +10,6 @@ import 'package:merodoctor/admin/ahomepage.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/api.dart';
 import 'package:merodoctor/chatbotpage.dart';
-import 'package:merodoctor/doctor/dhomepage.dart';
 import 'package:merodoctor/historyorsavedpage.dart';
 import 'package:merodoctor/loginpage.dart';
 import 'package:merodoctor/reportcheck.dart';
@@ -346,7 +346,7 @@ class _AdminprofileState extends State<Adminprofile> {
               InkWell(
                 onTap: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Dhomepage()));
+                      MaterialPageRoute(builder: (context) => Ahomepage()));
                 },
                 child: const Icon(Icons.home_outlined, size: 30),
               ),
