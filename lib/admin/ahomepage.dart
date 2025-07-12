@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:merodoctor/admin/adminprofile.dart';
 import 'package:merodoctor/admin/amessage.dart';
-import 'package:merodoctor/admin/dadminpage.dart';
+import 'package:merodoctor/admin/feebackspage.dart';
 import 'package:merodoctor/admin/patiadminpage.dart';
 import 'package:merodoctor/admin/specializedpage.dart';
 import 'package:merodoctor/admin/totalblogpage.dart';
-import 'package:merodoctor/api.dart';
+import 'package:merodoctor/api.dart' as api_config;
 import 'package:merodoctor/doctor/doctorrejectepage.dart';
 import 'package:merodoctor/doctor/doctorverifiedpage.dart';
 import 'package:merodoctor/doctor/drpendingpage.dart';
@@ -54,8 +54,7 @@ class _AhomepageState extends State<Ahomepage> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token') ?? '';
-
-      final url = Uri.parse(ApiConfig.adminDashbordeUrl);
+      final url = Uri.parse(api_config.ApiConfig.adminDashbordeUrl);
       final response = await http.get(
         url,
         headers: {
@@ -86,8 +85,7 @@ class _AhomepageState extends State<Ahomepage> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token') ?? '';
-
-      final url = Uri.parse(ApiConfig.adminProfileUrl);
+      final url = Uri.parse(api_config.ApiConfig.adminProfileUrl);
       final response = await http.get(
         url,
         headers: {
@@ -161,56 +159,48 @@ class _AhomepageState extends State<Ahomepage> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    navTile(
-                        'Doctors',
-                        'VIEW',
-                        () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const DAdminPage()))),
-                    navTile(
-                        'Patients',
-                        'VIEW',
-                        () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const PAdminPage()))),
-                    navTile(
-                        'Verified Doctors',
-                        'VIEW',
-                        () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const VerifiedDoctorsPage()))),
-                    navTile(
-                        'Rejected Doctors',
-                        'VIEW',
-                        () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const RejectedDoctorsPage()))),
-                    navTile(
-                        'Pending Doctors',
-                        'VIEW',
-                        () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const PendingPatientsPage()))),
-                    navTile(
-                        'Specialized Doctors',
-                        'VIEW',
-                        () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    const SpecializationAdminPage()))),
-                    navTile(
-                        'Blog Post',
-                        'VIEW',
-                        () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const AdminBlogPage()))),
+                    navTile('Patients', 'VIEW', () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const PAdminPage()));
+                    }),
+                    navTile('Verified Doctors', 'VIEW', () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const VerifiedDoctorsPage()));
+                    }),
+                    navTile('Rejected Doctors', 'VIEW', () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const RejectedDoctorsPage()));
+                    }),
+                    navTile('Pending Doctors', 'VIEW', () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const PendingPatientsPage()));
+                    }),
+                    navTile('Manage Specilization', 'VIEW', () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const SpecializationAdminPage()));
+                    }),
+                    navTile('Manage Categories', 'VIEW', () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const BlogCategoryAdminPage()));
+                    }),
+                    navTile('View Feebacks', 'VIEW', () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const FeedbacksPage()));
+                    }),
                     const SizedBox(height: 30),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15),

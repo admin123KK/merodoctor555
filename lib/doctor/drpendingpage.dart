@@ -78,46 +78,35 @@ class _PendingPatientsPageState extends State<PendingPatientsPage> {
       return;
     }
 
-    // Map status string to int according to backend
-    int statusInt;
-    if (status.toLowerCase() == 'verified') {
-      statusInt = 1;
-    } else if (status.toLowerCase() == 'rejected') {
-      statusInt = 2;
-    } else {
-      statusInt = 0; // fallback
-    }
+    // Map to enum int: Pending=0, Verified=1, Rejected=2
+    final int statusInt = status.toLowerCase() == 'verified'
+        ? 1
+        : status.toLowerCase() == 'rejected'
+            ? 2
+            : 0;
 
     final url = Uri.parse(ApiConfig.updateDoctorStatusUrl(doctorId.toString()));
-    final response = await http.put(
+
+    final res = await http.put(
       url,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode({'status': statusInt}),
+      body: jsonEncode(statusInt), // <-- just 1 or 2, no wrapper object
     );
 
-    if (response.statusCode == 200) {
-      // Show success snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Doctor status updated to "$status" successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      // Refresh doctor list
+    if (res.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Doctor status updated to "$status" successfully'),
+        backgroundColor: Colors.green,
+      ));
       await fetchPendingDoctors();
     } else {
-      // Show failure snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text('Failed to update doctor status: ${response.statusCode}'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Failed to update: ${res.statusCode}'),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 

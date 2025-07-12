@@ -6,37 +6,36 @@ import 'package:intl/intl.dart';
 import 'package:merodoctor/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class NotificationItem {
+class FeedbackItem {
   final int id;
-  final String message;
-  final bool isRead;
-  final DateTime createdAt;
+  final String email;
+  final String description;
+  final DateTime created;
 
-  NotificationItem({
+  FeedbackItem({
     required this.id,
-    required this.message,
-    required this.isRead,
-    required this.createdAt,
+    required this.email,
+    required this.description,
+    required this.created,
   });
 
-  factory NotificationItem.fromJson(Map<String, dynamic> json) =>
-      NotificationItem(
-        id: json['notificationId'],
-        message: json['message'],
-        isRead: json['isRead'],
-        createdAt: DateTime.parse(json['createdAt']),
+  factory FeedbackItem.fromJson(Map<String, dynamic> j) => FeedbackItem(
+        id: j['feedbackId'],
+        email: j['email'],
+        description: j['description'],
+        created: DateFormat('yyyy-MM-dd hh:mm:ss a').parse(j['createdDate']),
       );
 }
 
-class Amessage extends StatefulWidget {
-  const Amessage({Key? key}) : super(key: key);
+class FeedbacksPage extends StatefulWidget {
+  const FeedbacksPage({Key? key}) : super(key: key);
 
   @override
-  State<Amessage> createState() => _AmessageState();
+  State<FeedbacksPage> createState() => _FeedbacksPageState();
 }
 
-class _AmessageState extends State<Amessage> {
-  List<NotificationItem> _items = [];
+class _FeedbacksPageState extends State<FeedbacksPage> {
+  List<FeedbackItem> _items = [];
   bool _loading = true;
 
   @override
@@ -50,7 +49,6 @@ class _AmessageState extends State<Amessage> {
 
   Future<void> _fetch() async {
     setState(() => _loading = true);
-
     final tok = await _token();
     if (tok == null) {
       _snack('Auth token missing');
@@ -59,7 +57,7 @@ class _AmessageState extends State<Amessage> {
     }
 
     final res = await http.get(
-      Uri.parse(ApiConfig.notification),
+      Uri.parse(ApiConfig.feedbacks),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $tok',
@@ -68,7 +66,7 @@ class _AmessageState extends State<Amessage> {
 
     if (res.statusCode == 200) {
       final list = (jsonDecode(res.body)['data'] as List<dynamic>)
-          .map((e) => NotificationItem.fromJson(e))
+          .map((e) => FeedbackItem.fromJson(e))
           .toList();
       setState(() {
         _items = list;
@@ -83,7 +81,7 @@ class _AmessageState extends State<Amessage> {
   void _snack(String m) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(m)));
 
-  String _fmt(DateTime dt) => DateFormat('yyyy‑MM‑dd  HH:mm').format(dt);
+  String _fmt(DateTime dt) => DateFormat('yyyy‑MM‑dd  hh:mm a').format(dt);
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +103,11 @@ class _AmessageState extends State<Amessage> {
                         ),
                         const SizedBox(width: 20),
                         const Expanded(
-                          child: Text('Notification',
+                          child: Text('Feedbacks',
                               style: TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.bold)),
                         ),
-                        const Icon(Icons.more_vert_outlined, size: 30),
+                        const Icon(Icons.feedback_outlined, size: 28),
                       ],
                     ),
                   ),
@@ -119,41 +117,33 @@ class _AmessageState extends State<Amessage> {
                       physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: _items.length,
                       itemBuilder: (context, i) {
-                        final n = _items[i];
+                        final f = _items[i];
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 25, vertical: 6),
                           child: Container(
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: n.isRead
-                                  ? Colors.white
-                                  : const Color.fromARGB(90, 28, 165, 172),
-                              borderRadius: BorderRadius.circular(13),
-                              border: Border.all(
-                                  color: Colors.grey.shade300, width: 0.8),
+                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Expanded(
+                                Text(f.email,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 4),
+                                Text(f.description),
+                                const SizedBox(height: 6),
+                                Align(
+                                  alignment: Alignment.bottomRight,
                                   child: Text(
-                                    n.message,
-                                    style: TextStyle(
-                                      fontWeight: n.isRead
-                                          ? FontWeight.normal
-                                          : FontWeight.bold,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+                                    _fmt(f.created),
+                                    style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  _fmt(n.createdAt),
-                                  style: const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),

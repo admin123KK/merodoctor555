@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = "https://3e5048ad5001.ngrok-free.app";
+  static const String baseUrl = "https://5fd8aadcbbcb.ngrok-free.app";
 
   static String get loginUrl => "$baseUrl/api/Auth/login";
   static String get registerPatientUrl =>
@@ -13,7 +13,35 @@ class ApiConfig {
   static String adminProfileUrl = "$baseUrl/api/Admin/profile";
   static String adminDashbordeUrl = "$baseUrl/api/Admin/dashboard";
   static String imagelUrl = "$baseUrl/api/Image/uploadOrReplaceProfilePicture";
+  static String verifiedDoctors = "$baseUrl/api/Admin/verified";
   static String pendingDoctors = "$baseUrl/api/Admin/pending";
+  static String rejectedDoctors = "$baseUrl/api/Admin/rejected";
+  static String notification = "$baseUrl/api/Notification/notifications";
+  static String feedbacks = "$baseUrl/api/Feedbacks/getAllFeedbacks";
+
+  //Patients
+  static String getAllPatients = "$baseUrl/api/Patients/getAllPatients";
+
+  //specialilzation
+  static String specializations =
+      "$baseUrl/api/Specializations/getAllSpecialization";
+  static String addSpecialization = "$baseUrl/api/Specializations/add";
+  static String getSpecializations(String specializationId) =>
+      "$baseUrl/api/Specializations/getById/$specializationId";
+  static String updateSpecialization(String specializationId) =>
+      "$baseUrl/api/Specializations/update/$specializationId";
+  static String deleteSpecialization(String specializationId) =>
+      "$baseUrl/api/Specializations/delete/$specializationId";
+
+//blogcategories
+  static String get categories =>
+      '$baseUrl/api/BlogCategories/getAllCategories';
+  static String get addCategory => '$baseUrl/api/BlogCategories/add';
+  static String get updateCategory =>
+      '$baseUrl/api/BlogCategories/update'; // PUT, no {id} in URL
+  static String deleteCategory(String id) =>
+      '$baseUrl/api/BlogCategories/delete/$id';
+
   static String updateDoctorStatusUrl(String id) =>
       "$baseUrl/api/Admin/verify/$id";
   static String getCommentsByBlog(String blogId) =>
