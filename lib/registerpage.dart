@@ -22,10 +22,8 @@ class _RegisterpageState extends State<Registerpage> {
 
   int selectedGender = 0;
   bool isLoading = false;
-
   double latitude = 0;
   double longitude = 0;
-
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 

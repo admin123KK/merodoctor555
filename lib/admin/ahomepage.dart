@@ -146,7 +146,10 @@ class _AhomepageState extends State<Ahomepage> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        statBox('Total\nPatients', totalPatients),
+                        statBox(
+                          'Total\nPatients',
+                          totalPatients,
+                        ),
                         statBox('Total\nDoctors', totalDoctors),
                         statBox('Appointments', totalAppointments, width: 130),
                       ],
@@ -328,7 +331,6 @@ class _AhomepageState extends State<Ahomepage> {
               },
               child: const Icon(Icons.mail_outline, size: 30),
             ),
-            const Icon(Icons.calendar_month_outlined, size: 30),
             InkWell(
               onTap: () {
                 Navigator.push(

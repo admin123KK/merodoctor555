@@ -1,7 +1,10 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:merodoctor/admin/specializedpage.dart';
 import 'package:merodoctor/api.dart';
+
 import 'dloginpage.dart';
 
 class Dregisterpage extends StatefulWidget {
@@ -12,6 +15,7 @@ class Dregisterpage extends StatefulWidget {
 }
 
 class _DregisterpageState extends State<Dregisterpage> {
+  // ────────────────────────── text controllers
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _phone = TextEditingController();
@@ -21,146 +25,121 @@ class _DregisterpageState extends State<Dregisterpage> {
   final _clinicAddress = TextEditingController();
   final _password = TextEditingController();
 
-  int? _selectedSpecializationId;
-
-  bool isLoading = false;
   bool _isPasswordVisible = false;
+  bool _isLoading = false;
 
-  Future<void> registerDoctor() async {
-    if (_name.text.isEmpty ||
-        _email.text.isEmpty ||
-        _phone.text.isEmpty ||
-        _degree.text.isEmpty ||
-        _experience.text.isEmpty ||
-        _registrationId.text.isEmpty ||
-        _clinicAddress.text.isEmpty ||
-        _selectedSpecializationId == null ||
-        _password.text.isEmpty) {
-      showErrorMessage("⚠️ Please fill all fields");
+  // ────────────────────────── specialization data
+  List<Specialization> _specializations = [];
+  Specialization? _selectedSpec;
+
+  // ────────────────────────── LIFECYCLE
+  @override
+  void initState() {
+    super.initState();
+    _fetchSpecializations(); // load dropdown data first
+  }
+
+  Future<void> _fetchSpecializations() async {
+    try {
+      final res = await http.get(Uri.parse(ApiConfig.doctorRegisterUrl));
+      if (res.statusCode == 200) {
+        final data = (jsonDecode(res.body)['data'] as List)
+            .map((e) => Specialization.fromJson(e))
+            .toList();
+        setState(() => _specializations = data);
+      } else {
+        debugPrint('Failed to load specializations: ${res.body}');
+      }
+    } catch (e) {
+      debugPrint('Exception while loading specializations: $e');
+    }
+  }
+
+  // ────────────────────────── REGISTER
+  Future<void> _registerDoctor() async {
+    // validation
+    if ([
+          _name,
+          _email,
+          _phone,
+          _degree,
+          _experience,
+          _registrationId,
+          _clinicAddress,
+          _password
+        ].any((c) => c.text.trim().isEmpty) ||
+        _selectedSpec == null) {
+      _showError('⚠️ Please fill all fields (including specialization)');
       return;
     }
 
-    int? experience = int.tryParse(_experience.text);
-
+    final experience = int.tryParse(_experience.text);
     if (experience == null) {
-      showErrorMessage("⚠️ Experience must be a valid number");
+      _showError('⚠️ Experience must be a valid number');
       return;
     }
 
-    setState(() {
-      isLoading = true;
-    });
+    setState(() => _isLoading = true);
+
+    const double fixedLat = 27.686386;
+    const double fixedLon = 83.432426;
+
+    final body = {
+      "fullName": _name.text.trim(),
+      "email": _email.text.trim(),
+      "phoneNumber": _phone.text.trim(),
+      "degree": _degree.text.trim(),
+      "experience": experience,
+      "registrationId": _registrationId.text.trim(),
+      "clinicAddress": _clinicAddress.text.trim(),
+      "specializationId": _selectedSpec!.id,
+      "latitude": fixedLat,
+      "longitude": fixedLon,
+      "password": _password.text
+    };
 
     try {
-      final url = Uri.parse(ApiConfig.doctorRegisterUrl);
-      final response = await http.post(
-        url,
+      final res = await http.post(
+        Uri.parse(ApiConfig.doctorRegisterUrl),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          "fullName": _name.text,
-          "email": _email.text,
-          "phoneNumber": _phone.text,
-          "degree": _degree.text,
-          "experience": experience,
-          "registrationId": _registrationId.text,
-          "clinicAddress": _clinicAddress.text,
-          "specializationId": _selectedSpecializationId,
-          "password": _password.text,
-        }),
+        body: jsonEncode(body),
       );
 
-      setState(() {
-        isLoading = false;
-      });
+      setState(() => _isLoading = false);
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        showSuccessMessage('Login Successfully', isError: false);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        _showDialog('Success', 'Registered successfully', isError: false);
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const Dloginpage()));
         });
       } else {
-        try {
-          final body = jsonDecode(response.body);
-          final errorMessage = body['title'] ??
-              body['message'] ??
-              body['error'] ??
-              response.body;
-          showErrorMessage("❌ $errorMessage");
-        } catch (_) {
-          showErrorMessage("❌ Server error: ${response.statusCode}");
-        }
+        final j = jsonDecode(res.body);
+        _showError('❌ ${j['title'] ?? j['message'] ?? res.body}');
       }
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      showErrorMessage("❌ Exception: $e");
+      setState(() => _isLoading = false);
+      _showError('❌ Exception: $e');
     }
   }
 
-  void showErrorMessage(String msg) {
+  // ────────────────────────── UI HELPERS
+  void _showError(String msg) =>
+      _showDialog('Something went wrong', msg, isError: true);
+
+  void _showDialog(String title, String msg, {required bool isError}) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        icon: const Icon(Icons.error_outline, color: Colors.red, size: 30),
-        title: const Text('Something went wrong'),
+        icon: Icon(isError ? Icons.error_outline : Icons.check_circle_outline,
+            color: isError ? Colors.red : Colors.green, size: 30),
+        title: Text(title),
         content: Text(msg),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: const Text('Cancel')),
-                InkWell(
-                  child: Container(
-                    height: 30,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1CA4AC),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Center(
-                      child: InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: const Text(
-                          'OK',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  void showSuccessMessage(String msg, {required bool isError}) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        icon: const Icon(Icons.check_circle_outline,
-            color: Colors.green, size: 30),
-        title: Text(isError ? 'Login Error' : 'Success'),
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(msg, style: const TextStyle(color: Colors.green)),
-          ],
-        ),
-        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK', style: TextStyle(color: Color(0xFF1CA4AC))),
-          ),
+              onPressed: () => Navigator.pop(context),
+              child:
+                  const Text('OK', style: TextStyle(color: Color(0xFF1CA4AC)))),
         ],
       ),
     );
@@ -168,135 +147,119 @@ class _DregisterpageState extends State<Dregisterpage> {
 
   @override
   void dispose() {
-    _name.dispose();
-    _email.dispose();
-    _phone.dispose();
-    _degree.dispose();
-    _experience.dispose();
-    _registrationId.dispose();
-    _clinicAddress.dispose();
-    _password.dispose();
+    for (var c in [
+      _name,
+      _email,
+      _phone,
+      _degree,
+      _experience,
+      _registrationId,
+      _clinicAddress,
+      _password
+    ]) c.dispose();
     super.dispose();
   }
 
+  // ────────────────────────── WIDGET TREE
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1CA4AC),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-            Center(
-              child: Image.asset('assets/image/startpage.png', height: 170),
-            ),
-            Container(
-              height: 850,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(55),
-                  topRight: Radius.circular(55),
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: const Color(0xFF1CA4AC),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 30),
+              Center(
+                  child:
+                      Image.asset('assets/image/startpage.png', height: 170)),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.only(top: 20, bottom: 40),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(55),
+                    topRight: Radius.circular(55),
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Register Now Dr.',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1CA4AC),
-                        fontSize: 30),
-                  ),
-                  const Text(
-                    'Create new account to Register',
-                    style: TextStyle(color: Color(0xFF1CA4AC), fontSize: 12),
-                  ),
-                  buildTextField(_name, 'Full Name', Icons.person),
-                  buildTextField(_email, 'Email', Icons.email),
-                  buildTextField(_phone, 'Phone Number', Icons.phone),
-                  buildTextField(_degree, 'Degree', Icons.school),
-                  buildTextField(
-                      _experience, 'Experience (years)', Icons.access_time),
-                  buildTextField(
-                      _registrationId, 'Registration ID', Icons.badge),
-                  buildTextField(
-                      _clinicAddress, 'Clinic Address', Icons.location_on),
-                  buildDropdown(),
-                  buildTextField(_password, 'Password', Icons.lock,
-                      isPassword: true),
-                  const SizedBox(height: 20),
-                  isLoading
-                      ? const CircularProgressIndicator(
-                          color: Color(0xFF1CA4AC))
-                      : ElevatedButton(
-                          onPressed: registerDoctor,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF1CA4AC),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22),
+                child: Column(
+                  children: [
+                    const Text('Register Now Dr.',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1CA4AC),
+                            fontSize: 28)),
+                    const Text('Create new account to Register',
+                        style:
+                            TextStyle(color: Color(0xFF1CA4AC), fontSize: 12)),
+                    _buildField(_name, 'Full Name', Icons.person),
+                    _buildField(_email, 'Email', Icons.email),
+                    _buildField(_phone, 'Phone Number', Icons.phone),
+                    _buildField(_degree, 'Degree', Icons.school),
+                    _buildField(
+                        _experience, 'Experience (years)', Icons.access_time),
+                    _buildField(
+                        _registrationId, 'Registration ID', Icons.badge),
+                    _buildField(
+                        _clinicAddress, 'Clinic Address', Icons.location_on),
+                    _buildDropdown(),
+                    _buildField(_password, 'Password', Icons.lock,
+                        isPassword: true),
+                    const SizedBox(height: 20),
+                    _isLoading
+                        ? const CircularProgressIndicator(
+                            color: Color(0xFF1CA4AC))
+                        : ElevatedButton(
+                            onPressed: _registerDoctor,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF1CA4AC),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(22)),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              child: Text('Register',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
                             ),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 10),
-                            child: Text(
-                              'Register',
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Already have an account?'),
+                        InkWell(
+                          onTap: () => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const Dloginpage())),
+                          child: const Text(' Login',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ),
+                                  color: Color(0xFF1CA4AC))),
                         ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Already have an account?'),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const Dloginpage()),
-                          );
-                        },
-                        child: const Text(
-                          ' Login',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1CA4AC)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 
-  Widget buildTextField(
-    TextEditingController controller,
-    String label,
-    IconData icon, {
-    bool isPassword = false,
-  }) {
+  // ────────────────────────── REUSABLE FIELDS
+  Widget _buildField(TextEditingController c, String label, IconData icon,
+      {bool isPassword = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       child: TextField(
-        controller: controller,
+        controller: c,
         obscureText: isPassword ? !_isPasswordVisible : false,
         cursorColor: const Color(0xFF1CA4AC),
         decoration: InputDecoration(
           labelText: label,
-          hintText: 'Enter your $label',
-          labelStyle: const TextStyle(color: Color(0xFF1CA4AC)),
           icon: Icon(icon),
           suffixIcon: isPassword
               ? IconButton(
@@ -306,11 +269,8 @@ class _DregisterpageState extends State<Dregisterpage> {
                         : Icons.visibility_off,
                     color: const Color(0xFF1CA4AC),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
+                  onPressed: () =>
+                      setState(() => _isPasswordVisible = !_isPasswordVisible),
                 )
               : null,
         ),
@@ -318,31 +278,21 @@ class _DregisterpageState extends State<Dregisterpage> {
     );
   }
 
-  Widget buildDropdown() {
-    List<int> specializationOptions = [0, 1, 3, 4, 5];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-      child: DropdownButtonFormField<int>(
-        value: _selectedSpecializationId,
-        items: specializationOptions.map((int value) {
-          return DropdownMenuItem<int>(
-            value: value,
-            child: Text("Specialization ID: $value"),
-          );
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            _selectedSpecializationId = value;
-          });
-        },
-        decoration: const InputDecoration(
-          labelText: 'Specialization ID',
-          labelStyle: TextStyle(color: Color(0xFF1CA4AC)),
-          icon: Icon(Icons.star),
+  Widget _buildDropdown() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        child: DropdownButtonFormField<Specialization>(
+          value: _selectedSpec,
+          items: _specializations
+              .map((s) => DropdownMenuItem(
+                    value: s,
+                    child: Text(s.name),
+                  ))
+              .toList(),
+          onChanged: (s) => setState(() => _selectedSpec = s),
+          decoration: const InputDecoration(
+            labelText: 'Specialization',
+            icon: Icon(Icons.star),
+          ),
         ),
-        dropdownColor: Colors.white,
-      ),
-    );
-  }
+      );
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:merodoctor/admin/ahomepage.dart';
 import 'package:merodoctor/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -98,7 +99,12 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                     child: Row(
                       children: [
                         InkWell(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Ahomepage()));
+                          },
                           child: const Icon(Icons.arrow_back_ios_new, size: 27),
                         ),
                         const SizedBox(width: 20),

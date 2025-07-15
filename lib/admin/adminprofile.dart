@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart'; // For MediaType
@@ -9,9 +10,6 @@ import 'package:merodoctor/admin/ahomepage.dart';
 import 'package:merodoctor/admin/aloginpage.dart';
 import 'package:merodoctor/admin/amessage.dart';
 import 'package:merodoctor/api.dart';
-import 'package:merodoctor/chatbotpage.dart';
-import 'package:merodoctor/historyorsavedpage.dart';
-import 'package:merodoctor/reportcheck.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Adminprofile extends StatefulWidget {
@@ -151,8 +149,10 @@ class _AdminprofileState extends State<Adminprofile> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Ahomepage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Ahomepage()));
                     },
                     child: const Icon(
                       Icons.arrow_back_ios_new_outlined,
@@ -232,27 +232,23 @@ class _AdminprofileState extends State<Adminprofile> {
               ),
               child: Column(
                 children: [
-                  buildProfileItem(Icons.favorite_outline, 'Patient Record',
-                      () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Historyorsavedpage()));
-                  }),
-                  buildProfileItem(Icons.receipt_long_outlined, 'Report Check',
-                      () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Reportcheck()));
-                  }),
-                  buildProfileItem(
-                      Icons.person_search_outlined, 'Appointment', () {}),
-                  buildProfileItem(Icons.settings_outlined, 'Settings', () {}),
-                  buildProfileItem(Icons.message_outlined, 'FAQs', () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Chatbotpage()));
-                  }),
+                  // buildProfileItem(Icons.favorite_outline, 'Patient Record',
+                  //     () {
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => const Historyorsavedpage()));
+                  // }),
+                  // buildProfileItem(Icons.receipt_long_outlined, 'Report Check',
+                  //     () {
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => const Reportcheck()));
+                  // }),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   buildProfileItem(Icons.logout_outlined, 'Log out', () async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.remove('token');

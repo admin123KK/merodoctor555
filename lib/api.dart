@@ -1,6 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = "https://5fd8aadcbbcb.ngrok-free.app";
-
+  static const String baseUrl = "https://c2ae692395d1.ngrok-free.app";
   static String get loginUrl => "$baseUrl/api/Auth/login";
   static String get registerPatientUrl =>
       "$baseUrl/api/AuthPatientRegistration/register-patient";
@@ -18,6 +17,14 @@ class ApiConfig {
   static String rejectedDoctors = "$baseUrl/api/Admin/rejected";
   static String notification = "$baseUrl/api/Notification/notifications";
   static String feedbacks = "$baseUrl/api/Feedbacks/getAllFeedbacks";
+
+  //specialization
+  static String getAllSpecialization =
+      "$baseUrl/api/Specializations/getAllSpecialization";
+
+// pneumonia check
+  static String detectPneumonia = "$baseUrl/api/XRayRecords/detect-pneumonia";
+  static String xrayHistory = "$baseUrl/api/XRayRecords/xray-history";
 
   //Patients
   static String getAllPatients = "$baseUrl/api/Patients/getAllPatients";

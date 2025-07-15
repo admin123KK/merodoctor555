@@ -152,7 +152,7 @@ class _ProfilepageState extends State<Profilepage> {
                 children: [
                   profileTile(
                     icon: Icons.favorite_outline,
-                    text: 'My Saved',
+                    text: 'My Reports',
                     onTap: () {
                       Navigator.push(
                           context,
@@ -161,16 +161,16 @@ class _ProfilepageState extends State<Profilepage> {
                                   const Historyorsavedpage()));
                     },
                   ),
-                  profileTile(
-                    icon: Icons.qr_code_rounded,
-                    text: 'Report Check',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Reportcheck()));
-                    },
-                  ),
+                  // profileTile(
+                  //   icon: Icons.qr_code_rounded,
+                  //   text: 'Report Check',
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => const Reportcheck()));
+                  //   },
+                  // ),
                   profileTile(
                       icon: Icons.person_search_outlined, text: 'Appointment'),
                   profileTile(icon: Icons.settings_outlined, text: 'Settings'),
