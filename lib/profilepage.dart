@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:merodoctor/api.dart'; // Your ApiConfig with URLs
 import 'package:merodoctor/chatbotpage.dart';
+import 'package:merodoctor/doctor/feedback.page.dart';
 import 'package:merodoctor/historyorsavedpage.dart';
 import 'package:merodoctor/homepage.dart';
 import 'package:merodoctor/loginpage.dart';
@@ -17,16 +21,175 @@ class Profilepage extends StatefulWidget {
 }
 
 class _ProfilepageState extends State<Profilepage> {
-  File? _profileImage;
+  File? _profileImageFile;
+  String? profileImageUrl;
+  String fullName = "Loading...";
+  String gender = "";
+  String address = "";
+  String email = "";
+  String phoneNumber = "";
 
-  Future<void> _pickImage() async {
+  final ImagePicker _picker = ImagePicker();
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPatientDetails();
+  }
+
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  Future<void> _fetchPatientDetails() async {
+    final token = await _getToken();
+    if (token == null) return;
+
+    final url = Uri.parse(ApiConfig.fetchPatientOwnDetails);
+
+    try {
+      final response = await http.get(url, headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      });
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        if (jsonResponse['success'] == true) {
+          final data = jsonResponse['data'];
+          setState(() {
+            fullName = data['fullName'] ?? "";
+            profileImageUrl = data['profilePictureUrl'];
+            gender = data['gender'] ?? "";
+            address = data['address'] ?? "";
+            email = data['email'] ?? "";
+            phoneNumber = data['phoneNumber'] ?? "";
+          });
+        } else {
+          print("Failed fetching patient data: ${jsonResponse['message']}");
+        }
+      } else {
+        print('Error fetching patient details: ${response.body}');
+      }
+    } catch (e) {
+      print('Exception fetching patient details: $e');
+    }
+  }
+
+  Future<void> _pickAndUploadImage() async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+
+    if (pickedFile == null) return;
+
+    setState(() {
+      _profileImageFile = File(pickedFile.path);
+      isLoading = true;
+    });
+
+    final token = await _getToken();
+    if (token == null) {
       setState(() {
-        _profileImage = File(pickedFile.path);
+        isLoading = false;
+      });
+      return;
+    }
+
+    final url = Uri.parse(ApiConfig.imagelUrl);
+    var request = http.MultipartRequest('POST', url);
+    request.headers['Authorization'] = 'Bearer $token';
+
+    // Attach the image file
+    request.files.add(
+        await http.MultipartFile.fromPath('file', _profileImageFile!.path));
+
+    try {
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        if (jsonResponse['success'] == true) {
+          // Image uploaded successfully, update profileImageUrl and refresh details
+          print("Image uploaded: ${jsonResponse['data']}");
+          await _fetchPatientDetails();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Profile picture updated successfully')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(jsonResponse['message'] ?? 'Upload failed')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Upload failed with status ${response.statusCode}')),
+        );
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to upload image')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
       });
     }
+  }
+
+  Widget _buildProfileImage() {
+    ImageProvider imageProvider;
+    if (_profileImageFile != null) {
+      imageProvider = FileImage(_profileImageFile!);
+    } else if (profileImageUrl != null && profileImageUrl!.isNotEmpty) {
+      if (profileImageUrl!.startsWith('http')) {
+        imageProvider = NetworkImage(profileImageUrl!);
+      } else {
+        imageProvider = NetworkImage(ApiConfig.baseUrl + profileImageUrl!);
+      }
+    } else {
+      imageProvider = const AssetImage('assets/image/startpage3.png');
+    }
+    return Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        CircleAvatar(
+          radius: 55,
+          backgroundColor: Colors.white,
+          backgroundImage: imageProvider,
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            onTap: _pickAndUploadImage,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: isLoading
+                  ? SizedBox(
+                      height: 18,
+                      width: 18,
+                      child: CircularProgressIndicator(
+                        color: Colors.blue.shade900,
+                        strokeWidth: 2.5,
+                      ),
+                    )
+                  : const Icon(Icons.edit, size: 18, color: Colors.black),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -69,67 +232,46 @@ class _ProfilepageState extends State<Profilepage> {
             ),
 
             // Profile Image Section
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                CircleAvatar(
-                  radius: 55,
-                  backgroundColor: Colors.white,
-                  backgroundImage: _profileImage != null
-                      ? FileImage(_profileImage!)
-                      : const AssetImage('assets/image/startpage3.png')
-                          as ImageProvider,
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: _pickImage,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child:
-                          const Icon(Icons.edit, size: 18, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            _buildProfileImage(),
 
             const SizedBox(height: 15),
-            const Text('Dr.Sky Karki',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            Text(fullName,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white)),
             const SizedBox(height: 30),
 
-            // Sex and Age Row
+            // Sex Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(height: 60, width: 1, color: Colors.white),
-                const Column(
+                Column(
                   children: [
-                    Text('Sex',
+                    const Text('Sex',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                             fontSize: 16)),
-                    SizedBox(height: 10),
-                    Text('Male', style: TextStyle(fontWeight: FontWeight.bold))
+                    const SizedBox(height: 10),
+                    Text(gender,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white))
                   ],
                 ),
                 Container(height: 60, width: 1, color: Colors.white),
-                const Column(
+                Column(
                   children: [
-                    Text('Age',
+                    const Text('Email',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white)),
-                    SizedBox(height: 10),
-                    Text('27', style: TextStyle(fontWeight: FontWeight.bold))
+                            color: Colors.white,
+                            fontSize: 16)),
+                    const SizedBox(height: 10),
+                    Text(email,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white))
                   ],
                 ),
                 Container(height: 60, width: 1, color: Colors.white),
@@ -161,16 +303,6 @@ class _ProfilepageState extends State<Profilepage> {
                                   const Historyorsavedpage()));
                     },
                   ),
-                  // profileTile(
-                  //   icon: Icons.qr_code_rounded,
-                  //   text: 'Report Check',
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (context) => const Reportcheck()));
-                  //   },
-                  // ),
                   profileTile(
                       icon: Icons.person_search_outlined, text: 'Appointment'),
                   profileTile(icon: Icons.settings_outlined, text: 'Settings'),
@@ -182,6 +314,15 @@ class _ProfilepageState extends State<Profilepage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Chatbotpage()));
+                      }),
+                  profileTile(
+                      icon: Icons.person_search_outlined,
+                      text: 'Feedback',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const FeedBackPage()));
                       }),
                   profileTile(
                     icon: Icons.logout_outlined,
@@ -285,8 +426,10 @@ class _ProfilepageState extends State<Profilepage> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Homepage()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Homepage()));
                 },
                 child: const Icon(Icons.home_outlined, size: 30),
               ),

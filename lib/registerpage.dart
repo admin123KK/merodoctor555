@@ -1,8 +1,10 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:merodoctor/api.dart';
-import 'loginpage.dart';
+import 'package:merodoctor/api.dart'; // Make sure ApiConfig.registerPatientUrl is defined here
+
+import 'loginpage.dart'; // Make sure LoginPage is defined here
 
 class Registerpage extends StatefulWidget {
   const Registerpage({super.key});
@@ -22,12 +24,22 @@ class _RegisterpageState extends State<Registerpage> {
 
   int selectedGender = 0;
   bool isLoading = false;
-  double latitude = 0;
-  double longitude = 0;
+
+  // Fixed latitude and longitude values
+  final double latitude = 27.686386;
+  final double longitude = 83.432426;
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
+  @override
+  void initState() {
+    super.initState();
+    // latitude and longitude are initialized above as final, no need to set in initState
+  }
+
   Future<void> registerUser() async {
+    // Basic form validation
     if (_fullName.text.isEmpty ||
         _email.text.isEmpty ||
         _phone.text.isEmpty ||
@@ -45,48 +57,64 @@ class _RegisterpageState extends State<Registerpage> {
     }
 
     setState(() {
-      isLoading = true;
+      isLoading = true; // Show loading indicator
     });
 
     try {
       final response = await http.post(
-        Uri.parse(ApiConfig.registerPatientUrl),
+        Uri.parse(
+            ApiConfig.registerPatientUrl), // Your registration API endpoint
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           "fullName": _fullName.text,
           "email": _email.text,
           "phoneNumber": _phone.text,
-          "dateOfBirth": _dob.text,
+          "dateOfBirth": _dob
+              .text, // Ensure this format matches backend's expectation (e.g., "YYYY-MM-DD")
           "gender": selectedGender,
           "address": _address.text,
-          "latitude": latitude,
-          "longitude": longitude,
+          "latitude": latitude, // Using fixed latitude
+          "longitude": longitude, // Using fixed longitude
           "password": _password.text
         }),
       );
 
       setState(() {
-        isLoading = false;
+        isLoading = false; // Hide loading indicator
       });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showSuccessMessage("✅ Registration successful", isError: false);
+        // Success response
+        final body = jsonDecode(response.body);
+        final backendMessage = body['message'] ??
+            "Registration successful."; // Get message from backend
+        showSuccessMessage("✅ $backendMessage", isError: false);
+
+        // Navigate to login page after a short delay
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const Loginpage()));
         });
       } else {
+        // Error response from backend
         final body = jsonDecode(response.body);
-        showErrorMessage("❌ ${body['title'] ?? 'Unknown Error'}");
+        // Try to get 'message' first, then 'title' (common for validation errors), fallback to generic error
+        final backendMessage =
+            body['message'] ?? body['title'] ?? "Unknown error occurred.";
+        showErrorMessage("❌ $backendMessage");
       }
     } catch (e) {
+      // Network or other unexpected errors
       setState(() {
         isLoading = false;
       });
-      showErrorMessage("❌ Something went wrong ");
+      showErrorMessage(
+          "❌ An unexpected error occurred. Please check your internet connection.");
+      print('Registration error: $e'); // For debugging
     }
   }
 
+  // Custom dialog for showing error messages
   void showErrorMessage(String msg) {
     showDialog(
       context: context,
@@ -128,17 +156,25 @@ class _RegisterpageState extends State<Registerpage> {
     );
   }
 
+  // Custom dialog for showing success messages
   void showSuccessMessage(String msg, {required bool isError}) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         icon: const Icon(Icons.check_circle_outline,
             color: Colors.green, size: 30),
-        title: Text(isError ? 'Login Error' : 'Success'),
+        title: Text(
+            isError ? 'Login Error' : 'Success'), // Title adjusted for clarity
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(msg, style: const TextStyle(color: Colors.green)),
+            Flexible(
+              // Use Flexible to prevent text overflow
+              child: Text(msg,
+                  textAlign: TextAlign
+                      .center, // Center align text for better appearance
+                  style: const TextStyle(color: Colors.green)),
+            ),
           ],
         ),
         actions: [
@@ -175,7 +211,7 @@ class _RegisterpageState extends State<Registerpage> {
               child: Image.asset('assets/image/startpage.png', height: 170),
             ),
             Container(
-              height: 850,
+              height: 850, // Adjust height as needed based on content
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -193,12 +229,13 @@ class _RegisterpageState extends State<Registerpage> {
                           fontSize: 30)),
                   const Text('Create new account to register',
                       style: TextStyle(color: Color(0xFF1CA4AC), fontSize: 12)),
+                  // Text input fields
                   buildTextField(_fullName, 'Full Name', Icons.person),
                   buildTextField(_email, 'Email', Icons.email),
                   buildTextField(_phone, 'Phone Number', Icons.phone),
                   buildTextField(_address, 'Address', Icons.location_city),
-                  buildDatePicker(),
-                  buildGenderDropdown(),
+                  buildDatePicker(), // Date of birth picker
+                  buildGenderDropdown(), // Gender selection
                   buildTextField(_password, 'Password', Icons.lock,
                       isPassword: true),
                   buildTextField(
@@ -207,8 +244,10 @@ class _RegisterpageState extends State<Registerpage> {
                   const SizedBox(height: 20),
                   isLoading
                       ? const CircularProgressIndicator(
+                          // Loading indicator
                           color: Color(0xFF1CA4AC))
                       : ElevatedButton(
+                          // Register button
                           onPressed: registerUser,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF1CA4AC),
@@ -226,6 +265,7 @@ class _RegisterpageState extends State<Registerpage> {
                           ),
                         ),
                   const SizedBox(height: 10),
+                  // Link to Login page
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -253,6 +293,7 @@ class _RegisterpageState extends State<Registerpage> {
     );
   }
 
+  // Reusable widget for text input fields
   Widget buildTextField(
       TextEditingController controller, String label, IconData icon,
       {bool isPassword = false}) {
@@ -298,6 +339,7 @@ class _RegisterpageState extends State<Registerpage> {
     );
   }
 
+  // Widget for date of birth picker
   Widget buildDatePicker() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -307,11 +349,14 @@ class _RegisterpageState extends State<Registerpage> {
         onTap: () async {
           DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: DateTime(2000),
-              firstDate: DateTime(1900),
-              lastDate: DateTime.now());
+              initialDate: DateTime(2000), // Default initial year
+              firstDate: DateTime(1900), // Earliest selectable year
+              lastDate: DateTime.now()); // Latest selectable year (today)
 
           if (pickedDate != null) {
+            // Format the date to ISO 8601 string (e.g., "2000-10-25T00:00:00.000Z")
+            // Ensure your backend can parse this or format it as "YYYY-MM-DD" if required by your DTO.
+            // Example for "YYYY-MM-DD": DateFormat('yyyy-MM-dd').format(pickedDate);
             _dob.text = pickedDate.toIso8601String();
           }
         },
@@ -325,6 +370,7 @@ class _RegisterpageState extends State<Registerpage> {
     );
   }
 
+  // Widget for gender dropdown selection
   Widget buildGenderDropdown() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -343,7 +389,7 @@ class _RegisterpageState extends State<Registerpage> {
             ],
             onChanged: (value) {
               setState(() {
-                selectedGender = value!;
+                selectedGender = value!; // Update selected gender
               });
             },
           ),

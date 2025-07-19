@@ -34,7 +34,6 @@ class _LoginpageState extends State<Loginpage> {
     print('Token found on init: $token'); // print token to terminal
 
     if (token != null && token.isNotEmpty) {
-      // Token exists, navigate directly to homepage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const Homepage()),
@@ -52,28 +51,33 @@ class _LoginpageState extends State<Loginpage> {
           "password": password,
         }),
       );
+
       final data = jsonDecode(response.body);
 
       Navigator.pop(context); // close loading dialog
 
-      if (response.statusCode == 200 && data['success']) {
+      final backendMessage = data['message'] ?? 'Login failed';
+
+      if (response.statusCode == 200 &&
+          (data['success'] == true || data['success'] == 'true')) {
         final token = data['data'];
-        print('Login success, token: $token'); // print token before saving
+        print('Login success, token: $token');
 
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', token); // Save token with correct key
+        await prefs.setString('token', token);
 
-        showSuccessMessage('Login Successful');
+        showSuccessMessage(backendMessage);
         await Future.delayed(const Duration(seconds: 2), () {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const Homepage()));
         });
       } else {
-        showErrorMessage(data['message'] ?? 'Login failed');
+        showErrorMessage(backendMessage);
       }
     } catch (e) {
       Navigator.pop(context);
       showErrorMessage('Something went wrong on server');
+      print('Login error: $e');
     }
   }
 
