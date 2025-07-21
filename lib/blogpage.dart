@@ -5,8 +5,52 @@ import 'package:http/http.dart' as http;
 import 'package:merodoctor/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class Blog {
+  final int blogId;
+  final String title;
+  final String? profilePicture;
+  final String content;
+  final String createdDate;
+  final String categoryName;
+  final String doctorName;
+  final String blogPictureUrl;
+  int totalLikes;
+  int totalComments;
+  bool isLikedByUser;
+
+  Blog({
+    required this.blogId,
+    required this.title,
+    this.profilePicture,
+    required this.content,
+    required this.createdDate,
+    required this.categoryName,
+    required this.doctorName,
+    required this.blogPictureUrl,
+    required this.totalLikes,
+    required this.totalComments,
+    required this.isLikedByUser,
+  });
+
+  factory Blog.fromJson(Map<String, dynamic> json) {
+    return Blog(
+      blogId: json['blogId'],
+      title: json['title'],
+      profilePicture: json['profilePicture'],
+      content: json['content'],
+      createdDate: json['createdDate'],
+      categoryName: json['categoryName'],
+      doctorName: json['doctorName'],
+      blogPictureUrl: json['blogPictureUrl'],
+      totalLikes: json['totalLikes'],
+      totalComments: json['totalComments'] ?? 0,
+      isLikedByUser: json['isLikedByUser'] ?? false,
+    );
+  }
+}
+
 class BlogDetailsPage extends StatefulWidget {
-  final int blogId; // Added to fetch comments/likes properly
+  final int blogId;
   final String imagePath;
   final String title;
   final String description;
@@ -14,6 +58,7 @@ class BlogDetailsPage extends StatefulWidget {
   final String time;
   final String category;
   final int totalLikes;
+  final bool isLikedByUser;
 
   const BlogDetailsPage({
     super.key,
@@ -25,6 +70,7 @@ class BlogDetailsPage extends StatefulWidget {
     required this.time,
     required this.category,
     required this.totalLikes,
+    this.isLikedByUser = false,
   });
 
   @override
@@ -32,19 +78,20 @@ class BlogDetailsPage extends StatefulWidget {
 }
 
 class _BlogDetailsPageState extends State<BlogDetailsPage> {
-  bool isLiked =
-      false; // you can also fetch initial like status from backend if needed
+  late bool isLiked;
   late int totalLikes;
-  List<Map<String, dynamic>> comments = []; // hold comment objects
-
+  List<Map<String, dynamic>> comments = [];
   final TextEditingController _commentController = TextEditingController();
+  bool isPosting = false;
+  bool isLoadingComments = false;
 
   @override
   void initState() {
     super.initState();
+    isLiked = widget.isLikedByUser;
     totalLikes = widget.totalLikes;
     fetchComments();
-    checkIfLiked();
+    fetchIsLiked(); // Fetch fresh like status from backend
   }
 
   Future<String?> _getToken() async {
@@ -52,9 +99,35 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
     return prefs.getString('token');
   }
 
+  Future<void> fetchIsLiked() async {
+    final token = await _getToken();
+    if (token == null) return;
+
+    try {
+      final url =
+          Uri.parse('${ApiConfig.baseUrl}/api/blogs/${widget.blogId}/isliked');
+      final response = await http.get(url, headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      });
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        if (jsonResponse['success'] == true && mounted) {
+          setState(() {
+            isLiked = jsonResponse['data']['isLiked'] ?? isLiked;
+          });
+        }
+      }
+    } catch (_) {
+      // Silent fail
+    }
+  }
+
   Future<void> fetchComments() async {
     final token = await _getToken();
     if (token == null) return;
+    setState(() => isLoadingComments = true);
 
     final url =
         Uri.parse(ApiConfig.getCommentsByBlog(widget.blogId.toString()));
@@ -80,12 +153,11 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
                 .toList();
           });
         }
-      } else {
-        print('Failed to fetch comments: ${response.body}');
       }
     } catch (e) {
       print('Error fetching comments: $e');
     }
+    setState(() => isLoadingComments = false);
   }
 
   Future<void> addComment(String commentText) async {
@@ -99,6 +171,7 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
     };
 
     try {
+      setState(() => isPosting = true);
       final response = await http.post(url,
           headers: {
             'Authorization': 'Bearer $token',
@@ -109,10 +182,7 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         if (jsonResponse['success'] == true) {
-          setState(() {
-            // Clear input and refresh comments
-            _commentController.clear();
-          });
+          _commentController.clear();
           await fetchComments();
         } else {
           _showSnackBar(jsonResponse['message'] ?? 'Could not add comment');
@@ -123,6 +193,8 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
     } catch (e) {
       _showSnackBar('Error adding comment');
       print('Add comment error: $e');
+    } finally {
+      setState(() => isPosting = false);
     }
   }
 
@@ -131,9 +203,7 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
     if (token == null) return;
 
     final url = Uri.parse(ApiConfig.toggleLike);
-    final body = {
-      "blogId": widget.blogId,
-    };
+    final body = {"blogId": widget.blogId};
 
     try {
       final response = await http.post(url,
@@ -147,8 +217,16 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
 
       if (response.statusCode == 200 && jsonResponse['success'] == true) {
         setState(() {
-          isLiked = !isLiked;
-          totalLikes += isLiked ? 1 : -1;
+          if (jsonResponse['message']
+              .toString()
+              .toLowerCase()
+              .contains('unliked')) {
+            isLiked = false;
+            totalLikes -= 1;
+          } else {
+            isLiked = true;
+            totalLikes += 1;
+          }
         });
       } else {
         _showSnackBar(jsonResponse['message'] ?? 'Like toggle failed');
@@ -159,28 +237,16 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
     }
   }
 
-  Future<void> checkIfLiked() async {
-    // Optional: Implement backend call here to check if user already liked the blog
-    // For now, we keep isLiked false;
-  }
-
   void _showSnackBar(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _submitComment() {
     final comment = _commentController.text.trim();
     if (comment.isEmpty) return;
     addComment(comment);
-  }
-
-  @override
-  void dispose() {
-    _commentController.dispose();
-    super.dispose();
   }
 
   String formatDate(String dateStr) {
@@ -193,72 +259,90 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
   }
 
   @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Blog Detail',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('Blog Detail',
+            style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: widget.imagePath.startsWith('http')
-                  ? Image.network(widget.imagePath, fit: BoxFit.cover)
-                  : Image.asset(widget.imagePath, fit: BoxFit.cover),
-            ),
-            const SizedBox(height: 10),
-            Text(widget.title,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            Text('${widget.doctorName} • ${widget.category} • ${widget.time}',
-                style: const TextStyle(color: Colors.grey)),
-            const SizedBox(height: 10),
-            Text(widget.description),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    isLiked ? Icons.favorite : Icons.favorite_border,
-                    color: isLiked ? Colors.red : Colors.grey,
-                  ),
-                  onPressed: toggleLike,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: widget.imagePath.startsWith('http')
+                ? Image.network(widget.imagePath, fit: BoxFit.cover)
+                : Image.asset(widget.imagePath, fit: BoxFit.cover),
+          ),
+          const SizedBox(height: 10),
+          Text(widget.title,
+              style:
+                  const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          Text('${widget.doctorName} • ${widget.category} • ${widget.time}',
+              style: const TextStyle(color: Colors.grey)),
+          const SizedBox(height: 10),
+          Text(widget.description),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              IconButton(
+                icon: Icon(
+                  isLiked ? Icons.thumb_up_alt : Icons.thumb_up_alt_outlined,
+                  color: isLiked ? Colors.blue : Colors.grey,
+                  size: 30,
                 ),
-                Text('$totalLikes likes', style: const TextStyle(fontSize: 16)),
-              ],
-            ),
-            const Divider(height: 30),
-            const Text('Comments',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            const SizedBox(height: 10),
-            for (final comment in comments)
-              ListTile(
-                leading: const Icon(Icons.comment),
-                title: Text(comment['comment']),
-                subtitle: Text(
-                    '${comment['name']} • ${formatDate(comment['createdDate'])}',
-                    style: const TextStyle(fontSize: 12)),
+                onPressed: toggleLike,
               ),
-            TextField(
-              controller: _commentController,
-              decoration: InputDecoration(
-                labelText: 'Write a comment...',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _submitComment,
-                ),
-              ),
-              minLines: 1,
-              maxLines: 3,
+              Text('$totalLikes likes', style: const TextStyle(fontSize: 16)),
+            ],
+          ),
+          const Divider(height: 30),
+          const Text('Comments',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          const SizedBox(height: 10),
+          if (isLoadingComments)
+            const Center(child: CircularProgressIndicator())
+          else if (comments.isEmpty)
+            const Center(child: Text('No comments yet.'))
+          else
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: comments.length,
+              itemBuilder: (context, idx) {
+                final comment = comments[idx];
+                final name = comment['name'] ?? "User";
+                final msg = comment['comment'] ?? "";
+                final time = comment['createdDate'] ?? "";
+                return ListTile(
+                  leading: const Icon(Icons.account_circle,
+                      size: 40, color: Colors.grey),
+                  title: Text(name,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(msg),
+                  trailing: Text(formatDate(time),
+                      style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 18),
+                );
+              },
             ),
-          ],
-        ),
+          TextField(
+            controller: _commentController,
+            decoration: InputDecoration(
+              labelText: 'Write a comment...',
+              suffixIcon: IconButton(
+                  icon: const Icon(Icons.send), onPressed: _submitComment),
+            ),
+            minLines: 1,
+            maxLines: 3,
+          ),
+        ]),
       ),
     );
   }

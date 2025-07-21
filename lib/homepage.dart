@@ -7,33 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:merodoctor/api.dart';
 import 'package:merodoctor/blogpage.dart';
 import 'package:merodoctor/doctordetailspage.dart';
+import 'package:merodoctor/homeblog.dart';
+import 'package:merodoctor/models/doctor.dart';
 import 'package:merodoctor/profilepage.dart';
 import 'package:merodoctor/reportcheck.dart';
+import 'package:merodoctor/schedulepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class Doctor {
-  final String userId;
-  final String fullName;
-  final String specializationName;
-  final double rating;
-
-  Doctor({
-    required this.userId,
-    required this.fullName,
-    required this.specializationName,
-    this.rating = 4.5,
-  });
-
-  factory Doctor.fromJson(Map<String, dynamic> json) {
-    return Doctor(
-      userId: json['userId'] ?? '',
-      fullName: json['fullName'] ?? '',
-      specializationName: json['specializationName'] ?? '',
-      rating:
-          json.containsKey('rating') ? (json['rating'] as num).toDouble() : 4.5,
-    );
-  }
-}
 
 class Blog {
   final int blogId;
@@ -106,6 +85,10 @@ class _HomepageState extends State<Homepage> {
   List<Doctor> doctors = [];
   List<Blog> blogs = [];
 
+  // New: top doctors list and loader
+  List<Doctor> topDoctors = [];
+  bool isLoadingTopDoctors = false;
+
   TextEditingController _searchController = TextEditingController();
 
   bool isLoadingDoctors = false;
@@ -117,6 +100,7 @@ class _HomepageState extends State<Homepage> {
     fetchPatientDetails();
     fetchSpecializations();
     fetchBlogs();
+    fetchTopDoctors(); // <-- Fetch top doctors here
 
     _searchController.addListener(() {
       _fetchDoctorsFiltered();
@@ -195,7 +179,6 @@ class _HomepageState extends State<Homepage> {
     final searchText = _searchController.text.trim();
     if ((selectedSpecialization == null || selectedSpecialization!.id == 0) &&
         searchText.isEmpty) {
-      // No specialization selected and search text empty: clear doctors and return
       if (doctors.isNotEmpty) {
         setState(() {
           doctors = [];
@@ -241,6 +224,18 @@ class _HomepageState extends State<Homepage> {
           setState(() {
             doctors = data.map((d) => Doctor.fromJson(d)).toList();
           });
+          for (var doctor in doctors) {
+            String imageUrl;
+            if (doctor.profilePictureUrl != null &&
+                doctor.profilePictureUrl!.isNotEmpty) {
+              imageUrl = doctor.profilePictureUrl!.startsWith('http')
+                  ? doctor.profilePictureUrl!
+                  : ApiConfig.baseUrl + doctor.profilePictureUrl!;
+            } else {
+              imageUrl = 'No image (fallback asset will show)';
+            }
+            print('Loading doctor image URL: $imageUrl');
+          }
         }
       } else if (response.statusCode == 404) {
         setState(() {
@@ -283,6 +278,54 @@ class _HomepageState extends State<Homepage> {
       }
     } catch (e) {
       debugPrint('Error fetching blogs: $e');
+    }
+  }
+
+  // New function to fetch top doctors
+  Future<void> fetchTopDoctors() async {
+    setState(() {
+      isLoadingTopDoctors = true;
+    });
+
+    final token = await _getToken();
+    if (token == null) {
+      setState(() {
+        isLoadingTopDoctors = false;
+      });
+      return;
+    }
+
+    try {
+      final response = await http.get(
+        Uri.parse(ApiConfig.getAllTopDoctors),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        if (jsonResponse['success'] == true && jsonResponse['data'] != null) {
+          final data = jsonResponse['data'] as List<dynamic>;
+          setState(() {
+            topDoctors = data.map((d) => Doctor.fromJson(d)).toList();
+          });
+        }
+      } else if (response.statusCode == 404) {
+        setState(() {
+          topDoctors = [];
+        });
+      }
+    } catch (e) {
+      debugPrint('Error fetching top doctors: $e');
+      setState(() {
+        topDoctors = [];
+      });
+    } finally {
+      setState(() {
+        isLoadingTopDoctors = false;
+      });
     }
   }
 
@@ -354,7 +397,7 @@ class _HomepageState extends State<Homepage> {
             ),
             const SizedBox(height: 15),
             if (!_shouldShowDoctors())
-              const SizedBox.shrink() // Show nothing initially
+              const SizedBox.shrink()
             else if (isLoadingDoctors)
               const Center(child: CircularProgressIndicator())
             else if (doctors.isEmpty)
@@ -367,14 +410,27 @@ class _HomepageState extends State<Homepage> {
                 itemBuilder: (context, index) {
                   final doctor = doctors[index];
                   return ListTile(
-                    leading: const Icon(Icons.person),
+                    leading: CircleAvatar(
+                      radius: 22,
+                      backgroundColor: Colors.grey.shade200,
+                      backgroundImage: (doctor.profilePictureUrl != null &&
+                              doctor.profilePictureUrl!.isNotEmpty)
+                          ? (doctor.profilePictureUrl!.startsWith('http')
+                              ? NetworkImage(doctor.profilePictureUrl!)
+                              : NetworkImage(ApiConfig.baseUrl +
+                                  doctor.profilePictureUrl!))
+                          : const AssetImage('assets/image/startpage3.png')
+                              as ImageProvider,
+                    ),
                     title: Text(doctor.fullName),
                     subtitle: Text(doctor.specializationName),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const Doctordetailspage()),
+                            builder: (context) => Doctordetailspage(
+                                  doctor: doctor,
+                                )),
                       );
                     },
                   );
@@ -388,6 +444,8 @@ class _HomepageState extends State<Homepage> {
             ),
             const SizedBox(height: 30),
             _buildPromoCard(),
+
+            // New: Top Doctors Section
             const Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -399,21 +457,36 @@ class _HomepageState extends State<Homepage> {
               ],
             ),
             const Text(
-              'Top Doctor',
+              'Top Doctors',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             const SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                  children: doctors
-                      .map((doctor) => _buildDoctorCard(
-                          'assets/image/startpage3.png',
-                          doctor.fullName,
-                          doctor.specializationName,
-                          doctor.rating))
-                      .toList()),
-            ),
+            if (isLoadingTopDoctors)
+              const Center(child: CircularProgressIndicator())
+            else if (topDoctors.isEmpty)
+              const Center(child: Text('No top doctors found'))
+            else
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    children: topDoctors.map((doctor) {
+                  String imageUrl = (doctor.profilePictureUrl != null &&
+                          doctor.profilePictureUrl!.isNotEmpty)
+                      ? (doctor.profilePictureUrl!.startsWith('http')
+                          ? doctor.profilePictureUrl!
+                          : ApiConfig.baseUrl + doctor.profilePictureUrl!)
+                      : 'assets/image/startpage3.png';
+
+                  return _buildDoctorCard(
+                    imageUrl,
+                    doctor.fullName,
+                    doctor.specializationName,
+                    doctor.averageRating.toDouble(),
+                    doctor,
+                  );
+                }).toList()),
+              ),
+
             const SizedBox(height: 30),
             const Text(
               'Doctor Blogs',
@@ -454,8 +527,8 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Widget _buildDoctorCard(
-      String imagePath, String name, String speciality, double rating) {
+  Widget _buildDoctorCard(String imagePath, String name, String speciality,
+      double rating, Doctor doctor) {
     return Padding(
       padding: const EdgeInsets.only(right: 15),
       child: Card(
@@ -466,7 +539,7 @@ class _HomepageState extends State<Homepage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const Doctordetailspage()),
+                  builder: (context) => Doctordetailspage(doctor: doctor)),
             );
           },
           child: Container(
@@ -483,7 +556,9 @@ class _HomepageState extends State<Homepage> {
                 CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 60,
-                  backgroundImage: AssetImage(imagePath),
+                  backgroundImage: imagePath.startsWith('http')
+                      ? NetworkImage(imagePath)
+                      : AssetImage(imagePath) as ImageProvider,
                 ),
                 const SizedBox(height: 8),
                 Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -666,7 +741,23 @@ class _HomepageState extends State<Homepage> {
               },
               child: const Icon(Icons.qr_code_outlined, size: 30),
             ),
-            const Icon(Icons.calendar_month_outlined, size: 30),
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SchedulePage()));
+              },
+              child: const Icon(
+                Icons.calendar_month_outlined,
+                size: 30,
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Homeblog()));
+              },
+              child: const Icon(Icons.article_outlined, size: 30),
+            ),
             InkWell(
               onTap: () {
                 Navigator.push(

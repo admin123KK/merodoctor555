@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = "https://5c7630f1f57f.ngrok-free.app";
+  static const String baseUrl = "https://d8533e367220.ngrok-free.app";
   static String get loginUrl => "$baseUrl/api/Auth/login";
   static String get registerPatientUrl =>
       "$baseUrl/api/AuthPatientRegistration/register-patient";
@@ -30,6 +30,7 @@ class ApiConfig {
   static String deleteDaySchedule = "$baseUrl/api/Doctor/delete-day-Schedule";
   static String deleteTimeRange = "$baseUrl/api/Doctor/delete-time-range";
   static String doctorFilter = "$baseUrl/api/Doctor/filter";
+  static String getAllTopDoctors = "$baseUrl/api/Doctor/getAllTopDoctors";
 
   //patient
   static const String fetchPatientOwnDetails =
@@ -63,6 +64,13 @@ class ApiConfig {
   //Patients
   static String getAllPatients = "$baseUrl/api/Patients/getAllPatients";
 
+//appointment
+  static String bookAppointment = "$baseUrl/api/Appointments/bookAppointment";
+  static String confirmPayment = "$baseUrl/api/Appointments/confirm-payment";
+  static String failPayment = "$baseUrl/api/Appointments/fail-payment";
+  static String getUpcommingAppointments =
+      "$baseUrl/api/Appointments/getUpcommingAppointments";
+
   //specialilzation
   static String specializations =
       "$baseUrl/api/Specializations/getAllSpecialization";
@@ -74,6 +82,15 @@ class ApiConfig {
   static String deleteSpecialization(String specializationId) =>
       "$baseUrl/api/Specializations/delete/$specializationId";
 
+//rating
+  static String getUserRating(String doctorId) =>
+      "$baseUrl/api/Ratings/UserRating/$doctorId";
+  static String getDoctorRatings(String doctorId) =>
+      "$baseUrl/api/Ratings/DoctorRatings/$doctorId";
+  static String get createRating => '$baseUrl/api/Ratings/Create';
+  static String get updateRating => '$baseUrl/api/Ratings/Update';
+  static String get getDoctosrRatings =>
+      '$baseUrl/api/BlogCategories/getAllCategories';
 //blogcategories
   static String get categories =>
       '$baseUrl/api/BlogCategories/getAllCategories';
